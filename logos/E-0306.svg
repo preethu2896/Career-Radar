@@ -1,0 +1,7 @@
+<svg id="MDI_google-play" data-name="MDI / google-play" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Boundary" fill="#212121" stroke="rgba(0,0,0,0)" stroke-width="1" opacity="0">
+    <rect width="24" height="24" stroke="none"/>
+    <rect x="0.5" y="0.5" width="23" height="23" fill="none"/>
+  </g>
+  <path id="Path_google-play" data-name="Path / google-play" d="M3,20.5V3.5a1.5,1.5,0,0,1,.84-1.35L13.69,12,3.84,21.85A1.508,1.508,0,0,1,3,20.5m13.81-5.38L6.05,21.34l8.49-8.49,2.27,2.27m3.35-4.31A1.521,1.521,0,0,1,20.75,12a1.469,1.469,0,0,1-.57,1.18L17.89,14.5,15.39,12l2.5-2.5,2.27,1.31M6.05,2.66,16.81,8.88l-2.27,2.27Z" transform="translate(0 -0.15)" fill="#212121"/>
+</svg>

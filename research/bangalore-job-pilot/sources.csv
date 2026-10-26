@@ -1,0 +1,9 @@
+companyName,sourceRow,provider,boardUrl,apiUrl
+Atomicwork,443,GREENHOUSE,https://job-boards.greenhouse.io/atomicwork,https://boards-api.greenhouse.io/v1/boards/atomicwork/jobs?content=true
+Endor Labs,1674,GREENHOUSE,https://boards.greenhouse.io/endorlabs,https://boards-api.greenhouse.io/v1/boards/endorlabs/jobs?content=true
+HackerRank,161,GREENHOUSE,https://job-boards.greenhouse.io/hackerrank/jobs/8102780,https://boards-api.greenhouse.io/v1/boards/hackerrank/jobs?content=true
+Hevo Data,38,LEVER,https://jobs.lever.co/hevodata,https://api.lever.co/v0/postings/hevodata?mode=json
+Razorpay,22,GREENHOUSE,http://job-boards.greenhouse.io/razorpaysoftwareprivatelimited?offices%5B0%5D=4009555005,https://boards-api.greenhouse.io/v1/boards/razorpaysoftwareprivatelimited/jobs?content=true
+Rockstar India,1012,GREENHOUSE,https://job-boards.greenhouse.io/rockstargames/jobs/6217088003?gh_src=c59b72893us,https://boards-api.greenhouse.io/v1/boards/rockstargames/jobs?content=true
+Sigmoid Analytics,205,GREENHOUSE,https://boards.greenhouse.io/sigmoid,https://boards-api.greenhouse.io/v1/boards/sigmoid/jobs?content=true
+Stable Money,613,LEVER,https://jobs.lever.co/stable-money1,https://api.lever.co/v0/postings/stable-money1?mode=json

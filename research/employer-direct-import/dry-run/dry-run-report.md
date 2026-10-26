@@ -1,0 +1,342 @@
+# Employer-direct dry-run import plan
+
+- Planner: Phase 3A
+- Database writes: **none**
+
+## Counts
+
+- Selected companies: 1782
+- Selected jobs: 18275
+- Selected sources: 14124
+- Excluded companies: 101
+- Excluded jobs: 185
+- Excluded sources: 475
+
+## Relationship checks
+
+- Passed: **yes**
+- Selected job → company references: 18275
+- Selected source → company references: 14124
+- Selected source → job references: 14075
+
+## Exclusion reasons
+
+- IDENTITY_COLLISION: 4
+- JOB_NOT_SELECTED: 474
+- LIKELY_DUPLICATE_REVIEW: 15
+- MISSING_LAST_CHECKED_AT: 170
+- NOT_IN_ALLOWLIST: 421
+- UNSUPPORTED_SOURCE_TYPE: 1
+- VALIDATION:Invalid URL in official_careers_url: 1
+- VALIDATION:Unknown company verification_status: FLAGGED_NON_OPERATING: 3
+- VALIDATION:Unknown company verification_status: IMPORTED_PENDING_VERIFICATION: 66
+- VALIDATION:Unknown company verification_status: VERIFIED_ZERO: 27
+- VALIDATION:Unknown or ambiguous source_type: ATS/OFFICIAL JOBS BOARD: 1
+- VALIDATION:Unmatched job_id: EJ-11759: 1
+- VALIDATION:Unmatched job_id: EJ-11761: 1
+- VALIDATION:Unmatched job_id: EJ-11769: 1
+- VALIDATION:Unmatched job_id: EJ-11783: 1
+- VALIDATION:Unmatched job_id: EJ-11794: 1
+- VALIDATION:Unmatched job_id: EJ-11797: 1
+- VALIDATION:Unmatched job_id: EJ-11801: 1
+- VALIDATION:Unmatched job_id: EJ-11803: 1
+- VALIDATION:Unmatched job_id: EJ-11804: 1
+- VALIDATION:Unmatched job_id: EJ-11805: 1
+- VALIDATION:Unmatched job_id: EJ-11810: 1
+- VALIDATION:Unmatched job_id: EJ-11811: 1
+- VALIDATION:Unmatched job_id: EJ-11816: 1
+- VALIDATION:Unmatched job_id: EJ-11820: 1
+- VALIDATION:Unmatched job_id: EJ-11823: 1
+- VALIDATION:Unmatched job_id: EJ-11827: 1
+- VALIDATION:Unmatched job_id: EJ-11829: 1
+- VALIDATION:Unmatched job_id: EJ-11831: 1
+- VALIDATION:Unmatched job_id: EJ-11832: 1
+- VALIDATION:Unmatched job_id: EJ-11833: 1
+- VALIDATION:Unmatched job_id: EJ-11836: 1
+- VALIDATION:Unmatched job_id: EJ-11838: 1
+- VALIDATION:Unmatched job_id: EJ-11840: 1
+- VALIDATION:Unmatched job_id: EJ-11842: 1
+- VALIDATION:Unmatched job_id: EJ-11844: 1
+- VALIDATION:Unmatched job_id: EJ-11847: 1
+- VALIDATION:Unmatched job_id: EJ-11849: 1
+- VALIDATION:Unmatched job_id: EJ-11852: 1
+- VALIDATION:Unmatched job_id: EJ-11853: 1
+- VALIDATION:Unmatched job_id: EJ-11854: 1
+- VALIDATION:Unmatched job_id: EJ-11857: 1
+- VALIDATION:Unmatched job_id: EJ-11858: 1
+- VALIDATION:Unmatched job_id: EJ-11859: 1
+- VALIDATION:Unmatched job_id: EJ-11860: 1
+- VALIDATION:Unmatched job_id: EJ-11861: 1
+- VALIDATION:Unmatched job_id: EJ-11862: 1
+- VALIDATION:Unmatched job_id: EJ-11863: 1
+- VALIDATION:Unmatched job_id: EJ-11866: 1
+- VALIDATION:Unmatched job_id: EJ-11868: 1
+- VALIDATION:Unmatched job_id: EJ-11869: 1
+- VALIDATION:Unmatched job_id: EJ-11871: 1
+- VALIDATION:Unmatched job_id: EJ-11876: 1
+- VALIDATION:Unmatched job_id: EJ-11877: 1
+- VALIDATION:Unmatched job_id: EJ-11878: 1
+- VALIDATION:Unmatched job_id: EJ-11879: 1
+- VALIDATION:Unmatched job_id: EJ-11880: 1
+- VALIDATION:Unmatched job_id: EJ-11881: 1
+- VALIDATION:Unmatched job_id: EJ-11882: 1
+- VALIDATION:Unmatched job_id: EJ-11885: 1
+- VALIDATION:Unmatched job_id: EJ-11889: 1
+- VALIDATION:Unmatched job_id: EJ-11893: 1
+- VALIDATION:Unmatched job_id: EJ-11896: 1
+- VALIDATION:Unmatched job_id: EJ-11898: 1
+- VALIDATION:Unmatched job_id: EJ-11899: 1
+- VALIDATION:Unmatched job_id: EJ-11900: 1
+- VALIDATION:Unmatched job_id: EJ-11903: 1
+- VALIDATION:Unmatched job_id: EJ-11904: 1
+- VALIDATION:Unmatched job_id: EJ-11905: 1
+- VALIDATION:Unmatched job_id: EJ-11906: 1
+- VALIDATION:Unmatched job_id: EJ-11907: 1
+- VALIDATION:Unmatched job_id: EJ-11908: 1
+- VALIDATION:Unmatched job_id: EJ-11911: 1
+- VALIDATION:Unmatched job_id: EJ-11912: 1
+- VALIDATION:Unmatched job_id: EJ-11913: 1
+- VALIDATION:Unmatched job_id: EJ-11914: 1
+- VALIDATION:Unmatched job_id: EJ-11916: 1
+- VALIDATION:Unmatched job_id: EJ-11921: 1
+- VALIDATION:Unmatched job_id: EJ-11922: 1
+- VALIDATION:Unmatched job_id: EJ-11923: 1
+- VALIDATION:Unmatched job_id: EJ-11924: 1
+- VALIDATION:Unmatched job_id: EJ-11925: 1
+- VALIDATION:Unmatched job_id: EJ-11926: 1
+- VALIDATION:Unmatched job_id: EJ-11927: 1
+- VALIDATION:Unmatched job_id: EJ-11930: 1
+- VALIDATION:Unmatched job_id: EJ-11933: 1
+- VALIDATION:Unmatched job_id: EJ-11937: 1
+- VALIDATION:Unmatched job_id: EJ-11938: 1
+- VALIDATION:Unmatched job_id: EJ-11939: 1
+- VALIDATION:Unmatched job_id: EJ-11940: 1
+- VALIDATION:Unmatched job_id: EJ-11942: 1
+- VALIDATION:Unmatched job_id: EJ-11943: 1
+- VALIDATION:Unmatched job_id: EJ-11945: 1
+- VALIDATION:Unmatched job_id: EJ-11946: 1
+- VALIDATION:Unmatched job_id: EJ-11947: 1
+- VALIDATION:Unmatched job_id: EJ-11948: 1
+- VALIDATION:Unmatched job_id: EJ-11949: 1
+- VALIDATION:Unmatched job_id: EJ-11950: 1
+- VALIDATION:Unmatched job_id: EJ-11951: 1
+- VALIDATION:Unmatched job_id: EJ-11952: 1
+- VALIDATION:Unmatched job_id: EJ-11953: 1
+- VALIDATION:Unmatched job_id: EJ-11955: 1
+- VALIDATION:Unmatched job_id: EJ-11956: 1
+- VALIDATION:Unmatched job_id: EJ-11957: 1
+- VALIDATION:Unmatched job_id: EJ-11959: 1
+- VALIDATION:Unmatched job_id: EJ-11960: 1
+- VALIDATION:Unmatched job_id: EJ-11965: 1
+- VALIDATION:Unmatched job_id: EJ-11969: 1
+- VALIDATION:Unmatched job_id: EJ-11971: 1
+- VALIDATION:Unmatched job_id: EJ-11972: 1
+- VALIDATION:Unmatched job_id: EJ-11973: 1
+- VALIDATION:Unmatched job_id: EJ-11974: 1
+- VALIDATION:Unmatched job_id: EJ-13144: 1
+- VALIDATION:Unmatched job_id: EJ-13147: 1
+- VALIDATION:Unmatched job_id: EJ-13165: 1
+- VALIDATION:Unmatched job_id: EJ-13225: 1
+- VALIDATION:Unmatched job_id: EJ-13251: 1
+- VALIDATION:Unmatched job_id: EJ-13254: 1
+- VALIDATION:Unmatched job_id: EJ-13270: 1
+- VALIDATION:Unmatched job_id: EJ-13329: 1
+- VALIDATION:Unmatched job_id: EJ-13337: 1
+- VALIDATION:Unmatched job_id: EJ-13340: 1
+- VALIDATION:Unmatched job_id: EJ-13390: 1
+- VALIDATION:Unmatched job_id: EJ-13399: 1
+- VALIDATION:Unmatched job_id: EJ-13401: 1
+- VALIDATION:Unmatched job_id: EJ-13402: 1
+- VALIDATION:Unmatched job_id: EJ-13405: 1
+- VALIDATION:Unmatched job_id: EJ-13409: 1
+- VALIDATION:Unmatched job_id: EJ-13411: 1
+- VALIDATION:Unmatched job_id: EJ-13412: 1
+- VALIDATION:Unmatched job_id: EJ-13413: 1
+- VALIDATION:Unmatched job_id: EJ-13419: 1
+- VALIDATION:Unmatched job_id: EJ-13420: 1
+- VALIDATION:Unmatched job_id: EJ-13425: 1
+- VALIDATION:Unmatched job_id: EJ-13429: 1
+- VALIDATION:Unmatched job_id: EJ-13432: 1
+- VALIDATION:Unmatched job_id: EJ-13436: 1
+- VALIDATION:Unmatched job_id: EJ-13437: 1
+- VALIDATION:Unmatched job_id: EJ-13438: 1
+- VALIDATION:Unmatched job_id: EJ-13441: 1
+- VALIDATION:Unmatched job_id: EJ-13454: 1
+- VALIDATION:Unmatched job_id: EJ-13750: 1
+- VALIDATION:Unmatched job_id: EJ-14445: 1
+- VALIDATION:Unmatched job_id: EJ-14446: 1
+- VALIDATION:Unmatched job_id: EJ-14447: 1
+- VALIDATION:Unmatched job_id: EJ-14448: 1
+- VALIDATION:Unmatched job_id: EJ-14449: 1
+- VALIDATION:Unmatched job_id: EJ-14450: 1
+- VALIDATION:Unmatched job_id: EJ-14451: 1
+- VALIDATION:Unmatched job_id: EJ-14452: 1
+- VALIDATION:Unmatched job_id: EJ-14453: 1
+- VALIDATION:Unmatched job_id: EJ-14454: 1
+- VALIDATION:Unmatched job_id: EJ-14455: 1
+- VALIDATION:Unmatched job_id: EJ-14456: 1
+- VALIDATION:Unmatched job_id: EJ-14457: 1
+- VALIDATION:Unmatched job_id: EJ-14458: 1
+- VALIDATION:Unmatched job_id: EJ-14459: 1
+- VALIDATION:Unmatched job_id: EJ-14460: 1
+- VALIDATION:Unmatched job_id: EJ-1778: 1
+- VALIDATION:Unmatched job_id: EJ-1781: 1
+- VALIDATION:Unmatched job_id: EJ-1786: 1
+- VALIDATION:Unmatched job_id: EJ-1787: 1
+- VALIDATION:Unmatched job_id: EJ-1789: 1
+- VALIDATION:Unmatched job_id: EJ-1794: 1
+- VALIDATION:Unmatched job_id: EJ-1797: 1
+- VALIDATION:Unmatched job_id: EJ-1814: 1
+- VALIDATION:Unmatched job_id: EJ-1821: 1
+- VALIDATION:Unmatched job_id: EJ-1826: 1
+- VALIDATION:Unmatched job_id: EJ-1828: 1
+- VALIDATION:Unmatched job_id: EJ-1830: 1
+- VALIDATION:Unmatched job_id: EJ-1837: 1
+- VALIDATION:Unmatched job_id: EJ-1841: 1
+- VALIDATION:Unmatched job_id: EJ-1842: 1
+- VALIDATION:Unmatched job_id: EJ-1850: 1
+- VALIDATION:Unmatched job_id: EJ-1851: 1
+- VALIDATION:Unmatched job_id: EJ-1854: 1
+- VALIDATION:Unmatched job_id: EJ-1857: 1
+- VALIDATION:Unmatched job_id: EJ-1858: 1
+- VALIDATION:Unmatched job_id: EJ-1859: 1
+- VALIDATION:Unmatched job_id: EJ-1861: 1
+- VALIDATION:Unmatched job_id: EJ-1864: 1
+- VALIDATION:Unmatched job_id: EJ-1866: 1
+- VALIDATION:Unmatched job_id: EJ-1870: 1
+- VALIDATION:Unmatched job_id: EJ-1874: 1
+- VALIDATION:Unmatched job_id: EJ-1876: 1
+- VALIDATION:Unmatched job_id: EJ-1877: 1
+- VALIDATION:Unmatched job_id: EJ-1879: 1
+- VALIDATION:Unmatched job_id: EJ-1880: 1
+- VALIDATION:Unmatched job_id: EJ-1883: 1
+- VALIDATION:Unmatched job_id: EJ-1885: 1
+- VALIDATION:Unmatched job_id: EJ-3710: 1
+- VALIDATION:Unmatched job_id: EJ-3790: 1
+- VALIDATION:Unmatched job_id: EJ-3804: 1
+- VALIDATION:Unmatched job_id: EJ-3809: 1
+- VALIDATION:Unmatched job_id: EJ-3865: 1
+- VALIDATION:Unmatched job_id: EJ-3866: 1
+- VALIDATION:Unmatched job_id: EJ-4280: 1
+- VALIDATION:Unmatched job_id: EJ-4393: 1
+- VALIDATION:Unmatched job_id: EJ-4394: 1
+- VALIDATION:Unmatched job_id: EJ-4395: 1
+- VALIDATION:Unmatched job_id: EJ-4396: 1
+- VALIDATION:Unmatched job_id: EJ-4397: 1
+- VALIDATION:Unmatched job_id: EJ-4405: 1
+- VALIDATION:Unmatched job_id: EJ-4406: 1
+- VALIDATION:Unmatched job_id: EJ-4433: 1
+- VALIDATION:Unmatched job_id: EJ-4612: 1
+- VALIDATION:Unmatched job_id: EJ-4620: 1
+- VALIDATION:Unmatched job_id: EJ-4750: 1
+- VALIDATION:Unmatched job_id: EJ-4751: 1
+- VALIDATION:Unmatched job_id: EJ-4853: 1
+- VALIDATION:Unmatched job_id: EJ-4882: 1
+- VALIDATION:Unmatched job_id: EJ-4883: 1
+- VALIDATION:Unmatched job_id: EJ-4884: 1
+- VALIDATION:Unmatched job_id: EJ-4916: 1
+- VALIDATION:Unmatched job_id: EJ-5154: 1
+- VALIDATION:Unmatched job_id: EJ-5155: 1
+- VALIDATION:Unmatched job_id: EJ-5319: 1
+- VALIDATION:Unmatched job_id: EJ-5320: 1
+- VALIDATION:Unmatched job_id: EJ-5321: 1
+- VALIDATION:Unmatched job_id: EJ-5322: 1
+- VALIDATION:Unmatched job_id: EJ-5578: 1
+- VALIDATION:Unmatched job_id: EJ-5579: 1
+- VALIDATION:Unmatched job_id: EJ-5581: 1
+- VALIDATION:Unmatched job_id: EJ-5589: 1
+- VALIDATION:Unmatched job_id: EJ-5591: 1
+- VALIDATION:Unmatched job_id: EJ-5954: 1
+- VALIDATION:Unmatched job_id: EJ-5999: 1
+- VALIDATION:Unmatched job_id: EJ-6014: 1
+- VALIDATION:Unmatched job_id: EJ-6028: 1
+- VALIDATION:Unmatched job_id: EJ-6070: 1
+- VALIDATION:Unmatched job_id: EJ-6078: 1
+- VALIDATION:Unmatched job_id: EJ-6081: 1
+- VALIDATION:Unmatched job_id: EJ-6089: 1
+- VALIDATION:Unmatched job_id: EJ-6095: 1
+- VALIDATION:Unmatched job_id: EJ-6101: 1
+- VALIDATION:Unmatched job_id: EJ-6114: 1
+- VALIDATION:Unmatched job_id: EJ-6118: 1
+- VALIDATION:Unmatched job_id: EJ-6141: 1
+- VALIDATION:Unmatched job_id: EJ-6142: 1
+- VALIDATION:Unmatched job_id: EJ-6153: 1
+- VALIDATION:Unmatched job_id: EJ-6165: 1
+- VALIDATION:Unmatched job_id: EJ-6175: 1
+- VALIDATION:Unmatched job_id: EJ-6619: 1
+- VALIDATION:Unmatched job_id: EJ-6620: 1
+- VALIDATION:Unmatched job_id: EJ-6626: 1
+- VALIDATION:Unmatched job_id: EJ-6634: 1
+- VALIDATION:Unmatched job_id: EJ-6635: 1
+- VALIDATION:Unmatched job_id: EJ-6643: 1
+- VALIDATION:Unmatched job_id: EJ-6644: 1
+- VALIDATION:Unmatched job_id: EJ-6645: 1
+- VALIDATION:Unmatched job_id: EJ-6646: 1
+- VALIDATION:Unmatched job_id: EJ-6654: 1
+- VALIDATION:Unmatched job_id: EJ-6760: 1
+- VALIDATION:Unmatched job_id: EJ-6761: 1
+- VALIDATION:Unmatched job_id: EJ-6762: 1
+- VALIDATION:Unmatched job_id: EJ-6763: 1
+- VALIDATION:Unmatched job_id: EJ-6764: 1
+- VALIDATION:Unmatched job_id: EJ-6765: 1
+- VALIDATION:Unmatched job_id: EJ-6766: 1
+- VALIDATION:Unmatched job_id: EJ-6767: 1
+- VALIDATION:Unmatched job_id: EJ-6768: 1
+- VALIDATION:Unmatched job_id: EJ-6915: 1
+- VALIDATION:Unmatched job_id: EJ-6917: 1
+- VALIDATION:Unmatched job_id: EJ-6918: 1
+- VALIDATION:Unmatched job_id: EJ-6923: 1
+- VALIDATION:Unmatched job_id: EJ-6925: 1
+- VALIDATION:Unmatched job_id: EJ-6927: 1
+- VALIDATION:Unmatched job_id: EJ-6930: 1
+- VALIDATION:Unmatched job_id: EJ-6931: 1
+- VALIDATION:Unmatched job_id: EJ-6932: 1
+- VALIDATION:Unmatched job_id: EJ-6934: 1
+- VALIDATION:Unmatched job_id: EJ-6937: 1
+- VALIDATION:Unmatched job_id: EJ-6938: 1
+- VALIDATION:Unmatched job_id: EJ-6942: 1
+- VALIDATION:Unmatched job_id: EJ-6943: 1
+- VALIDATION:Unmatched job_id: EJ-6944: 1
+- VALIDATION:Unmatched job_id: EJ-6946: 1
+- VALIDATION:Unmatched job_id: EJ-6947: 1
+- VALIDATION:Unmatched job_id: EJ-6948: 1
+- VALIDATION:Unmatched job_id: EJ-6949: 1
+- VALIDATION:Unmatched job_id: EJ-6951: 1
+- VALIDATION:Unmatched job_id: EJ-6953: 1
+- VALIDATION:Unmatched job_id: EJ-6959: 1
+- VALIDATION:Unmatched job_id: EJ-6961: 1
+- VALIDATION:Unmatched job_id: EJ-6962: 1
+- VALIDATION:Unmatched job_id: EJ-6964: 1
+- VALIDATION:Unmatched job_id: EJ-6966: 1
+- VALIDATION:Unmatched job_id: EJ-6967: 1
+- VALIDATION:Unmatched job_id: EJ-6969: 1
+- VALIDATION:Unmatched job_id: EJ-6971: 1
+- VALIDATION:Unmatched job_id: EJ-6973: 1
+- VALIDATION:Unmatched job_id: EJ-9806: 1
+- VALIDATION:Unmatched job_id: EJ-9808: 1
+- VALIDATION:Unmatched job_id: EJ-9810: 1
+- VALIDATION:Unmatched job_id: EJ-9813: 1
+- VALIDATION:Unmatched job_id: EJ-9821: 1
+- VALIDATION:Unmatched job_id: EJ-9833: 1
+- VALIDATION:Unmatched job_id: EJ-9834: 1
+- VALIDATION:Unmatched job_id: EJ-9855: 1
+- VALIDATION:Unmatched job_id: EJ-9856: 1
+- VALIDATION:Unmatched job_id: EJ-9862: 1
+
+## Identity collisions
+
+- domain:jdl.in: E-1173, E-1180
+- domain:larsentoubro.com: E-1215, E-1400
+
+## Policies
+
+- External workbook IDs remain in raw rows and the identity mapping; core UUIDs are deterministic and never replace the external IDs.
+- Quarantined records, identity collisions, likely duplicate jobs, missing last-checked dates, and their dependent sources are excluded from the proposed set.
+- Missing application URLs remain null; no URL is inferred from a careers or source URL.
+- No job is promoted to OPEN or VERIFIED by this planner; it consumes adapter-normalized status only.
+- The plan is a dry-run artifact and performs no database writes.
+
+## Approval status
+
+- This artifact is not import approval.
+- A database writer, explicit migration decision for external IDs, transactional safeguards, and post-write reconciliation are still required.

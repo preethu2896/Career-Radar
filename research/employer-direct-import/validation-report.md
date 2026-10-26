@@ -1,0 +1,254 @@
+# Employer-direct workbook validation
+
+- Input: C:\Users\preet\OneDrive\Desktop\startupss\employer_direct_collection_FINAL_2026-10-16.xlsx
+- Generated: 2026-10-16T10:18:09.031Z
+- Import approval: **BLOCKED**
+
+## Counts
+
+- companies: 1883
+- jobs: 18460
+- sources: 14599
+- quarantinedCompanies: 97
+- quarantinedJobs: 0
+- quarantinedSources: 291
+- exactDuplicateCompanies: 0
+- exactDuplicateJobs: 0
+- exactDuplicateSources: 0
+- likelyDuplicateJobs: 14
+- unmatchedSourceJobs: 290
+- invalidUrls: 1
+- unknownCompanyStatuses: 96
+- unknownJobStatuses: 0
+- unknownSourceTypes: 1
+- repairedJobStatuses: 170
+- evidenceReconciledJobs: 884
+- placeholderUrlCorrections: 1054
+- totalCorrections: 10652
+
+## Checks
+
+- Errors: 388
+- Warnings: 2239
+- Passed: sheet-presence, stable-identifiers, date-validation, duplicate-review, provenance-preservation
+- Failed: foreign-keys, status-mapping, url-validation, row-validation
+
+## Review rules
+
+- Raw workbook values are retained in every staging record.
+- Normalized values and deterministic internal IDs are separate from external workbook IDs.
+- Unmapped statuses and source types are quarantined; no ambiguous mapping is silently accepted.
+- Missing application URLs remain missing.
+- Exact duplicates and likely duplicate jobs are reported separately; likely duplicates are not merged.
+
+## Blocking reasons
+
+- **status-mapping** (Companies:36): Unknown company verification_status: FLAGGED_NON_OPERATING
+- **url-validation** (Companies:39): Invalid URL in official_careers_url
+- **status-mapping** (Companies:156): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:306): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:434): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:487): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:552): Unknown company verification_status: FLAGGED_NON_OPERATING
+- **status-mapping** (Companies:622): Unknown company verification_status: FLAGGED_NON_OPERATING
+- **status-mapping** (Companies:658): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:724): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:782): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:812): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:855): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:864): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:868): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:884): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:892): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:900): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:901): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:906): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:942): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:944): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:946): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:954): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1029): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1044): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1057): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1058): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1066): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1070): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1075): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1077): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1083): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1113): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1120): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1127): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1193): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1194): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1205): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1208): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1209): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1211): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1212): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1214): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1225): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1237): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1240): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1243): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1244): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1259): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1280): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1283): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1292): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1294): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1308): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1311): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1332): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1342): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1363): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1365): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1385): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1422): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1445): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1470): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1483): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1494): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1515): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1521): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1533): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1543): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1567): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1569): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1587): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1631): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1670): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1694): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1744): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1763): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1769): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1775): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1777): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1780): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1788): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1793): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1801): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1803): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1811): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1821): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1831): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1832): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1833): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1834): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1853): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1855): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1871): Unknown company verification_status: VERIFIED_ZERO
+- **status-mapping** (Companies:1875): Unknown company verification_status: IMPORTED_PENDING_VERIFICATION
+- **status-mapping** (Companies:1877): Unknown company verification_status: VERIFIED_ZERO
+- **foreign-keys** (Sources:1810): Unmatched job_id: EJ-1778
+- **foreign-keys** (Sources:1813): Unmatched job_id: EJ-1781
+- **foreign-keys** (Sources:1818): Unmatched job_id: EJ-1786
+- **foreign-keys** (Sources:1819): Unmatched job_id: EJ-1787
+- **foreign-keys** (Sources:1821): Unmatched job_id: EJ-1789
+- **foreign-keys** (Sources:1826): Unmatched job_id: EJ-1794
+- **foreign-keys** (Sources:1829): Unmatched job_id: EJ-1797
+- **foreign-keys** (Sources:1846): Unmatched job_id: EJ-1814
+- **foreign-keys** (Sources:1853): Unmatched job_id: EJ-1821
+- **foreign-keys** (Sources:1858): Unmatched job_id: EJ-1826
+- **foreign-keys** (Sources:1860): Unmatched job_id: EJ-1828
+- **foreign-keys** (Sources:1862): Unmatched job_id: EJ-1830
+- **foreign-keys** (Sources:1869): Unmatched job_id: EJ-1837
+- **foreign-keys** (Sources:1873): Unmatched job_id: EJ-1841
+- **foreign-keys** (Sources:1874): Unmatched job_id: EJ-1842
+- **foreign-keys** (Sources:1882): Unmatched job_id: EJ-1850
+- **foreign-keys** (Sources:1883): Unmatched job_id: EJ-1851
+- **foreign-keys** (Sources:1886): Unmatched job_id: EJ-1854
+- **foreign-keys** (Sources:1889): Unmatched job_id: EJ-1857
+- **foreign-keys** (Sources:1890): Unmatched job_id: EJ-1858
+- **foreign-keys** (Sources:1891): Unmatched job_id: EJ-1859
+- **foreign-keys** (Sources:1893): Unmatched job_id: EJ-1861
+- **foreign-keys** (Sources:1896): Unmatched job_id: EJ-1864
+- **foreign-keys** (Sources:1898): Unmatched job_id: EJ-1866
+- **foreign-keys** (Sources:1902): Unmatched job_id: EJ-1870
+- **foreign-keys** (Sources:1906): Unmatched job_id: EJ-1874
+- **foreign-keys** (Sources:1908): Unmatched job_id: EJ-1876
+- **foreign-keys** (Sources:1909): Unmatched job_id: EJ-1877
+- **foreign-keys** (Sources:1911): Unmatched job_id: EJ-1879
+- **foreign-keys** (Sources:1912): Unmatched job_id: EJ-1880
+- **foreign-keys** (Sources:1915): Unmatched job_id: EJ-1883
+- **foreign-keys** (Sources:1917): Unmatched job_id: EJ-1885
+- **foreign-keys** (Sources:3738): Unmatched job_id: EJ-3710
+- **foreign-keys** (Sources:3817): Unmatched job_id: EJ-3790
+- **foreign-keys** (Sources:3831): Unmatched job_id: EJ-3804
+- **foreign-keys** (Sources:3836): Unmatched job_id: EJ-3809
+- **foreign-keys** (Sources:3892): Unmatched job_id: EJ-3865
+- **foreign-keys** (Sources:3893): Unmatched job_id: EJ-3866
+- **foreign-keys** (Sources:4307): Unmatched job_id: EJ-4280
+- **foreign-keys** (Sources:4420): Unmatched job_id: EJ-4393
+- **foreign-keys** (Sources:4421): Unmatched job_id: EJ-4394
+- **foreign-keys** (Sources:4422): Unmatched job_id: EJ-4395
+- **foreign-keys** (Sources:4423): Unmatched job_id: EJ-4396
+- **foreign-keys** (Sources:4424): Unmatched job_id: EJ-4397
+- **foreign-keys** (Sources:4432): Unmatched job_id: EJ-4405
+- **foreign-keys** (Sources:4433): Unmatched job_id: EJ-4406
+- **foreign-keys** (Sources:4460): Unmatched job_id: EJ-4433
+- **foreign-keys** (Sources:4639): Unmatched job_id: EJ-4612
+- **foreign-keys** (Sources:4647): Unmatched job_id: EJ-4620
+- **foreign-keys** (Sources:4777): Unmatched job_id: EJ-4750
+- **foreign-keys** (Sources:4778): Unmatched job_id: EJ-4751
+- **foreign-keys** (Sources:4880): Unmatched job_id: EJ-4853
+- **foreign-keys** (Sources:4909): Unmatched job_id: EJ-4882
+- **foreign-keys** (Sources:4910): Unmatched job_id: EJ-4883
+- **foreign-keys** (Sources:4911): Unmatched job_id: EJ-4884
+- **foreign-keys** (Sources:4943): Unmatched job_id: EJ-4916
+- **foreign-keys** (Sources:5181): Unmatched job_id: EJ-5154
+- **foreign-keys** (Sources:5182): Unmatched job_id: EJ-5155
+- **foreign-keys** (Sources:5346): Unmatched job_id: EJ-5319
+- **foreign-keys** (Sources:5347): Unmatched job_id: EJ-5320
+- **foreign-keys** (Sources:5348): Unmatched job_id: EJ-5321
+- **foreign-keys** (Sources:5349): Unmatched job_id: EJ-5322
+- **foreign-keys** (Sources:5605): Unmatched job_id: EJ-5578
+- **foreign-keys** (Sources:5606): Unmatched job_id: EJ-5579
+- **foreign-keys** (Sources:5608): Unmatched job_id: EJ-5581
+- **foreign-keys** (Sources:5616): Unmatched job_id: EJ-5589
+- **foreign-keys** (Sources:5618): Unmatched job_id: EJ-5591
+- **foreign-keys** (Sources:5981): Unmatched job_id: EJ-5954
+- **foreign-keys** (Sources:6026): Unmatched job_id: EJ-5999
+- **foreign-keys** (Sources:6041): Unmatched job_id: EJ-6014
+- **foreign-keys** (Sources:6055): Unmatched job_id: EJ-6028
+- **foreign-keys** (Sources:6097): Unmatched job_id: EJ-6070
+- **foreign-keys** (Sources:6105): Unmatched job_id: EJ-6078
+- **foreign-keys** (Sources:6108): Unmatched job_id: EJ-6081
+- **foreign-keys** (Sources:6116): Unmatched job_id: EJ-6089
+- **foreign-keys** (Sources:6122): Unmatched job_id: EJ-6095
+- **foreign-keys** (Sources:6128): Unmatched job_id: EJ-6101
+- **foreign-keys** (Sources:6141): Unmatched job_id: EJ-6114
+- **foreign-keys** (Sources:6145): Unmatched job_id: EJ-6118
+- **foreign-keys** (Sources:6168): Unmatched job_id: EJ-6141
+- **foreign-keys** (Sources:6169): Unmatched job_id: EJ-6142
+- **foreign-keys** (Sources:6180): Unmatched job_id: EJ-6153
+- **foreign-keys** (Sources:6192): Unmatched job_id: EJ-6165
+- **foreign-keys** (Sources:6202): Unmatched job_id: EJ-6175
+- **foreign-keys** (Sources:6646): Unmatched job_id: EJ-6619
+- **foreign-keys** (Sources:6647): Unmatched job_id: EJ-6620
+- **foreign-keys** (Sources:6653): Unmatched job_id: EJ-6626
+- **foreign-keys** (Sources:6661): Unmatched job_id: EJ-6634
+- **foreign-keys** (Sources:6662): Unmatched job_id: EJ-6635
+- **foreign-keys** (Sources:6670): Unmatched job_id: EJ-6643
+- **foreign-keys** (Sources:6671): Unmatched job_id: EJ-6644
+- **foreign-keys** (Sources:6672): Unmatched job_id: EJ-6645
+- **foreign-keys** (Sources:6673): Unmatched job_id: EJ-6646
+- **foreign-keys** (Sources:6681): Unmatched job_id: EJ-6654
+- **foreign-keys** (Sources:6787): Unmatched job_id: EJ-6760
+- **foreign-keys** (Sources:6788): Unmatched job_id: EJ-6761
+- **foreign-keys** (Sources:6789): Unmatched job_id: EJ-6762
+- **foreign-keys** (Sources:6790): Unmatched job_id: EJ-6763
+- **foreign-keys** (Sources:6791): Unmatched job_id: EJ-6764
+- **foreign-keys** (Sources:6792): Unmatched job_id: EJ-6765
+- **foreign-keys** (Sources:6793): Unmatched job_id: EJ-6766
+- **foreign-keys** (Sources:6794): Unmatched job_id: EJ-6767
+- **foreign-keys** (Sources:6795): Unmatched job_id: EJ-6768
+
+## Approval criteria
+
+- All required IDs are present and unique.
+- All company/job/source references reconcile.
+- Status and source-type mappings are explicit or manually resolved.
+- Invalid dates and URLs are repaired or quarantined.
+- All quarantined records have an approved disposition.
+- Only after those conditions are met may a separate importer write to a dataset or database.

@@ -1,0 +1,14 @@
+companyName,provider,sourceUrl,kind,message,checkedAt
+Postman,,https://www.postman.com/company/careers/,UNSUPPORTED_SOURCE,"ATS was mentioned, but no supported public board URL was present in the URL fields.",2026-10-10T15:02:41.289Z
+CleverTap,,https://clevertap.com/careers/,UNSUPPORTED_SOURCE,"ATS was mentioned, but no supported public board URL was present in the URL fields.",2026-10-10T15:02:41.291Z
+Zynga India,,https://www.zynga.com/jobs,UNSUPPORTED_SOURCE,"ATS was mentioned, but no supported public board URL was present in the URL fields.",2026-10-10T15:02:41.295Z
+Fi Money,,https://fi.money/careers,UNSUPPORTED_SOURCE,"ATS was mentioned, but no supported public board URL was present in the URL fields.",2026-10-10T15:02:41.295Z
+Tenstorrent,,https://tenstorrent.com/careers,UNSUPPORTED_SOURCE,"ATS was mentioned, but no supported public board URL was present in the URL fields.",2026-10-10T15:02:41.298Z
+Loop Health,,https://www.loophealth.com/careers,UNSUPPORTED_SOURCE,"ATS was mentioned, but no supported public board URL was present in the URL fields.",2026-10-10T15:02:41.305Z
+Unilever,,https://www.unilever.com/careers/,UNSUPPORTED_SOURCE,"ATS was mentioned, but no supported public board URL was present in the URL fields.",2026-10-10T15:02:41.315Z
+Composio,,https://composio.dev/careers,UNSUPPORTED_SOURCE,"ATS was mentioned, but no supported public board URL was present in the URL fields.",2026-10-10T15:02:41.318Z
+Flexport,,https://www.flexport.com/careers/,UNSUPPORTED_SOURCE,"ATS was mentioned, but no supported public board URL was present in the URL fields.",2026-10-10T15:02:41.318Z
+Dun & Bradstreet,,https://www.dnb.com/careers,UNSUPPORTED_SOURCE,"ATS was mentioned, but no supported public board URL was present in the URL fields.",2026-10-10T15:02:41.320Z
+Leverage Edu,,https://www.linkedin.com/company/leverage-edu/jobs/,UNSUPPORTED_SOURCE,"ATS was mentioned, but no supported public board URL was present in the URL fields.",2026-10-10T15:02:41.325Z
+Abnormal Security,,https://careers.abnormalsecurity.com/open-roles,UNSUPPORTED_SOURCE,"ATS was mentioned, but no supported public board URL was present in the URL fields.",2026-10-10T15:02:41.325Z
+Atomicwork,GREENHOUSE,https://job-boards.greenhouse.io/atomicwork,REQUEST_FAILED,HTTP_404,2026-10-10T15:02:41.342Z

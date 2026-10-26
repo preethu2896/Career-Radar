@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+reports/*.json
+tmp/
+*.timestamp-*.mjs
+research/employer-direct-import/dry-run/dry-run-report.json
+research/employer-direct-import/*-staging.json
+research/employer-direct-import/import-manifest.json

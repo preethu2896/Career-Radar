@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-10-10T15:02:46.197Z",
+  "input": "data/Bangalore companies_audited.csv",
+  "companiesInInput": 1846,
+  "companiesAttempted": 8,
+  "supportedSourcesFound": 8,
+  "jobsCollected": 218,
+  "uniqueJobsRetained": 218,
+  "applicationUrlsPresent": 218,
+  "errors": 1,
+  "unsupportedSources": 12,
+  "unverifiedRecords": 218,
+  "providers": {
+    "GREENHOUSE": 6,
+    "LEVER": 2
+  }
+}

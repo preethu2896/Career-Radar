@@ -1,0 +1,130 @@
+{
+  "input": "C:\\Users\\preet\\OneDrive\\Desktop\\startupss\\employer_direct_collection_FINAL_2026-10-16.xlsx",
+  "sheets": {
+    "Instructions": {
+      "headers": [
+        "EMPLOYER-DIRECT COLLECTION — Instructions"
+      ],
+      "rows": 55
+    },
+    "Companies": {
+      "headers": [
+        "company_id",
+        "company_name",
+        "official_website_url",
+        "official_careers_url",
+        "industry",
+        "company_description",
+        "headquarters_location",
+        "country",
+        "source_name",
+        "first_seen_at",
+        "last_checked_at",
+        "verification_status",
+        "notes",
+        "logo_url"
+      ],
+      "rows": 1883
+    },
+    "Sources": {
+      "headers": [
+        "source_record_id",
+        "company_id",
+        "job_id",
+        "source_name",
+        "source_type",
+        "source_url",
+        "access_method",
+        "robots_txt_status",
+        "observed_at",
+        "verification_method",
+        "verification_status",
+        "notes"
+      ],
+      "rows": 14599
+    },
+    "Jobs": {
+      "headers": [
+        "job_id",
+        "company_id",
+        "company_name",
+        "job_title",
+        "job_location",
+        "country",
+        "state",
+        "city",
+        "work_mode",
+        "employment_type",
+        "experience_min_years",
+        "experience_max_years",
+        "experience_level",
+        "department",
+        "job_category",
+        "required_skills",
+        "preferred_skills",
+        "education_requirements",
+        "salary_min",
+        "salary_max",
+        "salary_currency",
+        "salary_period",
+        "job_description",
+        "job_description_url",
+        "source_name",
+        "source_job_url",
+        "application_url",
+        "posted_at",
+        "first_seen_at",
+        "last_checked_at",
+        "verification_status",
+        "data_quality_notes",
+        "duplicate_group_id"
+      ],
+      "rows": 18460
+    }
+  },
+  "counts": {
+    "companies": 1883,
+    "jobs": 18460,
+    "sources": 14599,
+    "quarantinedCompanies": 97,
+    "quarantinedJobs": 0,
+    "quarantinedSources": 291,
+    "exactDuplicateCompanies": 0,
+    "exactDuplicateJobs": 0,
+    "exactDuplicateSources": 0,
+    "likelyDuplicateJobs": 14,
+    "unmatchedSourceJobs": 290,
+    "invalidUrls": 1,
+    "unknownCompanyStatuses": 96,
+    "unknownJobStatuses": 0,
+    "unknownSourceTypes": 1,
+    "repairedJobStatuses": 170,
+    "evidenceReconciledJobs": 884,
+    "placeholderUrlCorrections": 1054,
+    "totalCorrections": 10652
+  },
+  "checks": {
+    "errors": 388,
+    "warnings": 2239,
+    "failed": [
+      "foreign-keys",
+      "status-mapping",
+      "url-validation",
+      "row-validation"
+    ],
+    "passed": [
+      "sheet-presence",
+      "stable-identifiers",
+      "date-validation",
+      "duplicate-review",
+      "provenance-preservation"
+    ]
+  },
+  "approval": {
+    "allowed": false,
+    "reasons": [
+      "No import approval: unresolved workbook validation errors remain.",
+      "Quarantined records and ambiguous mappings require manual review."
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "mode": "dry-run",
+  "manifestHash": "a0d665ae88447e2d4629e6da02ca93bacb5be401bb43cf6d452cb4733eeccc4b",
+  "expected": {
+    "companies": 1782,
+    "jobs": 18275,
+    "sources": 14124,
+    "observations": 14075,
+    "rawRows": 34181,
+    "mappings": 34521
+  },
+  "attempted": {
+    "companies": 1782,
+    "jobs": 18275,
+    "sources": 14124,
+    "observations": 14075,
+    "rawRows": 34181,
+    "mappings": 0
+  },
+  "written": {
+    "companies": 0,
+    "jobs": 0,
+    "sources": 0,
+    "observations": 0,
+    "rawRows": 0,
+    "mappings": 0
+  },
+  "failedBatches": [],
+  "reconciliation": {
+    "checked": false,
+    "companies": 0,
+    "jobs": 0,
+    "sources": 0,
+    "observations": 0,
+    "mappings": 0,
+    "rawRows": 0,
+    "manifestConsistent": false,
+    "relationshipsPassed": true,
+    "failures": []
+  },
+  "recovery": [
+    "Writes are retry-safe upserts, not a single transaction.",
+    "If a batch fails, preserve this report and rerun the same unchanged plan after resolving the error.",
+    "Before retrying, reconcile by manifestHash and external-ID mappings; do not broaden the allowlist.",
+    "Any partial run requires post-write count and relationship reconciliation before being considered complete."
+  ]
+}
