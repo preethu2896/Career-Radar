@@ -17,10 +17,10 @@ The owner requested that the email remain a placeholder until their domain is re
 
 ## Data-handling accuracy
 
-The Privacy Policy distinguishes active private record deletion from browser search history and provider backups/logs. It explains the opaque identity marker used to block deleted accounts' old tokens. It does not promise instantaneous backup erasure or describe the discontinued mandatory résumé/onboarding flow as current.
+The Privacy Policy discloses the existing external Google Fonts requests and distinguishes active private record deletion from browser search history and provider backups/logs. It explains the opaque identity marker used to block deleted accounts' old tokens. It does not promise instantaneous backup erasure or describe the discontinued mandatory résumé/onboarding flow as current.
 
 Provider references checked: Clerk's privacy notice (`https://clerk.com/legal/privacy`), Supabase (`https://supabase.com/privacy`), Turso (`https://turso.tech/privacy-policy`) and Vercel (`https://vercel.com/legal/privacy-notice`). Provider policies do not replace CareerRadar's own description of how it handles app data.
 
 ## Verification
 
-TypeScript, production build and public-content regression checks; browser checks at 1440, 768, 390 and 320 pixels for all six pages, footer destinations, FAQ keyboard controls, deep links and aliases. No accounts, private records, résumé files, payments or public jobs were changed by this batch.
+505 regression tests passed. TypeScript and production build passed; browser checks at 1440, 768, 390 and 320 pixels for all six pages, footer destinations, FAQ keyboard controls, deep links and aliases. No accounts, private records, résumé files, payments or public jobs were changed by this batch.
