@@ -4,7 +4,7 @@ import {parseCompanyProfilePath} from '../services/companyProfileUrls.js';
 import { LoadingSkeleton } from "./LoadingSkeleton.js";
 import { AuthReady } from './ClerkRoot.js';
 import { SiteHeader, useSiteAccount } from './SiteHeader.js';
-import { LegalPage } from "./LegalPages.js";
+import {PublicFooter} from './PublicFooter.js';
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
@@ -44,6 +44,8 @@ import { loadProductCompanies } from "./productData.js";
 import { safeExternalUrl } from "../domain/normalize.js";
 import handUrl from "../../hand.webp";
 
+const InformationPage = lazy(() => import('./InformationPages.js').then(module => ({default: module.InformationPage})));
+const LegalPage = lazy(() => import('./LegalPages.js').then(module => ({default: module.LegalPage})));
 const DiscoveryRoute = lazy(() => import('./Discovery.js').then(module => ({default: module.DiscoveryRoute})));
 const SettingsRoute = lazy(() => import('./Settings.js').then(module => ({default: module.SettingsRoute})));
 const ProfileSettingsRoute = lazy(() => import('./ProfileSettings.js').then(module => ({default: module.ProfileSettingsRoute})));
@@ -227,7 +229,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
         <div className="landing-links">
           <a href="/jobs">Jobs</a>
           <a href="/companies">Companies</a>
-          <a href="/about#trust">Our approach</a>
+          <a href="/about#what-we-do">Our approach</a>
         </div>
         <div className="landing-actions">
           {landingAccount.userId?<details className="sf-account-menu"><summary aria-label="Profile menu">Profile</summary><div><a href="/dashboard">Dashboard</a><a href="/profile">Profile</a><a href="/tracker">Tracker</a><a href="/settings">Settings</a><a href="/settings#settings-subscription">Subscription</a><button disabled={logoutBusy} onClick={()=>void logout()}>{logoutBusy?'Signing out…':'Sign out'}</button>{logoutError?<p className="cr-error" role="alert">{logoutError}</p>:null}</div></details>:<button className="text-button" onClick={onLogin}>Sign in</button>}
@@ -248,7 +250,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
             <a href="/jobs" onClick={() => setMobileNavOpen(false)}>
               Jobs
             </a>
-            <a href="/about#trust" onClick={() => setMobileNavOpen(false)}>
+            <a href="/about#what-we-do" onClick={() => setMobileNavOpen(false)}>
               Our approach
             </a>
             <a href="/about#how-it-works" onClick={() => setMobileNavOpen(false)}>
@@ -423,12 +425,12 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
           </nav>
           <nav className="landing-footer-column" aria-label="Company links">
             <h3>COMPANY</h3>
-            <a href="#trust">About Career Radar</a>
-            <a href="#signals">Questions worth asking</a>
+            <a href="/about">About Career Radar</a>
+            <a href="/help">Help / FAQ</a>
           </nav>
           <nav className="landing-footer-column" aria-label="Connect links">
             <h3>CONNECT</h3>
-            <button type="button" onClick={onEnter}>Try the preview</button>
+            <a href="/contact">Contact</a>
             <a href="#top">Back to top</a>
           </nav>
         </div>
@@ -437,7 +439,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
             <Logo />
           </a>
           <span>Career intelligence for the curious.</span>
-          <span>© 2026 Career Radar</span><span><a href="/terms">Terms</a> · <a href="/privacy">Privacy</a></span>
+          <span>© 2026 Career Radar</span><span><a href="/terms">Terms</a> · <a href="/privacy">Privacy</a> · <a href="/refund-policy">Refunds</a></span>
         </div>
         <div className="landing-footer-wordmark" aria-hidden="true">careerradar</div>
       </footer>
@@ -1366,6 +1368,11 @@ function usePageMetadata(path: string, entered: boolean) {
           title = "About Career Radar";
           description = "Our approach to finding companies and opportunities with evidence.";
           break;
+        case "/help":
+        case "/faq": title="Help and FAQ | CareerRadar";description="Help with finding jobs, apply unlocks, account access and your private tracker.";break;
+        case "/contact": title="Contact | CareerRadar";description="CareerRadar support availability, account help and privacy controls.";break;
+        case "/refund":
+        case "/refund-policy": title="Refund Policy | CareerRadar";description="Current payment availability and future purchasing terms.";break;
         case "/companies":
           title = "Companies | Career Radar";
           description = "Explore company research and official career pages.";
@@ -1467,7 +1474,7 @@ export default function App() {
   useEffect(() => { const onPopState = () => { setEntered(false); setPath(window.location.pathname); }; window.addEventListener("popstate", onPopState); return () => window.removeEventListener("popstate", onPopState); }, []);
   const navigate = useCallback((nextPath: string) => { window.history.pushState({}, "", nextPath); setEntered(false); setPath(new URL(nextPath, window.location.origin).pathname); window.scrollTo({ top: 0, behavior: "auto" }); }, []);
 
-  useEffect(() => {if(path === '/applications'){window.history.replaceState({}, '', '/tracker'+window.location.search+window.location.hash);setPath('/tracker');return;}if(path === '/account'){window.history.replaceState({}, '', '/profile');setPath('/profile');window.scrollTo({top:0,behavior:'auto'});}}, [path]);
+  useEffect(() => {if(path==='/faq'||path==='/refund'){const destination=path==='/faq'?'/help':'/refund-policy';window.history.replaceState({},'',destination+window.location.search+window.location.hash);setPath(destination);return;}if(path === '/applications'){window.history.replaceState({}, '', '/tracker'+window.location.search+window.location.hash);setPath('/tracker');return;}if(path === '/account'){window.history.replaceState({}, '', '/profile');setPath('/profile');window.scrollTo({top:0,behavior:'auto'});}}, [path]);
 
   // Keep ordinary internal links in the app so the same transition runs everywhere.
   useEffect(() => {
@@ -1512,7 +1519,9 @@ export default function App() {
     pageContent = <ProfileSettingsRoute navigate={navigate} />;
   } else if (path === "/dashboard" || path === '/radar') {
     pageContent = <DashboardRoute navigate={navigate} />;
-  } else if (path === "/about" || path === "/" || path === "") {
+  } else if (['/about','/help','/faq','/contact','/refund','/refund-policy'].includes(path)) {
+    pageContent = <InformationPage kind={path==='/about'?'about':path==='/contact'?'contact':path==='/refund'||path==='/refund-policy'?'refund':'help'}/>;
+  } else if (path === "/" || path === "") {
     pageContent = (
       <Landing
         showNavigation={path === "/" || path === ""}
@@ -1538,6 +1547,7 @@ export default function App() {
       <div key={pageKey} className="page-transition">
       <Suspense fallback={<main className="cr-loading"><LoadingSkeleton label="Loading page" rows={5}/></main>}>{['/login','/signup','/forgot-password','/reset-password','/auth/callback','/onboarding','/profile','/account','/settings','/dashboard','/radar'].includes(path) ? <AuthReady>{pageContent}</AuthReady> : pageContent}</Suspense>
       </div>
+      {!withoutSiteNavbar?<PublicFooter/>:null}
     </div>
   );
 }

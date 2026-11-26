@@ -62,22 +62,6 @@ import "./discovery.css";
 
 type Navigate = (path: string) => void;
 function safePathId(value: string) { try { return decodeURIComponent(value); } catch { return ''; } }
-function Footer() {
-  return (
-    <footer className="sf-footer">
-      <a className="auth-logo" href="/">
-        career<span>radar</span>
-      </a>
-      <p>A clearer route to your next opportunity.</p>
-      <nav aria-label="Footer">
-        <a href="/about">About</a>
-        <a href="/pricing">Pricing</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-      </nav>
-    </footer>
-  );
-}
 function External({
   url,
   children,
@@ -181,7 +165,6 @@ export function DiscoveryRoute({
           <Jobs key={account.userId ?? 'public'} path={path} account={account} navigate={navigate} />
         )}
       </main>
-      <Footer />
     </div>
   );
 }
