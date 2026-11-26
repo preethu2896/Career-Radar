@@ -1,9 +1,7 @@
+import { allowedOrigins } from "../_shared/allowedOrigins.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.117.3";
 import { resolveCandidate } from "../_shared/identity.ts";
-const origins = (Deno.env.get("CAREERRADAR_ALLOWED_ORIGINS") ?? "")
-  .split(",")
-  .map((value) => value.trim())
-  .filter(Boolean);
+const origins = allowedOrigins(Deno.env.get("CAREERRADAR_ALLOWED_ORIGINS"),Deno.env.get("CAREERRADAR_DEPLOYMENT_ORIGINS"));
 Deno.serve(async (request) => {
   const origin = request.headers.get("origin");
   const headers: Record<string, string> = {

@@ -1,10 +1,11 @@
+import { allowedOrigins } from "../_shared/allowedOrigins.ts";
 import {resolveCandidate}from "../_shared/identity.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.117.3";
 import { createResumeHandler, ResumeRequestError, type ResumeBackend } from "../_shared/resumeHandler.ts";
 
 const url = Deno.env.get("SUPABASE_URL")!;
 const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const origins = (Deno.env.get("CAREERRADAR_ALLOWED_ORIGINS") ?? "").split(",").map(value => value.trim()).filter(Boolean);
+const origins = allowedOrigins(Deno.env.get("CAREERRADAR_ALLOWED_ORIGINS"),Deno.env.get("CAREERRADAR_DEPLOYMENT_ORIGINS"));
 
 Deno.serve(async (request: Request) => {
   // All provider requests share a deadline shorter than the database lease.

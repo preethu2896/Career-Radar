@@ -1,3 +1,4 @@
+import { allowedOrigins } from "./allowedOrigins.ts";
 import { catalogueCorsHeaders } from "./catalogueCors.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.117.3";
 import { resolveCandidate } from "./identity.ts";
@@ -7,7 +8,7 @@ export async function catalogueAccess(request:Request,db:any,url:URL){
  if(request.method!=='POST')return json({error:'Use POST.'},405);
  const token=/^Bearer (\S+)$/i.exec(request.headers.get('authorization')??'')?.[1];if(!token)return json({error:'Sign in to continue.'},401);
  const admin=createClient(Deno.env.get('SUPABASE_URL')!,Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,{auth:{persistSession:false}});
- const origins=(Deno.env.get('CAREERRADAR_ALLOWED_ORIGINS')??'').split(',').map(x=>x.trim()).filter(Boolean);
+ const origins=allowedOrigins(Deno.env.get("CAREERRADAR_ALLOWED_ORIGINS"),Deno.env.get("CAREERRADAR_DEPLOYMENT_ORIGINS"));
  const userId=await resolveCandidate(admin,token,origins);if(!userId)return json({error:'Sign in again to continue.'},401);
  const kind=url.searchParams.get('kind'),id=url.searchParams.get('id')??'',consume=url.searchParams.get('consume')==='true';
  if(!['job','company'].includes(kind??'')||!id||id.length>160)return json({error:'Invalid access request.'},400);
