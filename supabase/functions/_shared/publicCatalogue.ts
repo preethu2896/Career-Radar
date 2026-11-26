@@ -209,6 +209,7 @@ export async function catalogueRead(
   const from =
     `FROM catalogue_jobs j ${companyId?'INDEXED BY catalogue_job_company_cover':''} JOIN catalogue_sources s ON s.id=j.source_id JOIN catalogue_companies c ON c.id=j.company_id`;
   let counts: Record<string, number>;
+  let remoteTotal:number|undefined;
   if (where.length === 1) {
     const dates=[1,7,30].map(days=>new Date(now.getTime()-days*86400000).toISOString());
     const total=await db.execute({sql:"SELECT coalesce(sum(snapshot_count),0) AS total FROM catalogue_sources WHERE enabled=1 AND last_success_at>=?",args:[fresh]});
@@ -219,10 +220,11 @@ export async function catalogueRead(
       new Date(now.getTime() - days * 86400000).toISOString(),
     );
     const r = await db.execute({
-      sql: `SELECT count(*) AS total,sum(CASE WHEN j.published_at>=? THEN 1 ELSE 0 END) AS d1,sum(CASE WHEN j.published_at>=? THEN 1 ELSE 0 END) AS d7,sum(CASE WHEN j.published_at>=? THEN 1 ELSE 0 END) AS d30 ${company?from:from.replace(' JOIN catalogue_companies c ON c.id=j.company_id','').replace('FROM catalogue_jobs j ',work&&!location&&!companyId?'FROM catalogue_jobs j INDEXED BY catalogue_job_work_cover ':'FROM catalogue_jobs j ')} WHERE ${where.join(" AND ")}`,
+      sql: `SELECT count(*) AS total,sum(CASE WHEN j.published_at>=? THEN 1 ELSE 0 END) AS d1,sum(CASE WHEN j.published_at>=? THEN 1 ELSE 0 END) AS d7,sum(CASE WHEN j.published_at>=? THEN 1 ELSE 0 END) AS d30 ${companyId?",sum(CASE WHEN j.work_mode='Remote' THEN 1 ELSE 0 END) AS remote_total":""} ${company?from:from.replace(' JOIN catalogue_companies c ON c.id=j.company_id','').replace('FROM catalogue_jobs j ',work&&!location&&!companyId?'FROM catalogue_jobs j INDEXED BY catalogue_job_work_cover ':'FROM catalogue_jobs j ')} WHERE ${where.join(" AND ")}`,
       args: [...dates, ...args],
     });
     const x = r.rows[0];
+    if(companyId)remoteTotal=Number(x.remote_total??0);
     counts = {
       "": Number(x.total),
       "1": Number(x.d1 ?? 0),
@@ -253,5 +255,6 @@ export async function catalogueRead(
     rows: r.rows.map(job),
     total: counts[posted] ?? counts[""],
     postedCounts: counts,
+    ...(remoteTotal===undefined?{}:{remoteTotal}),
   };
 }

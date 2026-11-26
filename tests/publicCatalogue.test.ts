@@ -24,3 +24,5 @@ describe('public worldwide catalogue',()=>{
  it('keeps stale sources out of the current job board',async()=>{const{adapter,db}=setup();await writeCatalogueSnapshot(adapter,source,[posting('one')],now);db.prepare('UPDATE catalogue_sources SET last_success_at=?').run('2026-01-01T00:00:00.000Z');expect((await read(adapter)).total).toBe(0);});
  it('rejects incomplete duplicate-ID snapshots before any changes',async()=>{const{adapter,db}=setup();await expect(writeCatalogueSnapshot(adapter,source,[posting('one'),posting('one')],now)).rejects.toThrow('DUPLICATE_SOURCE_ID');expect(db.prepare('SELECT count(*) AS n FROM catalogue_jobs').get()?.n).toBe(0);});
 });
+
+it('counts all company remote roles without depending on the visible page',async()=>{const{adapter}=setup();await writeCatalogueSnapshot(adapter,source,[posting('one',{work_mode:'Remote'}),posting('two')],now);const page=await read(adapter,'companyId=company&limit=1');expect(page.total).toBe(2);expect(page.remoteTotal).toBe(1);expect(page.rows).toHaveLength(1);});

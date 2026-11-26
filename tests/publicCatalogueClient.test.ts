@@ -13,4 +13,3 @@ it('sends long saved-company lists in the request body with a deadline',async()=
  const {catalogueRequest}=await client();await catalogueRequest('companies',{saved:JSON.stringify(Array.from({length:100},(_,i)=>'company-'+i+'x'.repeat(20)))});
  expect(fetcher.mock.calls[0]![0]).toBe('https://catalogue.example.test/');expect(fetcher.mock.calls[0]![1]).toMatchObject({method:'POST',signal:expect.any(AbortSignal)});
 });
-

@@ -37,7 +37,7 @@ export function CompanyProfile({path}:{path:string}){
    document.title=company.name+' jobs & company details | CareerRadar';
    void catalogueRequest<{rows:LocalCompanyRecord[]}>('companies',{city:companyPlace(company).city,limit:7},controller.signal).then(related=>{if(active)setData(old=>old?{...old,companies:related.rows}:old);}).catch(()=>{});
    try{const page=await catalogueRequest<PublicJobPage>('jobs',{companyId:company.id,sort:'posted',limit:15},controller.signal);
-    if(active)setData(old=>old?{...old,jobs:page.rows,total:page.total,jobsLoading:false}:old);
+    if(active)setData(old=>old?{...old,jobs:page.rows,total:page.total,...(page.remoteTotal===undefined?{}:{remote:page.remoteTotal}),jobsLoading:false}:old);
     if(!company.description&&page.rows[0])void loadOpportunity(page.rows[0].id).then(full=>{if(active&&full)setData(old=>old?{...old,jobs:old.jobs.map(job=>job.id===full.id?full:job)}:old);}).catch(()=>{});
    }catch{if(active)setData(old=>old?{...old,jobsError:true,jobsLoading:false}:old);}
   })().catch(()=>{if(active)setError(true);});return()=>{active=false;controller.abort();};}

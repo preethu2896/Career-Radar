@@ -12,7 +12,7 @@ Public requests have a 20-second deadline. Superseded job/company filter request
 
 ## Verification
 
-- Existing regression suite: 61 files / 485 tests passed; two additional request cancellation/retry tests passed.
+- Existing regression suite: 61 files / 485 tests passed; two additional request cancellation/retry tests and one company remote-count regression passed.
 - TypeScript and production build passed.
 - Chrome viewports 1440, 768, 390 and 320: company header and jobs rendered; no horizontal overflow; `/applications?stage=saved` redirected to `/tracker?stage=saved`.
 - Company header visible in 1.1–1.9 seconds in local browser checks against the hosted catalogue. Full job data is independent and may take longer.
