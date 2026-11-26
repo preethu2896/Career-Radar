@@ -24,3 +24,6 @@ verify_jwt = false
 
 [functions.sync-catalogue]
 verify_jwt = false
+
+[functions.account-settings]
+verify_jwt = false

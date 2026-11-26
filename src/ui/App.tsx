@@ -45,6 +45,7 @@ import { safeExternalUrl } from "../domain/normalize.js";
 import handUrl from "../../hand.webp";
 
 const DiscoveryRoute = lazy(() => import('./Discovery.js').then(module => ({default: module.DiscoveryRoute})));
+const SettingsRoute = lazy(() => import('./Settings.js').then(module => ({default: module.SettingsRoute})));
 const ProfileSettingsRoute = lazy(() => import('./ProfileSettings.js').then(module => ({default: module.ProfileSettingsRoute})));
 const DashboardRoute = lazy(() => import('./JobsDashboard.js').then(module => ({default: module.JobsDashboardRoute})));
 
@@ -229,7 +230,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
           <a href="/about#trust">Our approach</a>
         </div>
         <div className="landing-actions">
-          {landingAccount.userId?<details className="sf-account-menu"><summary aria-label="Profile menu">Profile</summary><div><a href="/profile">Profile</a><a href="/tracker">Tracker</a><button disabled={logoutBusy} onClick={()=>void logout()}>{logoutBusy?'Signing out…':'Sign out'}</button>{logoutError?<p className="cr-error" role="alert">{logoutError}</p>:null}</div></details>:<button className="text-button" onClick={onLogin}>Sign in</button>}
+          {landingAccount.userId?<details className="sf-account-menu"><summary aria-label="Profile menu">Profile</summary><div><a href="/dashboard">Dashboard</a><a href="/profile">Profile</a><a href="/tracker">Tracker</a><a href="/settings">Settings</a><a href="/settings#settings-subscription">Subscription</a><button disabled={logoutBusy} onClick={()=>void logout()}>{logoutBusy?'Signing out…':'Sign out'}</button>{logoutError?<p className="cr-error" role="alert">{logoutError}</p>:null}</div></details>:<button className="text-button" onClick={onLogin}>Sign in</button>}
           <button className="nav-cta" onClick={onEnter}>
             Explore jobs <ArrowRight size={15} />
           </button>
@@ -253,7 +254,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
             <a href="/about#how-it-works" onClick={() => setMobileNavOpen(false)}>
               How it works
             </a>
-            {landingAccount.userId?<a href="/profile" className="mobile-nav-link">Profile</a>:<button
+            {landingAccount.userId?<><a href="/dashboard" className="mobile-nav-link">Dashboard</a><a href="/profile" className="mobile-nav-link">Profile</a><a href="/tracker" className="mobile-nav-link">Tracker</a><a href="/settings" className="mobile-nav-link">Settings</a><a href="/settings#settings-subscription" className="mobile-nav-link">Subscription</a><button className="mobile-nav-link" disabled={logoutBusy} onClick={()=>void logout()}>{logoutBusy?'Signing out…':'Sign out'}</button></>:<button
               className="mobile-nav-link"
               onClick={() => {
                 setMobileNavOpen(false);
@@ -277,6 +278,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
       ) : null}
       
       <main>
+        {new URLSearchParams(window.location.search).get('account-deleted')==='1'?<p className="cr-deletion-success" role="status">Your CareerRadar account and private data have been deleted.</p>:null}
         <section className="hero">
           <div className="hero-copy">
             <div className="kicker">
@@ -1376,6 +1378,10 @@ function usePageMetadata(path: string, entered: boolean) {
           title = "Pricing | Career Radar";
           description = "Free job discovery and application tracking, with Pro features planned.";
           break;
+        case "/settings":
+          title = "Settings | CareerRadar";
+          description = "Manage your sign-in, notification preferences and account.";
+          break;
         case "/tracker":
           title = "Saved & applications | Career Radar";
           description = "Your saved roles, application stages and private notes.";
@@ -1498,6 +1504,8 @@ export default function App() {
     pageContent = <AuthCallbackRoute navigate={navigate} />;
   } else if (path === "/onboarding") {
     pageContent = <ProfileSettingsRoute navigate={navigate} welcome />;
+  } else if (path === "/settings") {
+    pageContent = <SettingsRoute navigate={navigate} />;
   } else if (path === "/profile") {
     pageContent = <ProfileSettingsRoute navigate={navigate} />;
   } else if (path === "/account") {
@@ -1528,7 +1536,7 @@ export default function App() {
     <div className={"cr-site-shell" + (withoutSiteNavbar ? " cr-no-site-navbar" : "") + (!withoutSiteNavbar ? " cr-product-type" : "")}>
       {!withoutSiteNavbar ? <SiteHeader navigate={navigate} path={path}/> : null}
       <div key={pageKey} className="page-transition">
-      <Suspense fallback={<main className="cr-loading"><LoadingSkeleton label="Loading page" rows={5}/></main>}>{['/login','/signup','/forgot-password','/reset-password','/auth/callback','/onboarding','/profile','/account','/dashboard','/radar'].includes(path) ? <AuthReady>{pageContent}</AuthReady> : pageContent}</Suspense>
+      <Suspense fallback={<main className="cr-loading"><LoadingSkeleton label="Loading page" rows={5}/></main>}>{['/login','/signup','/forgot-password','/reset-password','/auth/callback','/onboarding','/profile','/account','/settings','/dashboard','/radar'].includes(path) ? <AuthReady>{pageContent}</AuthReady> : pageContent}</Suspense>
       </div>
     </div>
   );

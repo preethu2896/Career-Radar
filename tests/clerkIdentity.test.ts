@@ -16,6 +16,7 @@ beforeAll(async () => {
     "202611200009_resume_quota_owner_fix.sql",
     "202611200010_candidate_workspace.sql",
     "202611200012_clerk_identity.sql",
+    "202611260002_account_settings.sql",
   ])
     await db.exec(readFileSync("supabase/migrations/" + name, "utf8"));
   await db.exec(
@@ -83,4 +84,18 @@ it("provisions idempotently without accepting an account ID or matching on email
   const two = (await db.query<{ id: string }>(query)).rows[0]!.id;
   expect(one).toBe(two);
   expect([alice, bob]).not.toContain(one);
+});
+
+it('prevents deleted Clerk identities from recreating profiles while preserving other accounts',async()=>{
+ await db.exec('reset role');
+ const result:any=await db.query("select public.ensure_clerk_candidate('https://clerk.example','user_delete_test','QA','') as id");const id=result.rows[0].id;
+ await db.query('insert into public.candidate_settings(user_id,product_updates)values($1,true)',[id]);
+ await db.query("insert into public.candidate_deleted_identities(issuer,subject)values('https://clerk.example','user_delete_test')");
+ await db.query('delete from public.candidate_accounts where id=$1',[id]);
+ expect((await db.query('select * from public.candidate_settings where user_id=$1',[id])).rows).toEqual([]);
+ await expect(db.query("select public.ensure_clerk_candidate('https://clerk.example','user_delete_test','','')")).rejects.toThrow('ACCOUNT_DELETING');
+ expect((await db.query('select id from public.profiles where id=$1',[bob])).rows).toEqual([{id:bob}]);
+ await claims('https://clerk.example','user_bob');
+ await expect(db.query('select * from public.candidate_settings')).rejects.toThrow();
+ await expect(db.query('select * from public.candidate_deleted_identities')).rejects.toThrow();
 });

@@ -49,7 +49,7 @@ import {
 type Navigate = (path: string) => void;
 type AuthMode = "signup" | "login";
 
-export type ProtectedTarget = "onboarding" | "dashboard" | "profile" | "account";
+export type ProtectedTarget = "onboarding" | "dashboard" | "profile" | "account" | "settings";
 
 export function resolveProtectedDestination(
   target: ProtectedTarget,

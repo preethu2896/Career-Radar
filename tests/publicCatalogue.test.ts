@@ -26,3 +26,5 @@ describe('public worldwide catalogue',()=>{
 });
 
 it('counts all company remote roles without depending on the visible page',async()=>{const{adapter}=setup();await writeCatalogueSnapshot(adapter,source,[posting('one',{work_mode:'Remote'}),posting('two')],now);const page=await read(adapter,'companyId=company&limit=1');expect(page.total).toBe(2);expect(page.remoteTotal).toBe(1);expect(page.rows).toHaveLength(1);});
+
+it('summarizes only current openings for followed companies and rejects oversized lists',async()=>{const{adapter,db}=setup();await writeCatalogueSnapshot(adapter,source,[posting('one'),posting('two')],now);expect((await read(adapter,'action=company_activity&ids='+encodeURIComponent(JSON.stringify(['company','missing'])))).rows).toEqual([{id:'company',count:2}]);db.prepare('UPDATE catalogue_sources SET enabled=0').run();expect((await read(adapter,'action=company_activity&ids='+encodeURIComponent('["company"]'))).rows).toEqual([]);await expect(read(adapter,'action=company_activity&ids='+encodeURIComponent(JSON.stringify(Array.from({length:13},(_,i)=>'c'+i))))).rejects.toThrow('INVALID_QUERY');});

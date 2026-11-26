@@ -252,3 +252,8 @@ export async function clerkSignOut() {
   pending = null;
   await current().clerk.signOut();
 }
+
+export async function clerkChangePassword(currentPassword:string,newPassword:string){
+ const user=current().clerk.user;if(!user)throw Error('Sign in again to change your password.');
+ await user.updatePassword({currentPassword,newPassword,signOutOfOtherSessions:true});
+}

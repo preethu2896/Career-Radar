@@ -128,6 +128,13 @@ export async function catalogueRead(
       total: Number(count.rows[0]?.n ?? 0),
     };
   }
+  if(action==='company_activity'){
+    let ids:unknown;try{ids=JSON.parse(p.get('ids')??'[]');}catch{throw Error('INVALID_QUERY');}
+    if(!Array.isArray(ids)||ids.length>12||!ids.every(id=>typeof id==='string'&&id.length>0&&id.length<100))throw Error('INVALID_QUERY');
+    if(!ids.length)return{rows:[]};
+    const r=await db.execute({sql:`SELECT j.company_id AS id,count(*) AS count FROM catalogue_jobs j INDEXED BY catalogue_job_company_cover JOIN catalogue_sources s ON s.id=j.source_id WHERE j.company_id IN (SELECT value FROM json_each(?)) AND ${recent} GROUP BY j.company_id`,args:[JSON.stringify(ids),fresh]});
+    return{rows:r.rows.map((row:any)=>({id:String(row.id),count:Number(row.count)}))};
+  }
   if(action==='counts'){const r=await db.execute({sql:'SELECT count(*) AS total FROM catalogue_companies',args:[]});return{companies:Number(r.rows[0]?.total??0)};}
  if(action==='company_facets'){
  const r=await db.execute({sql:"SELECT country,city,industry,count(*) AS n,sum(CASE WHEN json_extract(record_json,'$.addedAt') IS NOT NULL THEN 1 ELSE 0 END) AS added FROM catalogue_companies GROUP BY country,city,industry",args:[]});

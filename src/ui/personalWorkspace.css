@@ -1,0 +1,34 @@
+.cr-personal-page{padding:36px 24px 64px;min-height:calc(100svh - 56px);color:#15372f}
+.cr-personal-container{max-width:1120px;margin:auto;min-width:0}
+.cr-personal-heading{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-bottom:28px}
+.cr-personal-heading h1{font-family:'Instrument Serif',serif;font-size:40px;font-weight:400;line-height:1.1;margin:0 0 10px;text-wrap:balance;overflow-wrap:anywhere}
+.cr-personal-heading p{margin:0;color:#58665f;line-height:1.6}
+.cr-personal-heading>.auth-primary,.cr-personal-heading>.auth-secondary{flex-shrink:0}
+.cr-dashboard-layout,.cr-settings-layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(280px,1fr);gap:24px;align-items:start}
+.cr-dashboard-layout>*,.cr-settings-layout>*{min-width:0}
+.cr-dashboard-stages{display:flex;flex-wrap:wrap;background:#fcfcf9;border-radius:16px;margin-bottom:24px;overflow:hidden}
+.cr-dashboard-stages>a{flex:1 1 135px;display:grid;grid-template-columns:1fr auto;gap:10px;padding:20px 24px;color:inherit;text-decoration:none}
+.cr-dashboard-stages span{font-size:13px;color:#58665f;grid-column:1/-1}
+.cr-dashboard-stages strong{font-size:24px;font-weight:600;line-height:1.2}.cr-dashboard-stages svg{align-self:center}
+.cr-dashboard-stages>a:hover,.cr-personal-list a:hover{background:#edf1e8}
+.cr-personal-section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+.cr-personal-section-heading h2{margin-bottom:12px}.cr-personal-section-heading>a,.cr-personal-link{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:#15372f;text-underline-offset:3px}
+.cr-personal-list{padding:0;margin:0;list-style:none}
+.cr-personal-list li+li{border-top:1px solid #d8ded4}
+.cr-personal-list a{display:flex;align-items:center;gap:12px;padding:17px 0;color:inherit;text-decoration:none;min-width:0}
+.cr-personal-list a>span:first-child,.cr-followed-list a>span{min-width:0;flex:1}
+.cr-personal-list strong,.cr-personal-list small{display:block;overflow-wrap:anywhere}
+.cr-personal-list strong{font-size:14px;font-weight:600;line-height:1.5}.cr-personal-list small{font-size:13px;color:#58665f;line-height:1.5;margin-top:4px}
+.cr-personal-list svg{flex-shrink:0}.cr-personal-status{font-size:12px;white-space:nowrap}
+.cr-personal-empty{padding:12px 0 4px}.cr-personal-empty h3{font-size:17px;font-weight:500;line-height:1.5;margin:14px 0 8px}.cr-personal-empty p{max-width:55ch;color:#58665f}
+.cr-personal-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.cr-settings-facts{margin:0}.cr-settings-facts>div{margin-bottom:18px}.cr-settings-facts dt{font-size:13px;color:#58665f;margin-bottom:5px}.cr-settings-facts dd{margin:0;overflow-wrap:anywhere}
+.cr-settings-checkbox{display:flex;align-items:flex-start;gap:10px;line-height:1.6}.cr-settings-checkbox input{width:18px;height:18px;flex-shrink:0;accent-color:#15372f;margin-top:3px}
+.cr-personal-feedback{margin:12px 0 20px}.cr-personal-feedback p{overflow-wrap:anywhere}
+.cr-account-danger .auth-secondary{color:#9c3027}.cr-account-danger form .cr-field{margin-top:16px}.cr-account-danger form .auth-primary{background:#9c3027}
+.cr-personal-container .auth-primary,.cr-personal-container .auth-secondary{transition:background-color 160ms ease-out,color 160ms ease-out}
+.cr-personal-container :focus-visible{outline:3px solid #438372;outline-offset:3px}
+.cr-settings-layout section[id],.cr-personal-container section[id]{scroll-margin-top:80px}
+@media(max-width:800px){.cr-dashboard-layout,.cr-settings-layout{grid-template-columns:minmax(0,1fr);gap:0}.cr-personal-page{padding:28px 20px 48px}.cr-personal-heading{align-items:flex-start}.cr-personal-heading h1{font-size:32px}.cr-personal-heading>.auth-primary,.cr-personal-heading>.auth-secondary{font-size:13px}.cr-dashboard-stages>a{flex-basis:100px;padding:18px}.cr-personal-container .cr-profile-section{padding:24px}}
+@media(max-width:450px){.cr-personal-page{padding:24px 16px 40px}.cr-personal-heading{flex-direction:column;gap:16px}.cr-personal-heading h1{font-size:30px}.cr-personal-container .cr-profile-section{padding:22px 20px}.cr-dashboard-stages>a{flex-basis:70px;padding:16px}.cr-personal-status{font-size:11px}.cr-personal-list a{gap:8px}}
+@media(prefers-reduced-motion:reduce){.cr-personal-container *{transition:none!important}}

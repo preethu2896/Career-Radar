@@ -135,7 +135,7 @@ export function SiteHeader({
           <span className="cr-navbar-wordmark">career<span>radar</span></span>
         </a>
         <nav className="cr-market-tabs" aria-label="Explore CareerRadar">
-          <a href="/jobs" aria-current={path === '/jobs' || path === '/explore' || path === '/dashboard' || path === '/radar' || (path.startsWith('/jobs/') && path.split('/').length < 5) ? 'page' : undefined}><BriefcaseBusiness size={15} aria-hidden="true"/><span>Jobs</span></a>
+          <a href="/jobs" aria-current={path === '/jobs' || path === '/explore' || (path.startsWith('/jobs/') && path.split('/').length < 5) ? 'page' : undefined}><BriefcaseBusiness size={15} aria-hidden="true"/><span>Jobs</span></a>
           <a href="/companies" aria-current={path.startsWith('/companies') || (path.startsWith('/jobs/') && path.split('/').length >= 5) ? 'page' : undefined}><Building2 size={15} aria-hidden="true"/><span>Companies</span></a>
           <a href="/refer" aria-current={path === '/refer' ? 'page' : undefined} title="Referrals · Coming soon"><UsersRound size={15} aria-hidden="true"/><span>Refer</span></a>
         </nav>
@@ -153,8 +153,11 @@ export function SiteHeader({
                 <ChevronDown className="sf-account-chevron" size={14} />
               </summary>
               <div>
+                <a href="/dashboard">Dashboard</a>
                 <a href="/profile">Profile</a>
                 <a href="/tracker">Tracker</a>
+                <a href="/settings">Settings</a>
+                <a href="/settings#settings-subscription">Subscription</a>
                 <button disabled={busy} onClick={() => void logout()}>
                   {busy ? "Signing out…" : "Sign out"}
                 </button>

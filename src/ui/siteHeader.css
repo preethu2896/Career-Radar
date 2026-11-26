@@ -324,3 +324,8 @@
  .cr-site-shell .cr-site-navbar .sf-account-menu > summary { width:28px; min-width:28px; height:28px; min-height:28px; padding:0; }
  .cr-site-shell .cr-site-navbar .sf-mobile-account-icon { width:16px; height:16px; }
 }
+
+.cr-site-navbar .sf-account-menu>div{max-height:calc(100dvh - 80px);overflow-y:auto;}
+
+.cr-deletion-success{max-width:1120px;margin:90px auto 0;padding:16px 24px;color:#15372f;background:#edf1e8;}
+.landing-nav .mobile-nav-panel{max-height:calc(100dvh - 100px);overflow-y:auto;}

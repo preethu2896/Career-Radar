@@ -632,7 +632,7 @@ function SignInPrompt({
     <Empty title={title}>
       <p>
         {error ||
-          "Create a free account to save your progress. Browsing and applying stay free."}
+          "Create a free account to save your progress. Browsing is free, with 3 free apply unlocks."}
       </p>
       <div className="sf-actions">
         <a

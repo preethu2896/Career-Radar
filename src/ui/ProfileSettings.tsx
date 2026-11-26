@@ -1,3 +1,4 @@
+import {loadAccountSettings,type AccountSettings} from '../services/accountSettings.js';
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowRight, X } from "lucide-react";
 import { useProtectedAuth } from "./AuthFlows.js";
@@ -266,6 +267,8 @@ function ProfileSettings({
           </div>
         </header>
         <nav className="cr-profile-jump" aria-label="Profile sections">
+          <a href="/dashboard">Dashboard</a>
+          <a href="/settings">Settings</a>
           <a href="#profile-details">Details</a>
           <a href="#profile-preferences">Preferences</a>
           <a href="#profile-resume">Résumé</a>
@@ -344,23 +347,13 @@ function ProfileSettings({
               <h2>Account</h2>
               <span className="cr-profile-label">Sign-in email</span>
               <p className="cr-profile-email">{email}</p>
-              <a className="cr-profile-security" href="/forgot-password">
-                Reset your password
+              <a className="cr-profile-security" href="/settings#settings-security">
+                Sign-in and security
                 <ArrowRight size={14} />
               </a>
             </section>
             <ResumeSettings userId={profile.id} />
-            <section className="cr-profile-section">
-              <div className="cr-profile-plan-row">
-                <h2>Membership</h2>
-                <span className="cr-profile-badge">Free</span>
-              </div>
-              <p>Paid subscriptions are not enabled yet.</p>
-              <div className="cr-profile-coming">
-                <span>Hiring contacts</span>
-                <span className="cr-profile-label">Coming soon</span>
-              </div>
-            </section>
+            <ProfileMembership userId={profile.id}/>
           </aside>
         </div>
       </div>
@@ -495,4 +488,10 @@ function ResumeSettings({ userId }: { userId: string }) {
       ) : null}
     </section>
   );
+}
+
+function ProfileMembership({userId}:{userId:string}){
+ const[data,setData]=useState<AccountSettings|null>(null),[error,setError]=useState(''),[revision,setRevision]=useState(0);
+ useEffect(()=>{let active=true;setError('');void loadAccountSettings(userId).then(value=>{if(active)setData(value);}).catch(()=>{if(active)setError('Membership could not be checked.');});return()=>{active=false;};},[userId,revision]);
+ return <section className="cr-profile-section"><h2>Membership</h2>{error?<><p role="alert">{error}</p><button className="auth-secondary" onClick={()=>setRevision(n=>n+1)}>Try again</button></>:!data?<LoadingSkeleton label="Loading membership" rows={2}/>:<><span className="cr-profile-badge">{data.membership.paid?'Pro':'Free'}</span><p>{data.membership.paid?'Pro access is active.':data.membership.remaining+' of 3 free apply unlocks remaining.'}</p><a href="/settings#settings-subscription">View subscription details</a><p className="cr-profile-note">Hiring contacts are coming soon.</p></>}</section>;
 }
