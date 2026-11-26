@@ -171,7 +171,7 @@ export function DiscoveryRoute({
           <Pricing />
         ) : path === "/account" ? (
           <AccountPage key={account.userId ?? 'public'} account={account} />
-        ) : path === "/applications" ? (
+        ) : path === "/tracker" ? (
           <ApplicationsPage key={account.userId ?? 'public'} account={account} />
         ) : (parseCompanyProfilePath(path)||path.startsWith('/companies/')) ? (
           <CompanyProfile key={path} path={path}/>
@@ -211,12 +211,12 @@ function Jobs({
   }));
 
   useEffect(() => {
-    let active = true;
+    let active = true;const controller=new AbortController();
     if(!catalogueEnabled||offset===0)setLoading(true);
     else setLoadingMore(true);
     setError("");
     const requestTimer=setTimeout(()=>{void (
-      path.startsWith('/jobs/') ? loadOpportunityByPath(path).then(row=>row?[row]:[]) : catalogueEnabled ? catalogueJobs(filters,offset).then(page=>{if(active)setRemote(page);return page.rows;}) : loadOpportunityList({force:revision>0})
+      path.startsWith('/jobs/') ? loadOpportunityByPath(path).then(row=>row?[row]:[]) : catalogueEnabled ? catalogueJobs(filters,offset,controller.signal).then(page=>{if(active)setRemote(page);return page.rows;}) : loadOpportunityList({force:revision>0})
     )
       .then((rows) => {
         if (active) setJobs(current=>catalogueEnabled&&offset>0?[...current,...rows.filter(row=>!current.some(old=>old.id===row.id))]:rows);
@@ -228,7 +228,7 @@ function Jobs({
         if (active) {setLoading(false);setLoadingMore(false);}
       });},catalogueEnabled&&!path.startsWith('/jobs/')?150:0);
     return () => {
-      active = false;clearTimeout(requestTimer);
+      active = false;controller.abort();clearTimeout(requestTimer);
     };
   }, [revision, path, ...(catalogueEnabled?[filters,offset]:[])]);
   useEffect(()=>{const route=parseJobPath(path);const selected=jobs[0];if(path.startsWith('/jobs/')&&route&&'id' in route&&selected?.company_slug&&selected.role_slug){const canonical=jobPath(selected);if(window.location.pathname!==canonical){window.history.replaceState({},'',canonical+window.location.search);window.dispatchEvent(new PopStateEvent('popstate'));}}},[path,jobs]);
@@ -589,7 +589,7 @@ function ApplicationsPage({ account }: { account: Account }) {
     return (
       <SignInPrompt
         title="Keep your applications together."
-        next="/applications"
+        next="/tracker"
         error={account.error}
       />
     );

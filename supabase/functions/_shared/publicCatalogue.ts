@@ -207,7 +207,7 @@ export async function catalogueRead(
   if (experience === "freshers") where.push("j.accepts_freshers=1");
   if (experience === "internship") where.push("j.internship=1");
   const from =
-    `FROM catalogue_jobs j ${companyId?'INDEXED BY catalogue_job_company':''} JOIN catalogue_sources s ON s.id=j.source_id JOIN catalogue_companies c ON c.id=j.company_id`;
+    `FROM catalogue_jobs j ${companyId?'INDEXED BY catalogue_job_company_cover':''} JOIN catalogue_sources s ON s.id=j.source_id JOIN catalogue_companies c ON c.id=j.company_id`;
   let counts: Record<string, number>;
   if (where.length === 1) {
     const dates=[1,7,30].map(days=>new Date(now.getTime()-days*86400000).toISOString());
@@ -219,7 +219,7 @@ export async function catalogueRead(
       new Date(now.getTime() - days * 86400000).toISOString(),
     );
     const r = await db.execute({
-      sql: `SELECT count(*) AS total,sum(CASE WHEN j.published_at>=? THEN 1 ELSE 0 END) AS d1,sum(CASE WHEN j.published_at>=? THEN 1 ELSE 0 END) AS d7,sum(CASE WHEN j.published_at>=? THEN 1 ELSE 0 END) AS d30 ${from} WHERE ${where.join(" AND ")}`,
+      sql: `SELECT count(*) AS total,sum(CASE WHEN j.published_at>=? THEN 1 ELSE 0 END) AS d1,sum(CASE WHEN j.published_at>=? THEN 1 ELSE 0 END) AS d7,sum(CASE WHEN j.published_at>=? THEN 1 ELSE 0 END) AS d30 ${company?from:from.replace(' JOIN catalogue_companies c ON c.id=j.company_id','').replace('FROM catalogue_jobs j ',work&&!location&&!companyId?'FROM catalogue_jobs j INDEXED BY catalogue_job_work_cover ':'FROM catalogue_jobs j ')} WHERE ${where.join(" AND ")}`,
       args: [...dates, ...args],
     });
     const x = r.rows[0];
@@ -246,7 +246,7 @@ export async function catalogueRead(
   const n = limit(p.get("limit")),
     offset = offsetValue(p.get("offset"));
   const r = await db.execute({
-    sql: `SELECT ${columns} ${where.length===1&&sort!=="company"&&sort!=="posted"?"FROM catalogue_sources s CROSS JOIN catalogue_jobs j ON j.source_id=s.id JOIN catalogue_companies c ON c.id=j.company_id":from} WHERE ${where.join(" AND ")} ORDER BY ${order} LIMIT ? OFFSET ?`,
+    sql: `WITH matched AS MATERIALIZED (SELECT j.id ${where.length===1&&sort!=="company"&&sort!=="posted"?"FROM catalogue_sources s CROSS JOIN catalogue_jobs j ON j.source_id=s.id JOIN catalogue_companies c ON c.id=j.company_id":from} WHERE ${where.join(" AND ")} ORDER BY ${order} LIMIT ? OFFSET ?) SELECT ${columns} FROM matched m JOIN catalogue_jobs j ON j.id=m.id JOIN catalogue_sources s ON s.id=j.source_id JOIN catalogue_companies c ON c.id=j.company_id ORDER BY ${order}` ,
     args: [...args, n, offset],
   });
   return {

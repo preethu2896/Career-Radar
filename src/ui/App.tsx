@@ -1,8 +1,9 @@
+import {signOut} from '../services/auth.js';
 import {CompanyRoleSearch} from './CompanyRoleSearch.js';
 import {parseCompanyProfilePath} from '../services/companyProfileUrls.js';
 import { LoadingSkeleton } from "./LoadingSkeleton.js";
 import { AuthReady } from './ClerkRoot.js';
-import { SiteHeader } from './SiteHeader.js';
+import { SiteHeader, useSiteAccount } from './SiteHeader.js';
 import { LegalPage } from "./LegalPages.js";
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -165,6 +166,9 @@ function SignalStatusPill({ status }: { status: SignalStatus }) {
 }
 
 function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnter: () => void; onLogin: () => void; onSignUp: () => void; showNavigation?: boolean }) {
+  const landingAccount=useSiteAccount();
+  const [logoutBusy,setLogoutBusy]=useState(false),[logoutError,setLogoutError]=useState('');
+  const logout=async()=>{setLogoutBusy(true);setLogoutError('');try{await signOut();}catch{setLogoutError('Could not sign out. Please retry.');}finally{setLogoutBusy(false);}};
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [landingNavHidden, setLandingNavHidden] = useState(false);
 
@@ -225,9 +229,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
           <a href="/about#trust">Our approach</a>
         </div>
         <div className="landing-actions">
-          <button className="text-button" onClick={onLogin}>
-            Sign in
-          </button>
+          {landingAccount.userId?<details className="sf-account-menu"><summary aria-label="Profile menu">Profile</summary><div><a href="/profile">Profile</a><a href="/tracker">Tracker</a><button disabled={logoutBusy} onClick={()=>void logout()}>{logoutBusy?'Signing out…':'Sign out'}</button>{logoutError?<p className="cr-error" role="alert">{logoutError}</p>:null}</div></details>:<button className="text-button" onClick={onLogin}>Sign in</button>}
           <button className="nav-cta" onClick={onEnter}>
             Explore jobs <ArrowRight size={15} />
           </button>
@@ -251,7 +253,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
             <a href="/about#how-it-works" onClick={() => setMobileNavOpen(false)}>
               How it works
             </a>
-            <button
+            {landingAccount.userId?<a href="/profile" className="mobile-nav-link">Profile</a>:<button
               className="mobile-nav-link"
               onClick={() => {
                 setMobileNavOpen(false);
@@ -259,7 +261,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
               }}
             >
               Sign in
-            </button>
+            </button>}
             <button
               className="mobile-nav-cta"
               onClick={() => {
@@ -406,16 +408,16 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
           <nav className="landing-footer-column" aria-label="Product links">
             <h3>PRODUCT</h3>
             <a href="#how-it-works">How it works</a>
-            <button type="button" onClick={onEnter}>Explore companies</button>
+            <a href="/companies">Explore companies</a>
             <a href="#signals">Career signals</a>
-            <button type="button" onClick={onEnter}>Watchlist</button>
+            <a href="/tracker">Watchlist</a>
           </nav>
           <nav className="landing-footer-column" aria-label="Explore links">
             <h3>EXPLORE</h3>
-            <button type="button" onClick={onEnter}>Discover companies</button>
+            <a href="/companies">Discover companies</a>
             <button type="button" onClick={onEnter}>Browse opportunities</button>
-            <a href="#trust">Explore by city</a>
-            <a href="#trust">Explore by industry</a>
+            <a href="/jobs?location=Bengaluru">Jobs in Bengaluru</a>
+            <a href="/jobs?query=software">Software jobs</a>
           </nav>
           <nav className="landing-footer-column" aria-label="Company links">
             <h3>COMPANY</h3>
@@ -1374,7 +1376,7 @@ function usePageMetadata(path: string, entered: boolean) {
           title = "Pricing | Career Radar";
           description = "Free job discovery and application tracking, with Pro features planned.";
           break;
-        case "/applications":
+        case "/tracker":
           title = "Saved & applications | Career Radar";
           description = "Your saved roles, application stages and private notes.";
           break;
@@ -1459,7 +1461,7 @@ export default function App() {
   useEffect(() => { const onPopState = () => { setEntered(false); setPath(window.location.pathname); }; window.addEventListener("popstate", onPopState); return () => window.removeEventListener("popstate", onPopState); }, []);
   const navigate = useCallback((nextPath: string) => { window.history.pushState({}, "", nextPath); setEntered(false); setPath(new URL(nextPath, window.location.origin).pathname); window.scrollTo({ top: 0, behavior: "auto" }); }, []);
 
-  useEffect(() => {if(path === '/account'){window.history.replaceState({}, '', '/profile');setPath('/profile');window.scrollTo({top:0,behavior:'auto'});}}, [path]);
+  useEffect(() => {if(path === '/applications'){window.history.replaceState({}, '', '/tracker'+window.location.search+window.location.hash);setPath('/tracker');return;}if(path === '/account'){window.history.replaceState({}, '', '/profile');setPath('/profile');window.scrollTo({top:0,behavior:'auto'});}}, [path]);
 
   // Keep ordinary internal links in the app so the same transition runs everywhere.
   useEffect(() => {
@@ -1511,7 +1513,7 @@ export default function App() {
         onSignUp={() => navigate("/jobs")}
       />
     );
-  } else if (['/', '', '/jobs', '/explore', '/companies', '/refer', '/pricing', '/applications', '/account'].includes(path) || path.startsWith('/jobs/') || path.startsWith('/companies/')) {
+  } else if (['/', '', '/jobs', '/explore', '/companies', '/refer', '/pricing', '/tracker', '/applications', '/account'].includes(path) || path.startsWith('/jobs/') || path.startsWith('/companies/')) {
     pageContent = <DiscoveryRoute key={path} path={path === '/explore' ? '/jobs' : path} navigate={navigate}/>;
   } else {
     pageContent = (

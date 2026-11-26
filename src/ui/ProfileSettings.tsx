@@ -269,7 +269,7 @@ function ProfileSettings({
           <a href="#profile-details">Details</a>
           <a href="#profile-preferences">Preferences</a>
           <a href="#profile-resume">Résumé</a>
-          <a href="/applications">
+          <a href="/tracker">
             Tracker
             <ArrowRight size={14} />
           </a>

@@ -79,10 +79,10 @@
   font-weight: 600;
   text-decoration: none;
 }
-.cr-site-navbar .sf-account-menu {
+:is(.cr-site-navbar, .landing-nav) .sf-account-menu {
   position: relative;
 }
-.cr-site-navbar .sf-account-menu > summary {
+:is(.cr-site-navbar, .landing-nav) .sf-account-menu > summary {
   display: flex;
   align-items: center;
   gap: 7px;
@@ -94,7 +94,7 @@
 .cr-site-navbar summary::-webkit-details-marker {
   display: none;
 }
-.cr-site-navbar .sf-account-menu > div {
+:is(.cr-site-navbar, .landing-nav) .sf-account-menu > div {
   position: absolute;
   right: 0;
   top: 100%;
@@ -107,8 +107,8 @@
   border: 1px solid #d8ded4;
   border-radius: 10px;
 }
-.cr-site-navbar .sf-account-menu a,
-.cr-site-navbar .sf-account-menu button {
+:is(.cr-site-navbar, .landing-nav) .sf-account-menu a,
+:is(.cr-site-navbar, .landing-nav) .sf-account-menu button {
   display: flex;
   align-items: center;
   min-height: 44px;
@@ -124,8 +124,8 @@
   cursor: pointer;
   box-sizing: border-box;
 }
-.cr-site-navbar .sf-account-menu a:hover,
-.cr-site-navbar .sf-account-menu button:hover {
+:is(.cr-site-navbar, .landing-nav) .sf-account-menu a:hover,
+:is(.cr-site-navbar, .landing-nav) .sf-account-menu button:hover {
   background: #e8eee3;
   border-radius: 5px;
 }

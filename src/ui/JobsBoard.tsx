@@ -257,7 +257,7 @@ export function JobsBoard({
           <label htmlFor="board-query">Search jobs</label>
           <div>
             <Search size={16} />
-            <SearchAutocomplete suggestionsMaxWidth={1024} recentKey="careerradar.recent.jobs" id="board-query" label="Search jobs" onSearch={submitJobSearch} searching={loading&&Boolean(filters.query.trim())} value={filters.query} onChange={value=>update('query',value)} choices={searchChoices} placeholder="e.g. Analyst, Python" onFocus={loadSuggestions}/>
+            <SearchAutocomplete maxLength={160} suggestionsMaxWidth={1024} recentKey="careerradar.recent.jobs" id="board-query" label="Search jobs" onSearch={submitJobSearch} searching={loading&&Boolean(filters.query.trim())} value={filters.query} onChange={value=>update('query',value)} choices={searchChoices} placeholder="e.g. Analyst, Python" onFocus={loadSuggestions}/>
           </div>
         </div>
         {activeFilterControls}
@@ -290,7 +290,7 @@ export function JobsBoard({
           <details>
             <summary data-active={Boolean(filters.company||filters.companyId)}>Company<span>{filters.company||(filters.companyId?'Selected company':'Any')}<ChevronDown size={14}/></span></summary>
             <div className="sf-board-filter-body">
-              <label className="cr-field"><SearchAutocomplete suggestionsMaxWidth={1024} label="Company" value={filters.company} onChange={value=>update('company',value)} choices={companiesWithJobs.map(([name,count])=>({value:name,kind:count+' roles'}))} placeholder={'All hiring companies ('+companiesWithJobs.length+')'}/>
+              <label className="cr-field"><SearchAutocomplete maxLength={160} suggestionsMaxWidth={1024} label="Company" value={filters.company} onChange={value=>update('company',value)} choices={companiesWithJobs.map(([name,count])=>({value:name,kind:count+' roles'}))} placeholder={'All hiring companies ('+companiesWithJobs.length+')'}/>
               </label>
               <a className="sf-external" href={companySearchUrl}>Browse the full company directory <ArrowRight size={14}/></a>
             </div>
@@ -326,7 +326,7 @@ export function JobsBoard({
               </span>
             </summary>
             <div className="sf-board-filter-body">
-              <label className="cr-field"><SearchAutocomplete suggestionsMaxWidth={1024} label="Location" value={filters.location} onChange={value=>update('location',value)} placeholder="City, region or country" choices={locationNames.map(value=>({value,kind:'Location'}))}/>
+              <label className="cr-field"><SearchAutocomplete maxLength={160} suggestionsMaxWidth={1024} label="Location" value={filters.location} onChange={value=>update('location',value)} placeholder="City, region or country" choices={locationNames.map(value=>({value,kind:'Location'}))}/>
               </label>
             </div>
           </details>
@@ -361,10 +361,9 @@ export function JobsBoard({
           <button
             className="auth-primary"
             onClick={() => setFiltersOpen(false)}
-            disabled={loading}
             aria-busy={loading}
           >
-            {error?'View results':<>Show {loading ? "matching" : total.toLocaleString()}{" "}{!loading&&total === 1 ? "job" : "jobs"}</>}
+            {error||loading?'View results':<>Show {loading ? "matching" : total.toLocaleString()}{" "}{!loading&&total === 1 ? "job" : "jobs"}</>}
             <ArrowRight size={16} />
           </button>
         </footer>
@@ -450,7 +449,7 @@ export function JobsBoard({
           </div>
           <a
             className="auth-primary"
-            href={userId ? "/applications" : "/login?redirect=%2Fjobs"}
+            href={userId ? "/tracker" : "/login?redirect=%2Fjobs"}
           >
             {userId ? "Open tracker" : "Unlock apply links"}
             {userId ? <ArrowRight size={16} /> : <LockKeyhole size={15} />}
@@ -543,7 +542,7 @@ export function JobsBoard({
               {notice}
             </p>
           ) : null}
-          {loading ? (
+          {loading&&jobs.length===0 ? (
             <LoadingSkeleton label="Loading openings" rows={8} />
           ) : error ? (
             <div className="sf-board-empty">
@@ -578,7 +577,7 @@ export function JobsBoard({
                     <ArrowRight size={15} />
                   </a>
                 )}
-                <a className="auth-secondary" href="/applications">
+                <a className="auth-secondary" href="/tracker">
                   Track an application
                 </a>
               </div>
@@ -597,8 +596,7 @@ export function JobsBoard({
                     disabled={
                       accountLoading ||
                       trackerLoading ||
-                      Boolean(pending) ||
-                      Boolean(saveError)
+                      Boolean(pending)
                     }
                     saving={pending === job.id}
                     onSave={() => void save(job)}

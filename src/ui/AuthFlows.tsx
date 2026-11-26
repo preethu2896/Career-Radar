@@ -750,7 +750,7 @@ export function AuthRoute({
           error={errors.email}
           type="email"
           placeholder="you@example.com"
-          autoComplete="email"
+          autoComplete="username"
         />
         <PasswordField
           label="Password"
@@ -876,7 +876,7 @@ export function ForgotPasswordRoute({ navigate }: { navigate: Navigate }) {
           type="submit"
           disabled={busy || !authConfigured}
         >
-          {busy ? "Sending…" : "Send reset link"}
+          {busy ? "Sending…" : clerkEnabled ? "Send reset code" : "Send reset link"}
           <ArrowRight size={16} />
         </button>
       </form>

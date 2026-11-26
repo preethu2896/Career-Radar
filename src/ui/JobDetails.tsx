@@ -333,7 +333,7 @@ export function JobDetails({
             ) : null}
             {message ? (
               <p role="status">
-                {message} <a href="/applications">Open tracker</a>
+                {message} <a href="/tracker">Open tracker</a>
               </p>
             ) : null}
 

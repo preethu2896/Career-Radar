@@ -27,10 +27,20 @@ export function CompanyProfile({path}:{path:string}){
  const account=useSiteAccount();
  const [aboutExpanded,setAboutExpanded]=useState(false),[contactsExpanded,setContactsExpanded]=useState(()=>!matchMedia('(max-width:900px)').matches);
  useEffect(()=>{const media=matchMedia('(max-width:900px)');const update=()=>setContactsExpanded(!media.matches);media.addEventListener('change',update);return()=>media.removeEventListener('change',update);},[]);
- const [data,setData]=useState<{company:LocalCompanyRecord|null;companies:LocalCompanyRecord[];jobs:Opportunity[];jobsError:boolean;total?:number;remote?:number}|null>(null);
- const [error,setError]=useState(false),[revision,setRevision]=useState(0),[limit,setLimit]=useState(15),[saved,setSaved]=useState(false),[saving,setSaving]=useState(false),[saveError,setSaveError]=useState('');
+ const [data,setData]=useState<{company:LocalCompanyRecord|null;companies:LocalCompanyRecord[];jobs:Opportunity[];jobsError:boolean;jobsLoading?:boolean;total?:number;remote?:number}|null>(null);
+ const [error,setError]=useState(false),[revision,setRevision]=useState(0),[limit,setLimit]=useState(15),[saved,setSaved]=useState(false),[saving,setSaving]=useState(false),[saveError,setSaveError]=useState(''),[moreLoading,setMoreLoading]=useState(false);
  useEffect(()=>{let active=true;setData(null);setError(false);setLimit(15);
-  if(catalogueEnabled){void (async()=>{const result=await catalogueCompany(path);if(!result.company){if(active)setData({company:null,companies:[],jobs:[],jobsError:false});return;}const company=result.company;const [page,related]=await Promise.all([catalogueRequest<PublicJobPage>('jobs',{companyId:company.id,sort:'posted',limit:100}),catalogueRequest<{rows:LocalCompanyRecord[]}>('companies',{city:companyPlace(company).city,limit:7})]);const remote=await catalogueRequest<PublicJobPage>('jobs',{companyId:company.id,workMode:'Remote',limit:1});if(active){setData({company,companies:related.rows,jobs:page.rows,jobsError:false,total:page.total,remote:remote.total});document.title=company.name+' jobs & company details | CareerRadar';if(!company.description&&page.rows[0])void loadOpportunity(page.rows[0].id).then(full=>{if(active&&full)setData(old=>old?{...old,jobs:old.jobs.map(job=>job.id===full.id?full:job)}:old);}).catch(()=>{});}})().catch(()=>{if(active)setError(true);});return()=>{active=false;};}
+  if(catalogueEnabled){const controller=new AbortController();void (async()=>{
+   const result=await catalogueCompany(path);if(!active)return;
+   if(!result.company){setData({company:null,companies:[],jobs:[],jobsError:false});return;}
+   const company=result.company;setData({company,companies:[],jobs:[],jobsError:false,jobsLoading:true});
+   document.title=company.name+' jobs & company details | CareerRadar';
+   void catalogueRequest<{rows:LocalCompanyRecord[]}>('companies',{city:companyPlace(company).city,limit:7},controller.signal).then(related=>{if(active)setData(old=>old?{...old,companies:related.rows}:old);}).catch(()=>{});
+   try{const page=await catalogueRequest<PublicJobPage>('jobs',{companyId:company.id,sort:'posted',limit:15},controller.signal);
+    if(active)setData(old=>old?{...old,jobs:page.rows,total:page.total,jobsLoading:false}:old);
+    if(!company.description&&page.rows[0])void loadOpportunity(page.rows[0].id).then(full=>{if(active&&full)setData(old=>old?{...old,jobs:old.jobs.map(job=>job.id===full.id?full:job)}:old);}).catch(()=>{});
+   }catch{if(active)setData(old=>old?{...old,jobsError:true,jobsLoading:false}:old);}
+  })().catch(()=>{if(active)setError(true);});return()=>{active=false;controller.abort();};}
   void Promise.allSettled([loadDiscoveryCompanies(),loadOpportunityList({force:revision>0})]).then(results=>{
    if(!active)return;const companies=results[0].status==='fulfilled'?results[0].value:[];const jobs=results[1].status==='fulfilled'?results[1].value.filter(job=>isRecentOpening(job)):[];
    const route=parseCompanyProfilePath(path);let company:LocalCompanyRecord|undefined;
@@ -51,7 +61,7 @@ export function CompanyProfile({path}:{path:string}){
  if(!company)return <section className="sf-empty"><h1>Company not found.</h1><a href="/companies">Explore companies</a></section>;
  const place=companyPlace(company);const jobs=[...data.jobs].sort((a,b)=>Date.parse(b.published_at??b.last_checked_at??'')-Date.parse(a.published_at??a.last_checked_at??''));
  const total=data.total??jobs.length;
- const remote=data.remote??jobs.filter(j=>j.work_mode?.toLowerCase()==='remote').length;
+ const remote=data.remote;
  const checked=jobs.map(j=>j.last_checked_at).filter((date):date is string=>Boolean(date)).sort().at(-1)??null;
  const overview=company.description||jobs.map(j=>splitJobDescription(j.description,company.name).companyText).find(Boolean);
  const canonical=companyProfilePath(company);const jobsUrl='/jobs?'+new URLSearchParams({company:jobs[0]?.company_name??company.name,...(catalogueEnabled?{companyId:company.id}:{})});
@@ -68,7 +78,7 @@ export function CompanyProfile({path}:{path:string}){
     <div className="sf-role-title"><CompanyLogo name={company.name} companyId={company.id} logoUrl={company.logoUrl} className="sf-role-logo"/><div><h1>{company.name}</h1><div className="sf-company-identity-meta">{validPlace.length?<span>{validPlace.join(', ')}</span>:null}{company.industry?<span>{company.industry}</span>:null}</div></div></div>
     <div className="sf-company-header-actions">{company.website?<a className="sf-company-official-link" href={safeExternalUrl(company.website)!} target="_blank" rel="noopener noreferrer">Website<ExternalLink size={14}/></a>:null}<CareersAccess key={(account.userId??'guest')+company.id} userId={account.userId} companyId={company.id} returnPath={canonical}/>{saveControl}</div>
     {saveError?<p className="cr-error" role="alert">{saveError}</p>:null}
-    <div className="sf-company-opening-summary">{data.jobsError?<span>Current openings could not be checked.</span>:total>0?<><a href="#company-open-roles"><strong>{total}</strong> open {total===1?'role':'roles'}<ArrowRight size={14}/></a>{remote>0?<span>{remote} marked remote</span>:null}{checked?<span>Checked {displayDate(checked)}</span>:null}</>:<p>No verified openings listed currently. Check the company’s careers page for other opportunities.</p>}</div>
+    <div className="sf-company-opening-summary">{data.jobsLoading?<span role="status">Loading current openings…</span>:data.jobsError?<span>Current openings could not be checked.</span>:total>0?<><a href="#company-open-roles"><strong>{total}</strong> open {total===1?'role':'roles'}<ArrowRight size={14}/></a>{remote!==undefined&&remote>0?<span>{remote} marked remote</span>:null}{checked?<span>Checked {displayDate(checked)}</span>:null}</>:<p>No verified openings listed currently. Check the company’s careers page for other opportunities.</p>}</div>
    </header>
    <aside className="sf-company-profile-aside" aria-label="Founders and contacts">
     <details className="sf-role-card sf-company-contacts" open={contactsExpanded} onToggle={event=>setContactsExpanded(event.currentTarget.open)}>
@@ -77,11 +87,11 @@ export function CompanyProfile({path}:{path:string}){
     </details>
    </aside>
    <main className="sf-company-profile-main">
-   {data.jobsError||jobs.length>0?<section className="sf-role-card sf-company-openings" id="company-open-roles"><header><h2>Open roles</h2></header>
-    {data.jobsError?<p className="cr-error" role="alert">Openings could not be loaded. <button className="cr-text-button" onClick={()=>setRevision(n=>n+1)}>Retry</button></p>:<>
+   {data.jobsLoading||data.jobsError||jobs.length>0?<section className="sf-role-card sf-company-openings" id="company-open-roles"><header><h2>Open roles</h2></header>
+    {data.jobsLoading?<p role="status">Loading current openings…</p>:data.jobsError?<p className="cr-error" role="alert">Openings could not be loaded. <button className="cr-text-button" onClick={()=>setRevision(n=>n+1)}>Retry</button></p>:<>
      {locationTags.length>1?<div className="sf-company-role-tags" aria-label="Job locations">{locationTags.map(location=><span key={location}>{location}</span>)}</div>:null}
      <div className="sf-company-role-list">{jobs.slice(0,limit).map(job=><a key={job.id} href={jobPath(job)}><div><h3>{job.title}</h3><p>{[primaryJobLocation(job.location),job.employment_type].filter(Boolean).join(' · ')}</p></div>{job.published_at?<span>Posted {displayDate(job.published_at)}</span>:null}<ArrowRight className="sf-company-role-arrow" size={15}/></a>)}</div>
-     <footer><span>Showing {Math.min(limit,total)} of {total}</span>{limit<total?<button className="auth-secondary" onClick={()=>{if(catalogueEnabled&&limit+15>jobs.length&&jobs.length<total){void catalogueRequest<PublicJobPage>('jobs',{companyId:company.id,sort:'posted',offset:jobs.length,limit:100}).then(page=>{setData(old=>old?{...old,jobs:[...old.jobs,...page.rows]}:old);setLimit(n=>n+15);}).catch(()=>setSaveError('More roles could not be loaded. Please retry.'));}else setLimit(n=>n+15);}}>Show more roles</button>:null}<a href={jobsUrl}>View on jobs board <ArrowRight size={14}/></a></footer>
+     <footer><span>Showing {Math.min(limit,total)} of {total}</span>{limit<total?<button className="auth-secondary" disabled={moreLoading} onClick={()=>{if(moreLoading)return;if(catalogueEnabled&&limit+15>jobs.length&&jobs.length<total){setMoreLoading(true);setSaveError('');void catalogueRequest<PublicJobPage>('jobs',{companyId:company.id,sort:'posted',offset:jobs.length,limit:15}).then(page=>{setData(old=>old?{...old,jobs:[...old.jobs,...page.rows.filter(row=>!old.jobs.some(job=>job.id===row.id))]}:old);setLimit(n=>n+15);}).catch(()=>setSaveError('More roles could not be loaded. Please retry.')).finally(()=>setMoreLoading(false));}else setLimit(n=>n+15);}}>{moreLoading?'Loading…':'Show more roles'}</button>:null}<a href={jobsUrl}>View on jobs board <ArrowRight size={14}/></a></footer>
     </>}
    </section>:null}
    {overview?<section className="sf-role-card sf-company-overview"><h2>About {company.name}</h2><div id="company-about-content" className={!aboutExpanded&&overview.length>600?'sf-company-about-preview':''}><StructuredDescription text={removeOpeningAboutHeading(overview,company.name)}/></div>{overview.length>600?<button className="cr-text-button" aria-expanded={aboutExpanded} aria-controls="company-about-content" onClick={()=>setAboutExpanded(value=>!value)}>{aboutExpanded?'Show less':'Read more'}<ChevronDown size={14}/></button>:null}{company.description?<p className="sf-hint sf-company-source-note">From company research; not independently verified.</p>:null}</section>:null}

@@ -154,7 +154,7 @@ export function SiteHeader({
               </summary>
               <div>
                 <a href="/profile">Profile</a>
-                <a href="/applications">Tracker</a>
+                <a href="/tracker">Tracker</a>
                 <button disabled={busy} onClick={() => void logout()}>
                   {busy ? "Signing out…" : "Sign out"}
                 </button>
