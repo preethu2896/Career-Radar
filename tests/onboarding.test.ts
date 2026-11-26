@@ -349,8 +349,9 @@ describe("candidate onboarding rules", () => {
       expect(html).toContain("asha-rao-resume.pdf");
       expect(html).toContain("Remove");
       expect(html).toContain("linkedin.com/in/you");
-      expect(html).toContain("Import");
-      expect(html).toContain("* Your resume or LinkedIn is required to continue.");
+      expect(html).toContain("Continue with link");
+      expect(html).toContain("no profile information is imported");
+      expect(html).toContain("Add your resume or LinkedIn profile.");
     });
 
     it("2. Resume parsing results remain available after navigating to Step 2 and Step 3", () => {
@@ -394,14 +395,14 @@ describe("candidate onboarding rules", () => {
       const html = renderStep(2, draft);
 
       // Role suggestions derived from experience
-      expect(html).toContain("From your resume");
+      expect(html).toContain("Your roles");
       expect(html).toContain("Full-Stack Developer");
       expect(html).toContain("Select your top 3 titles");
       expect(html).toContain("1 of 3 selected");
 
       // Does not invent arbitrary roles that were not in experience
-      expect(html).not.toContain("Cybersecurity Engineer");
-      expect(html).not.toContain("Product Designer");
+      expect(html).not.toMatch(/aria-pressed="true"[^>]*>Cybersecurity Engineer/);
+      expect(html).not.toMatch(/aria-pressed="true"[^>]*>Product Designer/);
 
       // Extracted skills belong in Step 3
       const step3Html = renderStep(3, draft);
@@ -1955,7 +1956,7 @@ describe("candidate onboarding rules", () => {
       );
       expect(step2Markup).toContain("AI/ML Engineer");
       expect(step2Markup).toContain("Data Scientist");
-      expect(step2Markup).not.toContain("Software Engineer");
+      expect(step2Markup).not.toMatch(/aria-pressed="true"[^>]*>Software Engineer/);
       expect(step2Markup).not.toContain("Kept your previously entered values for:");
       expect(step2Markup).not.toContain("Merge resume suggestions");
       expect(step2Markup).not.toContain("Update with resume data");

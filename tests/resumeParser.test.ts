@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { isValidResume, MAX_RESUME_BYTES, prefillFromResume } from "../src/services/onboarding.js";
 import {
   extractResume,
+  extractTextFromPage,
   parseResumeText,
   splitCandidateName,
   detectSectionHeading,
@@ -247,8 +248,8 @@ Winner, National Hackathon 2022`;
       expect(result.education.length).toBe(1);
       expect(result.education[0]?.qualification).toContain("Bachelor of Technology in Computer Science");
       expect(result.education[0]?.institution).toContain("National Institute of Technology Karnataka");
-      expect(result.education[0]?.year).toBe("2017 – 2021");
-      expect(result.education[0]?.grade).toBe("CGPA: 8.8 / 10");
+      expect(result.education[0]?.year).toBe("2021");
+      expect(result.education[0]?.grade).toBe("8.8");
 
       // Verify no leak of other sections into education
       const educationText = JSON.stringify(result.education);
@@ -354,5 +355,24 @@ Indian Institute of Science
       expect(overwrittenResult.prefilledFields).toContain("LinkedIn");
       expect(overwrittenResult.prefilledFields).toContain("Target roles");
     });
+  });
+});
+
+describe("PDF line layout", () => {
+  it("ends a line after the final text item rather than before it", () => {
+    const text = extractTextFromPage({ items: [
+      { str: "Asha", transform: [1, 0, 0, 1, 10, 100] },
+      { str: "Rao", transform: [1, 0, 0, 1, 40, 100], hasEOL: true },
+      { str: "Skills: Python", transform: [1, 0, 0, 1, 10, 80], hasEOL: true },
+    ] });
+    expect(text).toBe("Asha Rao\nSkills: Python");
+    expect(parseResumeText(text).candidateName).toBe("Asha Rao");
+    expect(parseResumeText(text).skills).toContain("Python");
+  });
+  it("keeps separate baselines separate without EOL markers", () => {
+    expect(extractTextFromPage({ items: [
+      { str: "Education", transform: [1, 0, 0, 1, 10, 100] },
+      { str: "B.Tech", transform: [1, 0, 0, 1, 10, 80] },
+    ] })).toBe("Education\nB.Tech");
   });
 });

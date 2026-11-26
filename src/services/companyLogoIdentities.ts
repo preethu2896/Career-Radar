@@ -1,0 +1,28 @@
+// Existing locally verified logos, scoped to confirmed company identities.
+export const legacyLogosById:Readonly<Record<string,string>> = {
+  "01e26956a230c0a7472d": "/company-logos/alphagrep.ico",
+  "c7ce551a858ab5e4fa53": "/company-logos/atlan.png",
+  "bac79c050fedb4c0cd17": "/company-logos/atlys.ico",
+  "d1191d8bdc87af8044be": "/company-logos/databricks.png",
+  "fc06dd71c806d36600df": "/company-logos/dun-bradstreet.png",
+  "b35f8bae60d3f452162f": "/company-logos/endor-labs.png",
+  "4cb7db45f1def548e599": "/company-logos/equal-experts.png",
+  "a7dce11336e922359ab1": "/company-logos/fam.ico",
+  "9d8d191a5a631a83ebc2": "/company-logos/groww.ico",
+  "1534f713a413e8423a33": "/company-logos/hackerrank.png",
+  "b69c8862232a9797885b": "/company-logos/hevo-data.png",
+  "6ad32e705407e0f7fa15": "/company-logos/meesho.png",
+  "ba3c4f27877e0ddfbe08": "/company-logos/mindtickle.ico",
+  "9593b16bb0a159572465": "/company-logos/paytm.png",
+  "2bab1667d86ba327b8e6": "/company-logos/quinstreet.png",
+  "da48258802e3616a903b": "/company-logos/razorpay.png",
+  "a91d6248d1971637405d": "/company-logos/rockstar-games.ico",
+  "518c7acdf7d9180260f8": "/company-logos/schrodinger.png",
+  "4c999bf886d01a21080d": "/company-logos/sigmoid.png",
+  "7468d5148c0e0683c8a8": "/company-logos/stable-money.png",
+  "f1f0f8aa80c204889436": "/company-logos/stripe.png",
+  "3a11f2b466127cbc5b56": "/company-logos/z1-tech.png",
+  "da5f87839923cf19c06b": "/company-logos/zenoti.png",
+  "6678493cd639a744f640": "/company-logos/zeta.png",
+  "c6f548af827bf77878f9": "/company-logos/interview-kickstart.png"
+};

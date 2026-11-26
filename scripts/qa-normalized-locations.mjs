@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {chromium,expect} from '@playwright/test';
+const b=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
+try{const page=await b.newPage({reducedMotion:'reduce'});await page.route('**/fonts.googleapis.com/**',r=>r.abort());
+for(const width of [1440,390,320]){
+ await page.setViewportSize({width,height:900});await page.goto('http://localhost:5173/jobs');await expect(page.locator('.sf-board-job').first()).toBeVisible({timeout:45000});
+ if(width<901){await page.evaluate(()=>window.scrollTo(0,400));const button=page.getByRole('button',{name:'Filters',exact:true});const before=await button.boundingBox();await page.mouse.move(before.x+before.width/2,before.y+before.height/2);await page.mouse.down();await page.waitForTimeout(180);const pressed=await button.boundingBox();assert.ok(Math.abs(before.x-pressed.x)<1&&Math.abs(before.y-pressed.y)<1,'filter button moved on press');await page.mouse.up();await expect(page.locator('.sf-board-filter-dialog')).toBeVisible();
+ const centered=await page.locator('.sf-sheet-footer > button').evaluate(el=>{const text=[...el.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE&&n.textContent.trim());const r=document.createRange();r.setStartBefore(text[0]);r.setEndAfter(text.at(-1));const t=r.getBoundingClientRect(),b=el.getBoundingClientRect();return Math.abs((t.left+t.right)/2-(b.left+b.right)/2)<2;});assert.ok(centered,'show-jobs text not centered');const footer=await page.locator('.sf-sheet-footer').boundingBox();const action=await page.locator('.sf-sheet-footer > button').boundingBox();assert.ok(Math.abs(action.x+action.width/2-footer.x-footer.width/2)<2&&action.width>footer.width-48,'show-jobs button not centered/full-width');}
+ const panel=page.locator(width<901?'.sf-board-filter-dialog':'.sf-board-sidebar');await panel.locator('summary').filter({hasText:/^Location/}).click();const search=panel.getByRole('combobox',{name:'Location',exact:true});
+ for(const [query,name] of [['hary','Haryana'],['karna','Karnataka']]){await search.fill(query);await expect(panel.getByRole('option',{name:name+' Location',exact:true})).toHaveCount(1);const options=await panel.getByRole('option').allTextContents();assert.ok(!options.some(t=>/Haryāna|Karnātaka|Karnataka\s*\(/.test(t)));await search.press('Escape');}
+ await page.screenshot({path:`qa-artifacts/location-cleanup-${width}.png`});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));console.log(JSON.stringify({width,locationsDeduplicated:true,filterPressStable:width<901,showTextCentered:width<901}));
+}
+}finally{await b.close();}

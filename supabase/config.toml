@@ -1,0 +1,26 @@
+project_id = "career-radar"
+[auth]
+minimum_password_length = 8
+password_requirements = "lower_upper_letters_digits_symbols"
+
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173/auth/callback", "http://localhost:5173/reset-password", "http://127.0.0.1:5173/auth/callback", "http://127.0.0.1:5173/reset-password", "http://192.168.1.8:5173/auth/callback", "http://192.168.1.8:5173/reset-password"]
+
+[auth.third_party.clerk]
+enabled = true
+domain = 'choice-dove-8270.clerk.accounts.dev'
+
+[functions.manage-resume]
+verify_jwt = false
+
+[functions.candidate-identity]
+verify_jwt = false
+
+[functions.sync-job-feeds]
+verify_jwt = false
+
+[functions.catalogue]
+verify_jwt = false
+
+[functions.sync-catalogue]
+verify_jwt = false

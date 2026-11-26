@@ -1,0 +1,30 @@
+import {execFileSync}from'node:child_process';
+import {readFile,writeFile}from'node:fs/promises';
+import{join}from'node:path';
+const m=JSON.parse(await readFile('.clerk/migrate/baseline.json','utf8'));
+const quote=v=>"'"+v.replaceAll("'","''")+"'";
+const run=c=>execFileSync('powershell.exe',['-NoProfile','-NonInteractive','-Command',c],{encoding:'utf8',stdio:['ignore','pipe','pipe'],timeout:120000});
+const raw=run(`& npx -y clerk@latest migrate import ${quote(m.exportPath)} --source supabase --app ${m.app} --instance dev --runs-dir ${quote(join(m.privateFolder,'runs'))} --yes --json`);
+await writeFile(join(m.privateFolder,'import-result.json'),raw,{mode:0o600});
+const r=JSON.parse(raw.slice(raw.indexOf('{')));
+console.log(JSON.stringify({phase:'imported',checks:r.checks,runId:r.run?.id}));
+const mappings=[];
+for(const id of m.accountIds){
+ const result=run(`& npx -y clerk@latest users list --app ${m.app} --instance dev --external-id ${quote(id)} --json`);
+ const obj=JSON.parse(result.slice(result.indexOf('{')));
+ const users=Array.isArray(obj)?obj:obj.data??obj.users??obj.response?.data;
+ if(!Array.isArray(users)||users.length!==1)throw new Error('Imported identity lookup did not return exactly one user');
+ const user=users[0];
+ const subject=user.id;
+ if(typeof subject!=='string'||!/^user_[A-Za-z0-9]+$/.test(subject))throw new Error('Invalid Clerk identity');
+ mappings.push({accountId:id,subject});
+}
+const pk=process.env.VITE_CLERK_PUBLISHABLE_KEY;
+if(!pk?.startsWith('pk_test_'))throw new Error('Expected the selected development publishable key');
+const domain=Buffer.from(pk.slice('pk_test_'.length),'base64').toString().replace(/\$$/,'');
+if(!/^[a-z0-9.-]+\.clerk\.accounts\.dev$/.test(domain))throw new Error('Unexpected Clerk issuer');
+m.issuer='https://'+domain;m.mappings=mappings;
+await writeFile('.clerk/migrate/baseline.json',JSON.stringify(m,null,2),{mode:0o600});
+await writeFile(join(m.privateFolder,'clerk-runtime.env'),'CLERK_ISSUER='+m.issuer+'\n',{mode:0o600});
+await writeFile(join(m.privateFolder,'clerk-role.json'),JSON.stringify({session:{claims:{role:'authenticated'}}}));
+console.log(JSON.stringify({mappedAccounts:mappings.length,issuer:m.issuer,privateArtifacts:'retained until verification'}));

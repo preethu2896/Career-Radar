@@ -9,3 +9,19 @@ tmp/
 research/employer-direct-import/dry-run/dry-run-report.json
 research/employer-direct-import/*-staging.json
 research/employer-direct-import/import-manifest.json
+
+# Disposable live QA output
+qa-artifacts/
+test-results/
+playwright-report/
+
+# Clerk local state and credential-bearing migration exports
+.clerk/
+
+# Local Supabase CLI cache and private database/export files
+supabase/.temp/
+*.sqlite
+*.sqlite-*
+*.db
+*.db-shm
+*.db-wal

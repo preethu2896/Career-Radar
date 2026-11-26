@@ -1,0 +1,804 @@
+{
+  "checkedAt": "2026-11-21T15:32:17.734Z",
+  "connections": [
+    {
+      "provider": "WORKABLE",
+      "board_slug": "innovaccer-analytics",
+      "company_name": "Innovaccer Analytics",
+      "official_careers_url": "https://apply.workable.com/innovaccer-analytics",
+      "sync_batch": 5,
+      "source_urls": [],
+      "companyNames": [
+        "Innovaccer"
+      ],
+      "indiaJobs": 57,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:25:30.299Z"
+    },
+    {
+      "provider": "ASHBY",
+      "board_slug": "Aspora",
+      "company_name": "Aspora",
+      "official_careers_url": "https://jobs.ashbyhq.com/Aspora",
+      "sync_batch": 5,
+      "source_urls": [],
+      "companyNames": [
+        "Aspora"
+      ],
+      "indiaJobs": 7,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:21.853Z"
+    },
+    {
+      "provider": "GREENHOUSE",
+      "board_slug": "cloudsek",
+      "company_name": "CloudSEK",
+      "official_careers_url": "https://job-boards.greenhouse.io/cloudsek",
+      "sync_batch": 5,
+      "source_urls": [],
+      "companyNames": [
+        "CloudSEK"
+      ],
+      "indiaJobs": 14,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:22.563Z"
+    },
+    {
+      "provider": "GREENHOUSE",
+      "board_slug": "razorpaysoftwareprivatelimited",
+      "company_name": "Razorpay",
+      "official_careers_url": "https://job-boards.greenhouse.io/razorpaysoftwareprivatelimited",
+      "sync_batch": 0,
+      "source_urls": [],
+      "companyNames": [
+        "Razorpay"
+      ],
+      "indiaJobs": 25,
+      "isNew": false,
+      "checkedAt": "2026-11-21T15:21:22.961Z"
+    },
+    {
+      "provider": "ASHBY",
+      "board_slug": "novo",
+      "company_name": "Novo",
+      "official_careers_url": "https://jobs.ashbyhq.com/novo",
+      "sync_batch": 5,
+      "source_urls": [],
+      "companyNames": [
+        "Novo"
+      ],
+      "indiaJobs": 1,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:23.281Z"
+    },
+    {
+      "provider": "GREENHOUSE",
+      "board_slug": "karya",
+      "company_name": "Karya",
+      "official_careers_url": "https://job-boards.greenhouse.io/karya",
+      "sync_batch": 5,
+      "source_urls": [],
+      "companyNames": [
+        "Karya"
+      ],
+      "indiaJobs": 16,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:23.619Z"
+    },
+    {
+      "provider": "GREENHOUSE",
+      "board_slug": "stockx",
+      "company_name": "StockX",
+      "official_careers_url": "https://job-boards.greenhouse.io/stockx",
+      "sync_batch": 5,
+      "source_urls": [],
+      "companyNames": [
+        "StockX"
+      ],
+      "indiaJobs": 9,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:23.942Z"
+    },
+    {
+      "provider": "WORKABLE",
+      "board_slug": "weekday-1",
+      "company_name": "Weekday AI",
+      "official_careers_url": "https://apply.workable.com/weekday-1",
+      "sync_batch": 5,
+      "source_urls": [],
+      "companyNames": [
+        "Weekday"
+      ],
+      "indiaJobs": 494,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:25:31.237Z"
+    },
+    {
+      "provider": "GREENHOUSE",
+      "board_slug": "devrev",
+      "company_name": "DevRev",
+      "official_careers_url": "https://job-boards.greenhouse.io/devrev",
+      "sync_batch": 6,
+      "source_urls": [],
+      "companyNames": [
+        "DevRev"
+      ],
+      "indiaJobs": 6,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:24.867Z"
+    },
+    {
+      "provider": "ASHBY",
+      "board_slug": "parspec",
+      "company_name": "Parspec",
+      "official_careers_url": "https://jobs.ashbyhq.com/parspec",
+      "sync_batch": 6,
+      "source_urls": [],
+      "companyNames": [
+        "Parspec"
+      ],
+      "indiaJobs": 2,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:25.173Z"
+    },
+    {
+      "provider": "ASHBY",
+      "board_slug": "bureau",
+      "company_name": "Bureau",
+      "official_careers_url": "https://jobs.ashbyhq.com/bureau",
+      "sync_batch": 6,
+      "source_urls": [],
+      "companyNames": [
+        "Bureau"
+      ],
+      "indiaJobs": 16,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:25.485Z"
+    },
+    {
+      "provider": "ASHBY",
+      "board_slug": "metaforms",
+      "company_name": "Metaforms",
+      "official_careers_url": "https://jobs.ashbyhq.com/metaforms",
+      "sync_batch": 6,
+      "source_urls": [],
+      "companyNames": [
+        "Metaforms"
+      ],
+      "indiaJobs": 9,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:25.799Z"
+    },
+    {
+      "provider": "LEVER",
+      "board_slug": "dozee",
+      "company_name": "Dozee",
+      "official_careers_url": "https://jobs.lever.co/dozee",
+      "sync_batch": 6,
+      "source_urls": [],
+      "companyNames": [
+        "Dozee"
+      ],
+      "indiaJobs": 18,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:28.682Z"
+    },
+    {
+      "provider": "ASHBY",
+      "board_slug": "interview-kickstart",
+      "company_name": "Interview Kickstart",
+      "official_careers_url": "https://jobs.ashbyhq.com/interview-kickstart",
+      "sync_batch": 2,
+      "source_urls": [],
+      "companyNames": [
+        "Interview Kickstart"
+      ],
+      "indiaJobs": 11,
+      "isNew": false,
+      "checkedAt": "2026-11-21T15:21:29.022Z"
+    },
+    {
+      "provider": "LEVER",
+      "board_slug": "zeta",
+      "company_name": "Zeta",
+      "official_careers_url": "https://jobs.lever.co/zeta",
+      "sync_batch": 5,
+      "source_urls": [],
+      "companyNames": [
+        "Zeta"
+      ],
+      "indiaJobs": 29,
+      "isNew": false,
+      "checkedAt": "2026-11-21T15:21:30.035Z"
+    },
+    {
+      "provider": "LEVER",
+      "board_slug": "hevodata",
+      "company_name": "Hevo Data",
+      "official_careers_url": "https://jobs.lever.co/hevodata",
+      "sync_batch": 0,
+      "source_urls": [],
+      "companyNames": [
+        "Hevo Data"
+      ],
+      "indiaJobs": 39,
+      "isNew": false,
+      "checkedAt": "2026-11-21T15:21:34.289Z"
+    },
+    {
+      "provider": "GREENHOUSE",
+      "board_slug": "6sense",
+      "company_name": "6sense",
+      "official_careers_url": "https://job-boards.greenhouse.io/6sense",
+      "sync_batch": 6,
+      "source_urls": [],
+      "companyNames": [
+        "6sense"
+      ],
+      "indiaJobs": 9,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:34.740Z"
+    },
+    {
+      "provider": "WORKABLE",
+      "board_slug": "lokal-app",
+      "company_name": "Lokal App",
+      "official_careers_url": "https://apply.workable.com/lokal-app",
+      "sync_batch": 6,
+      "source_urls": [],
+      "companyNames": [
+        "Lokal"
+      ],
+      "indiaJobs": 77,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:35.103Z"
+    },
+    {
+      "provider": "ASHBY",
+      "board_slug": "spotdraft",
+      "company_name": "SpotDraft",
+      "official_careers_url": "https://jobs.ashbyhq.com/spotdraft",
+      "sync_batch": 6,
+      "source_urls": [],
+      "companyNames": [
+        "SpotDraft"
+      ],
+      "indiaJobs": 9,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:35.483Z"
+    },
+    {
+      "provider": "LEVER",
+      "board_slug": "acceldata",
+      "company_name": "Acceldata",
+      "official_careers_url": "https://jobs.lever.co/acceldata",
+      "sync_batch": 7,
+      "source_urls": [],
+      "companyNames": [
+        "Acceldata"
+      ],
+      "indiaJobs": 16,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:38.494Z"
+    },
+    {
+      "provider": "ASHBY",
+      "board_slug": "oaknorth",
+      "company_name": "OakNorth",
+      "official_careers_url": "https://jobs.ashbyhq.com/oaknorth",
+      "sync_batch": 7,
+      "source_urls": [],
+      "companyNames": [
+        "OakNorth"
+      ],
+      "indiaJobs": 16,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:38.851Z"
+    },
+    {
+      "provider": "ASHBY",
+      "board_slug": "headout",
+      "company_name": "Headout",
+      "official_careers_url": "https://jobs.ashbyhq.com/headout",
+      "sync_batch": 7,
+      "source_urls": [],
+      "companyNames": [
+        "Headout"
+      ],
+      "indiaJobs": 9,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:39.166Z"
+    },
+    {
+      "provider": "WORKABLE",
+      "board_slug": "caxton",
+      "company_name": "Caxton Associates",
+      "official_careers_url": "https://apply.workable.com/caxton",
+      "sync_batch": 7,
+      "source_urls": [],
+      "companyNames": [
+        "Caxton Associates"
+      ],
+      "indiaJobs": 13,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:39.517Z"
+    },
+    {
+      "provider": "ASHBY",
+      "board_slug": "bolna",
+      "company_name": "Bolna AI",
+      "official_careers_url": "https://jobs.ashbyhq.com/bolna",
+      "sync_batch": 7,
+      "source_urls": [],
+      "companyNames": [
+        "Bolna AI"
+      ],
+      "indiaJobs": 5,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:39.818Z"
+    },
+    {
+      "provider": "LEVER",
+      "board_slug": "saviynt",
+      "company_name": "Saviynt",
+      "official_careers_url": "https://jobs.lever.co/saviynt",
+      "sync_batch": 7,
+      "source_urls": [],
+      "companyNames": [
+        "Saviynt"
+      ],
+      "indiaJobs": 22,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:40.464Z"
+    },
+    {
+      "provider": "GREENHOUSE",
+      "board_slug": "quince",
+      "company_name": "Quince",
+      "official_careers_url": "https://job-boards.greenhouse.io/quince",
+      "sync_batch": 7,
+      "source_urls": [],
+      "companyNames": [
+        "Quince"
+      ],
+      "indiaJobs": 17,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:41.065Z"
+    },
+    {
+      "provider": "GREENHOUSE",
+      "board_slug": "sigmoid",
+      "company_name": "Sigmoid",
+      "official_careers_url": "https://job-boards.greenhouse.io/sigmoid",
+      "sync_batch": 0,
+      "source_urls": [],
+      "companyNames": [
+        "Sigmoid"
+      ],
+      "indiaJobs": 41,
+      "isNew": false,
+      "checkedAt": "2026-11-21T15:21:41.412Z"
+    },
+    {
+      "provider": "RECRUITEE",
+      "board_slug": "gain",
+      "company_name": "Gain",
+      "official_careers_url": "https://gain.recruitee.com",
+      "sync_batch": 7,
+      "source_urls": [],
+      "companyNames": [
+        "Gain"
+      ],
+      "indiaJobs": 7,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:42.212Z"
+    },
+    {
+      "provider": "ASHBY",
+      "board_slug": "airbound",
+      "company_name": "Airbound",
+      "official_careers_url": "https://jobs.ashbyhq.com/airbound",
+      "sync_batch": 8,
+      "source_urls": [],
+      "companyNames": [
+        "Airbound"
+      ],
+      "indiaJobs": 25,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:42.569Z"
+    },
+    {
+      "provider": "GREENHOUSE",
+      "board_slug": "eclinicalsolutions",
+      "company_name": "eClinical Solutions",
+      "official_careers_url": "https://job-boards.greenhouse.io/eclinicalsolutions",
+      "sync_batch": 8,
+      "source_urls": [],
+      "companyNames": [
+        "eClinical Solutions"
+      ],
+      "indiaJobs": 18,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:42.890Z"
+    },
+    {
+      "provider": "LEVER",
+      "board_slug": "fampay",
+      "company_name": "Fam",
+      "official_careers_url": "https://jobs.lever.co/fampay",
+      "sync_batch": 1,
+      "source_urls": [],
+      "companyNames": [
+        "FamPay"
+      ],
+      "indiaJobs": 14,
+      "isNew": false,
+      "checkedAt": "2026-11-21T15:21:43.303Z"
+    },
+    {
+      "provider": "LEVER",
+      "board_slug": "pocketfm",
+      "company_name": "Pocket FM",
+      "official_careers_url": "https://jobs.lever.co/pocketfm",
+      "sync_batch": 8,
+      "source_urls": [],
+      "companyNames": [
+        "Pocket FM"
+      ],
+      "indiaJobs": 2,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:45.826Z"
+    },
+    {
+      "provider": "ASHBY",
+      "board_slug": "Almabase",
+      "company_name": "Almabase",
+      "official_careers_url": "https://jobs.ashbyhq.com/Almabase",
+      "sync_batch": 8,
+      "source_urls": [],
+      "companyNames": [
+        "Almabase"
+      ],
+      "indiaJobs": 2,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:46.134Z"
+    },
+    {
+      "provider": "LEVER",
+      "board_slug": "gushwork",
+      "company_name": "Gushwork",
+      "official_careers_url": "https://jobs.lever.co/gushwork",
+      "sync_batch": 8,
+      "source_urls": [],
+      "companyNames": [
+        "Gushwork"
+      ],
+      "indiaJobs": 8,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:46.530Z"
+    },
+    {
+      "provider": "WORKABLE",
+      "board_slug": "apna",
+      "company_name": "Apna",
+      "official_careers_url": "https://apply.workable.com/apna",
+      "sync_batch": 8,
+      "source_urls": [],
+      "companyNames": [
+        "Apna"
+      ],
+      "indiaJobs": 126,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:25:31.603Z"
+    },
+    {
+      "provider": "LEVER",
+      "board_slug": "cred",
+      "company_name": "CRED",
+      "official_careers_url": "https://jobs.lever.co/cred",
+      "sync_batch": 8,
+      "source_urls": [],
+      "companyNames": [
+        "CRED"
+      ],
+      "indiaJobs": 11,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:47.474Z"
+    },
+    {
+      "provider": "ASHBY",
+      "board_slug": "sarvam",
+      "company_name": "Sarvam",
+      "official_careers_url": "https://www.sarvam.ai/careers",
+      "sync_batch": 0,
+      "source_urls": [],
+      "companyNames": [
+        "Sarvam AI"
+      ],
+      "indiaJobs": 42,
+      "isNew": false,
+      "checkedAt": "2026-11-21T15:21:47.627Z"
+    },
+    {
+      "provider": "GREENHOUSE",
+      "board_slug": "glance",
+      "company_name": "Glance",
+      "official_careers_url": "https://job-boards.greenhouse.io/glance",
+      "sync_batch": 8,
+      "source_urls": [],
+      "companyNames": [
+        "Glance"
+      ],
+      "indiaJobs": 14,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:48.105Z"
+    },
+    {
+      "provider": "GREENHOUSE",
+      "board_slug": "inmobi",
+      "company_name": "InMobi",
+      "official_careers_url": "https://job-boards.greenhouse.io/inmobi",
+      "sync_batch": 9,
+      "source_urls": [],
+      "companyNames": [
+        "InMobi"
+      ],
+      "indiaJobs": 46,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:21:48.602Z"
+    },
+    {
+      "provider": "GREENHOUSE",
+      "board_slug": "hackerrank",
+      "company_name": "HackerRank",
+      "official_careers_url": "https://job-boards.greenhouse.io/hackerrank",
+      "sync_batch": 0,
+      "source_urls": [],
+      "companyNames": [
+        "HackerRank"
+      ],
+      "indiaJobs": 16,
+      "isNew": false,
+      "checkedAt": "2026-11-21T15:25:32.093Z"
+    },
+    {
+      "provider": "LEVER",
+      "board_slug": "meesho",
+      "company_name": "Meesho",
+      "official_careers_url": "https://jobs.lever.co/meesho",
+      "sync_batch": 2,
+      "source_urls": [],
+      "companyNames": [
+        "Meesho"
+      ],
+      "indiaJobs": 48,
+      "isNew": false,
+      "checkedAt": "2026-11-21T15:25:37.230Z"
+    },
+    {
+      "provider": "SCHEMA",
+      "board_slug": "pages-73-strings",
+      "company_name": "73 Strings",
+      "official_careers_url": "https://73strings.teamtailor.com/jobs/8491769-senior-data-engineer",
+      "sync_batch": 10,
+      "source_urls": [
+        "https://73strings.teamtailor.com/jobs/8491769-senior-data-engineer",
+        "https://73strings.teamtailor.com/jobs/8464497-senior-site-reliability-engineer-application-support-sre"
+      ],
+      "companyNames": [
+        "73 Strings"
+      ],
+      "indiaJobs": 2,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:25:37.841Z"
+    },
+    {
+      "provider": "SCHEMA",
+      "board_slug": "pages-infinity",
+      "company_name": "Infinity",
+      "official_careers_url": "https://www.ycombinator.com/companies/infinity/jobs/OFwxm4z-software-engineer-backend",
+      "sync_batch": 10,
+      "source_urls": [
+        "https://www.ycombinator.com/companies/infinity/jobs/OFwxm4z-software-engineer-backend"
+      ],
+      "companyNames": [
+        "Infinity"
+      ],
+      "indiaJobs": 1,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:25:37.842Z"
+    },
+    {
+      "provider": "SCHEMA",
+      "board_slug": "pages-dognosis",
+      "company_name": "Dognosis",
+      "official_careers_url": "https://www.dognosis.tech/careers/principal-hardware-engineer-mechatronics",
+      "sync_batch": 11,
+      "source_urls": [
+        "https://www.dognosis.tech/careers/principal-hardware-engineer-mechatronics",
+        "https://www.dognosis.tech/careers/hardware-engineer-wearables",
+        "https://www.dognosis.tech/careers/hardware-engineer-mechatronics",
+        "https://www.dognosis.tech/careers/embedded-engineer",
+        "https://www.dognosis.tech/careers/hardware-intern",
+        "https://www.dognosis.tech/careers/software-engineer-backend",
+        "https://www.dognosis.tech/careers/software-intern",
+        "https://www.dognosis.tech/careers/decision-scientist-health-economics-and-decision-modeling",
+        "https://www.dognosis.tech/careers/field-care-specialist",
+        "https://www.dognosis.tech/careers/k9-trainer",
+        "https://www.dognosis.tech/careers/lab-manager-diagnostics-laboratory-operations",
+        "https://www.dognosis.tech/careers/lawyer-generalist",
+        "https://www.dognosis.tech/careers/care-coordinator"
+      ],
+      "companyNames": [
+        "Dognosis"
+      ],
+      "indiaJobs": 13,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:25:37.842Z"
+    },
+    {
+      "provider": "SCHEMA",
+      "board_slug": "pages-astrobase-space-technologies-pvt-ltd",
+      "company_name": "Astrobase Space Technologies Pvt. Ltd.",
+      "official_careers_url": "https://www.astrobase.in/careers/76682",
+      "sync_batch": 11,
+      "source_urls": [
+        "https://www.astrobase.in/careers/76682",
+        "https://www.astrobase.in/careers/96018",
+        "https://www.astrobase.in/careers/93265",
+        "https://www.astrobase.in/careers/65893",
+        "https://www.astrobase.in/careers/64581",
+        "https://www.astrobase.in/careers/93395",
+        "https://www.astrobase.in/careers/93389",
+        "https://www.astrobase.in/careers/94506",
+        "https://www.astrobase.in/careers/62148",
+        "https://www.astrobase.in/careers/62147",
+        "https://www.astrobase.in/careers/93256",
+        "https://www.astrobase.in/careers/80010",
+        "https://www.astrobase.in/careers/93964",
+        "https://www.astrobase.in/careers/93702",
+        "https://www.astrobase.in/careers/93701",
+        "https://www.astrobase.in/careers/86894",
+        "https://www.astrobase.in/careers/86893",
+        "https://www.astrobase.in/careers/86891",
+        "https://www.astrobase.in/careers/71598",
+        "https://www.astrobase.in/careers/96374",
+        "https://www.astrobase.in/careers/95351",
+        "https://www.astrobase.in/careers/94943",
+        "https://www.astrobase.in/careers/71640",
+        "https://www.astrobase.in/careers/51952",
+        "https://www.astrobase.in/careers/81516",
+        "https://www.astrobase.in/careers/96366",
+        "https://www.astrobase.in/careers/96364",
+        "https://www.astrobase.in/careers/96363",
+        "https://www.astrobase.in/careers/96362",
+        "https://www.astrobase.in/careers/80013",
+        "https://www.astrobase.in/careers/93665",
+        "https://www.astrobase.in/careers/93664",
+        "https://www.astrobase.in/careers/93516",
+        "https://www.astrobase.in/careers/93514",
+        "https://www.astrobase.in/careers/93513",
+        "https://www.astrobase.in/careers/93511",
+        "https://www.astrobase.in/careers/93510",
+        "https://www.astrobase.in/careers/93509",
+        "https://www.astrobase.in/careers/93508",
+        "https://www.astrobase.in/careers/93506"
+      ],
+      "companyNames": [
+        "Astrobase Space"
+      ],
+      "indiaJobs": 40,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:25:37.842Z"
+    },
+    {
+      "provider": "SCHEMA",
+      "board_slug": "pages-astrobase-space-technologies-pvt-ltd-1",
+      "company_name": "Astrobase Space Technologies Pvt. Ltd.",
+      "official_careers_url": "https://www.astrobase.in/careers/93505",
+      "sync_batch": 12,
+      "source_urls": [
+        "https://www.astrobase.in/careers/93505",
+        "https://www.astrobase.in/careers/93504",
+        "https://www.astrobase.in/careers/93503",
+        "https://www.astrobase.in/careers/94944",
+        "https://www.astrobase.in/careers/92029",
+        "https://www.astrobase.in/careers/92027",
+        "https://www.astrobase.in/careers/92025",
+        "https://www.astrobase.in/careers/93201",
+        "https://www.astrobase.in/careers/87827",
+        "https://www.astrobase.in/careers/75583",
+        "https://www.astrobase.in/careers/48292",
+        "https://www.astrobase.in/careers/96331",
+        "https://www.astrobase.in/careers/95430",
+        "https://www.astrobase.in/careers/95429",
+        "https://www.astrobase.in/careers/95428",
+        "https://www.astrobase.in/careers/95427",
+        "https://www.astrobase.in/careers/95420",
+        "https://www.astrobase.in/careers/95419",
+        "https://www.astrobase.in/careers/95417",
+        "https://www.astrobase.in/careers/95415",
+        "https://www.astrobase.in/careers/95393",
+        "https://www.astrobase.in/careers/95372",
+        "https://www.astrobase.in/careers/95367",
+        "https://www.astrobase.in/careers/95249",
+        "https://www.astrobase.in/careers/95171",
+        "https://www.astrobase.in/careers/95169",
+        "https://www.astrobase.in/careers/92166",
+        "https://www.astrobase.in/careers/92151",
+        "https://www.astrobase.in/careers/95919",
+        "https://www.astrobase.in/careers/95636",
+        "https://www.astrobase.in/careers/94533",
+        "https://www.astrobase.in/careers/94530"
+      ],
+      "companyNames": [
+        "Astrobase Space"
+      ],
+      "indiaJobs": 32,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:25:37.842Z"
+    },
+    {
+      "provider": "SCHEMA",
+      "board_slug": "pages-boeing",
+      "company_name": "Boeing",
+      "official_careers_url": "https://jobs.boeing.com/job/mohanbari/experienced-field-service-representative-defense/185/103515972896",
+      "sync_batch": 12,
+      "source_urls": [
+        "https://jobs.boeing.com/job/mohanbari/experienced-field-service-representative-defense/185/103515972896",
+        "https://jobs.boeing.com/job/prayagraj/experienced-product-quality-acceptance-specialist/185/103112305104",
+        "https://jobs.boeing.com/job/arakkonam/experienced-field-service-rep-defense/185/103112305088",
+        "https://jobs.boeing.com/job/bengaluru/experienced-customer-support-systems-service-engineer-flight-controls/185/103413932192",
+        "https://jobs.boeing.com/job/bengaluru/experienced-quality-systems-specialist-process-quality/185/103413916208",
+        "https://jobs.boeing.com/job/bengaluru/lead-avionics-systems-customer-support-engineer-communications-navigation-surveillance-systems/185/103377080432",
+        "https://jobs.boeing.com/job/bengaluru/experienced-software-application-qa-tester-java-full-stack/185/103328338800",
+        "https://jobs.boeing.com/job/bengaluru/experienced-software-application-developer-java-full-stack/185/103328338752",
+        "https://jobs.boeing.com/job/bengaluru/lead-software-application-engineer-java-full-stack/185/103328338720",
+        "https://jobs.boeing.com/job/bengaluru/associate-software-application-developer-java-full-stack/185/103328338496",
+        "https://jobs.boeing.com/job/bengaluru/lead-software-architect/185/103328338448",
+        "https://jobs.boeing.com/job/bengaluru/lead-software-application-devops-engineer/185/103328338400",
+        "https://jobs.boeing.com/job/bengaluru/lead-product-owner/185/103328338368",
+        "https://jobs.boeing.com/job/bengaluru/senior-lead-product-owner/185/103328338320",
+        "https://jobs.boeing.com/job/bengaluru/senior-lead-software-architect/185/103328338272",
+        "https://jobs.boeing.com/job/bengaluru/software-application-development-manager/185/103328338224",
+        "https://jobs.boeing.com/job/ridley-park/ch-47-experienced-field-service-representative-india/185/103081842032"
+      ],
+      "companyNames": [
+        "Boeing India"
+      ],
+      "indiaJobs": 17,
+      "isNew": true,
+      "checkedAt": "2026-11-21T15:25:37.842Z"
+    }
+  ],
+  "schedules": [
+    {
+      "batch": 6,
+      "schedule": "47 0,6,12,18 * * *"
+    },
+    {
+      "batch": 7,
+      "schedule": "52 0,6,12,18 * * *"
+    },
+    {
+      "batch": 8,
+      "schedule": "57 0,6,12,18 * * *"
+    },
+    {
+      "batch": 9,
+      "schedule": "2 1,7,13,19 * * *"
+    },
+    {
+      "batch": 10,
+      "schedule": "7 1,7,13,19 * * *"
+    },
+    {
+      "batch": 11,
+      "schedule": "12 1,7,13,19 * * *"
+    },
+    {
+      "batch": 12,
+      "schedule": "17 1,7,13,19 * * *"
+    }
+  ]
+}

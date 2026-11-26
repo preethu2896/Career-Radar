@@ -1,0 +1,4 @@
+/* Keep the existing icon frame dimensions; only replace its contents. */
+.cr-company-logo{overflow:hidden;flex-shrink:0}
+.cr-company-logo.has-logo{background:#fff}
+.cr-company-logo img{display:block;width:calc(100% - 10px);height:calc(100% - 10px);object-fit:contain;grid-area:1/1;max-width:100%;max-height:100%}

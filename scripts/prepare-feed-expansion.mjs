@@ -1,0 +1,11 @@
+import {readFile,writeFile} from 'node:fs/promises';
+const discoveries=JSON.parse(await readFile('qa-artifacts/india-feed-discovery.json','utf8'));
+const valid=discoveries.filter(s=>!s.error&&s.indiaJobs>0).sort((a,b)=>b.internships-a.internships||b.explicitFreshers-a.explicitFreshers||a.company_name.localeCompare(b.company_name));
+if(valid.length<20)throw new Error('Not enough validated employer sources');
+const ids=new Set();const quote=s=>"'"+s.replaceAll("'","''")+"'";
+const boards=valid.map((s,i)=>{const key=s.provider+':'+s.board_slug;if(ids.has(key))throw new Error('Duplicate source');ids.add(key);if(!['GREENHOUSE','LEVER','ASHBY'].includes(s.provider)||!/^[a-zA-Z0-9_-]{1,100}$/.test(s.board_slug))throw new Error('Invalid feed configuration');const sync_batch=1+Math.floor(i/8);if(sync_batch>7)throw new Error('Too many sources for configured batches');return {provider:s.provider,board_slug:s.board_slug,company_name:s.company_name,official_careers_url:s.official_careers_url,sync_batch,validated_at:s.checkedAt,evidence:s.earlyCareerSamples};});
+const batches=[...new Set(boards.map(b=>b.sync_batch))];
+const sql=`begin;\n-- Only employer boards confirmed by a complete current public feed are enabled.\ninsert into public.job_feed_boards(provider,board_slug,company_name,official_careers_url,sync_batch) values\n${boards.map(b=>'('+[b.provider,b.board_slug,b.company_name,b.official_careers_url].map(quote).join(',')+','+b.sync_batch+')').join(',\n')}\non conflict(provider,board_slug) do update set company_name=excluded.company_name,official_careers_url=excluded.official_careers_url,sync_batch=excluded.sync_batch;\n${batches.map(b=>`select cron.schedule('careerradar-job-feeds-${b}','${17+5*b} */6 * * *','select public.dispatch_job_feed_batch(${b});');`).join('\n')}\ncommit;\n`;
+await writeFile('data/job-feed-expansion.json',JSON.stringify(boards,null,2)+'\n');
+await writeFile('supabase/migrations/202611210016_more_india_job_sources.sql',sql);
+console.log(JSON.stringify({additionalSources:boards.length,batches,preflightIndiaJobs:valid.reduce((n,b)=>n+b.indiaJobs,0),preflightInternships:valid.reduce((n,b)=>n+b.internships,0)}));

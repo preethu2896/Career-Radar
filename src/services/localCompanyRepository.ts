@@ -1,3 +1,4 @@
+import {hasCareerPortal,normalizeSearchText} from './directoryPolicy.js';
 export type LocalSourceRow = {
   sourceRowId: string;
   sourceFile: string;
@@ -17,6 +18,15 @@ export type LocalSourceRow = {
   identityReview: { status: string; reasons: string[]; relatedNames: string[] };
 };
 export type LocalCompanyRecord = {
+  hasCareerPortal?: boolean;
+  logoUrl?: string | null;
+  country?:string|null;
+  city?:string|null;
+  feedBoardIds?: string[];
+  profilePath?: string;
+  addedAt?: string;
+  description?: string | null;
+  suppliedSources?: string[];
   id: string;
   identityKey: string;
   name: string;
@@ -35,10 +45,9 @@ export type LocalCompanyFilters = { query?: string; city?: string; verificationS
 let cache: LocalCompanyRecord[] | null = null;
 
 async function readIndex(): Promise<LocalCompanyRecord[]> {
-  if (cache) return cache;
-  const response = await fetch('/data/company-index.json');
+  const response = await fetch('/data/company-index.json',{cache:'no-store'});
   if (!response.ok) throw new Error(`LOCAL_DATA_HTTP_${response.status}`);
-  cache = (await response.json()) as LocalCompanyRecord[];
+  cache = ((await response.json()) as LocalCompanyRecord[]).filter(hasCareerPortal);
   return cache;
 }
 
@@ -59,9 +68,9 @@ export function paginateLocalCompanies(rows: LocalCompanyRecord[], requestedPage
 }
 
 export function filterLocalCompanies(rows: LocalCompanyRecord[], filters: LocalCompanyFilters = {}) {
-  const query = filters.query?.trim().toLowerCase() ?? '';
-  return rows.filter((company) => !query || `${company.name} ${company.industry ?? ''} ${company.headquarters ?? ''} ${company.sourceRows.flatMap((row) => [row.datasetCity ?? '', row.jobTitle ?? '']).join(' ')}`.toLowerCase().includes(query))
-    .filter((company) => !filters.city || company.cityAssociations.some((association) => association.datasetCity === filters.city || association.city === filters.city))
+  const query = normalizeSearchText(filters.query);
+  return rows.filter((company) => !query || normalizeSearchText(`${company.name} ${company.industry ?? ''} ${company.headquarters ?? ''} ${company.sourceRows.flatMap((row) => [row.datasetCity ?? '', row.jobTitle ?? '']).join(' ')}`).includes(query))
+    .filter((company) => !filters.city || company.cityAssociations.some((association) => normalizeSearchText(association.datasetCity).includes(normalizeSearchText(filters.city)) || normalizeSearchText(association.city).includes(normalizeSearchText(filters.city))))
     .filter((company) => !filters.verificationStatus || company.verificationStatuses.includes(filters.verificationStatus))
     .filter((company) => !filters.hasRoles || company.roles.length > 0);
 }

@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { supabase } from "../src/services/auth.js";
 import {
   destinationForProfile,
   incompleteProfile,
@@ -17,6 +18,15 @@ import {
 import { resolveProtectedDestination } from "../src/ui/AuthFlows.js";
 import { loadDraft } from "../src/ui/CandidateOnboarding.js";
 
+// These are unit tests: never query the configured live database with synthetic sessions.
+beforeEach(() => {
+  if (!supabase) throw new Error("Run auth tests with the test Supabase configuration.");
+  vi.spyOn(supabase, "from").mockReturnValue({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: null, error: null }) }) }) } as any);
+  vi.spyOn(supabase.auth, "getSession").mockResolvedValue({ data: { session: null }, error: null });
+  vi.spyOn(supabase.auth, "signOut").mockResolvedValue({ error: null });
+});
+afterEach(() => { vi.restoreAllMocks(); setCachedAuthSnapshot(null); });
+
 const profile = {
   id: "user-1",
   first_name: "Asha",
@@ -29,6 +39,33 @@ const profile = {
   work_preferences: [],
   industries: [],
 };
+
+it("shares concurrent profile reads for the same authenticated account", async () => {
+  let release!: (value: unknown) => void;
+  const read = new Promise(resolve => { release = resolve; });
+  const maybeSingle = vi.fn(() => read);
+  vi.mocked(supabase!.from).mockReturnValue({ select: () => ({ eq: () => ({ maybeSingle }) }) } as any);
+  const session = { user: { id: "user-1", user_metadata: {} } } as any;
+  const first = getAuthSnapshot(session);
+  const second = getAuthSnapshot(session);
+  expect(maybeSingle).toHaveBeenCalledTimes(1);
+  release({ data: { ...profile, onboarding_complete: true }, error: null });
+  const results = await Promise.all([first, second]);
+  expect(results[0]).toBe(results[1]);
+});
+
+it("does not reuse an in-flight profile across account changes", async () => {
+  let release!: (value: unknown) => void;
+  const read = new Promise(resolve => { release = resolve; });
+  vi.mocked(supabase!.from).mockReturnValue({ select: () => ({ eq: (_: string, id: string) => ({ maybeSingle: () => id === "user-1" ? read : Promise.resolve({ data: { ...profile, id }, error: null }) }) }) } as any);
+  const first = getAuthSnapshot({ user: { id: "user-1", user_metadata: {} } } as any);
+  const rejected = expect(first).rejects.toThrow("Authentication changed");
+  const second = await getAuthSnapshot({ user: { id: "user-2", user_metadata: {} } } as any);
+  release({ data: profile, error: null });
+  await rejected;
+  expect(second.profile?.id).toBe("user-2");
+  expect(getCachedAuthSnapshot()?.session?.user.id).toBe("user-2");
+});
 
 describe("candidate auth routing", () => {
   it("routes incomplete and completed profiles to the correct protected destination", () => {
@@ -545,7 +582,7 @@ describe("authentication flow, session persistence, and onboarding regression su
     setCachedAuthSnapshot(null);
   });
 
-  it("7. candidate draft in localStorage survives redirect transitions", async () => {
+  it("7. expiring candidate draft survives same-tab redirect transitions", async () => {
     const { loadDraft } = await import("../src/ui/CandidateOnboarding.js");
 
     const mockStorage: Record<string, string> = {};
@@ -574,9 +611,9 @@ describe("authentication flow, session persistence, and onboarding regression su
         expectedCompensation: "18",
       };
 
-      storageMock.setItem("career-radar-onboarding-draft", JSON.stringify(testDraft));
+      storageMock.setItem("career-radar-onboarding-draft:user-divya", JSON.stringify({ ...testDraft, _ownerId: "user-divya", _expiresAt: Date.now() + 60_000 }));
 
-      const loaded = loadDraft();
+      const loaded = loadDraft("user-divya");
       expect(loaded.firstName).toBe("Divya");
       expect(loaded.lastName).toBe("Menon");
       expect(loaded.roles).toEqual(["Frontend Developer", "UI/UX Engineer"]);
@@ -708,10 +745,10 @@ describe("Mobile auth UI and stale session redirect resolution suite", () => {
     expect(onbDecision.shouldRedirect).toBe(false);
     expect(onbDecision.destination).toBe("/onboarding");
 
-    // Attempting to visit /dashboard redirects back to /onboarding
+    // The dashboard remains accessible when optional onboarding is skipped.
     const dashDecision = resolveProtectedDestination("dashboard", incompleteSnap);
-    expect(dashDecision.shouldRedirect).toBe(true);
-    expect(dashDecision.destination).toBe("/onboarding");
+    expect(dashDecision.shouldRedirect).toBe(false);
+    expect(dashDecision.destination).toBe("/dashboard");
   });
 
   it("4. an authenticated user with a completed profile reaches the dashboard and is redirected away from onboarding", () => {

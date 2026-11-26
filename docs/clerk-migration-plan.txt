@@ -1,0 +1,68 @@
+CareerRadar authentication migration plan
+
+Selected Clerk app: app_3MN4yZno4sVNyict29RaVzQc4N4 (CareerRadar), development instance.
+Application: existing React + Vite project at C:\Users\preet\OneDrive\Desktop\startupss.
+The existing UI, Supabase database and private resume storage are retained.
+
+Observed source records: 2 Supabase accounts, 1 profile, 2 resume records,
+0 tracked applications, 0 social identities. These are counts, not an export.
+Clerk development keys have been pulled using the authenticated Clerk CLI.
+No existing users, password hashes or files have been imported, deleted or moved.
+
+1. Account migration
+Use Clerk's official Supabase migration tooling, first in dry-run mode.
+Export only the two existing account records into a private, ignored temporary
+migration directory. Compatible bcrypt/argon2 password hashes can be imported;
+plaintext passwords are neither requested nor exported. Preserve the original
+Supabase user UUID as the imported Clerk user's external ID. Restrict the import
+to the selected development application. An unsupported hash requires recovery
+through verified email rather than an invented password or an insecure fallback.
+Migration does not copy existing sessions. Existing users sign in again.
+No social identities exist at the source. Enable Google in the destination and
+test verified-email linking to an imported account without duplicate ownership.
+
+2. Stable data ownership
+Create a provider-neutral candidate account table using the current UUIDs, and
+a private mapping from verified Clerk subject IDs to those UUIDs. Retarget
+candidate-data foreign keys to the candidate account table. Preserve every
+existing profile, application record, resume row, and UUID-prefixed object path.
+Keep existing auth.users records for rollback; do not reset or delete them.
+Provision new Clerk users through an authenticated backend, never by accepting
+an arbitrary UUID or an email-only account claim from the browser.
+
+3. Supabase authorization
+Configure Supabase's native Clerk third-party authentication integration.
+Update owner policies to resolve the verified identity to the stable candidate
+UUID. Apply the same mapping to restrictive storage policies. Preserve backend-
+only upload/deletion, PDF size/type checks, operation leases and upload quotas.
+Update the resume backend to verify Clerk JWT signatures against the correct
+issuer/JWKS, expiry and applicable claims before resolving account ownership.
+Never expose a Supabase service key or Clerk secret key to the frontend.
+Test coexistence with the old authorization path until cutover succeeds.
+
+4. Frontend authentication
+Use the React Clerk SDK and custom flows inside the current CareerRadar forms.
+Support email/password, email verification, Google OAuth, password recovery,
+new-device verification where required, protected routes and session expiry.
+First name remains required in CareerRadar; last name remains optional.
+Preserve current layout, error styling, onboarding and account-specific drafts.
+Align new-password validation with the configured Clerk policy (currently a
+15-character minimum with breached-password protections); imported compatible
+credentials are handled by the official migration rather than changing passwords.
+
+5. Rollout and verification
+Build and test locally before activating Clerk as the application's auth provider.
+Check both migrated accounts retain their own profile and PDF access, without
+cross-account reads or writes. Verify new signup, Google/email flows, logout,
+recovery, resume upload/download/replacement/removal, profile saving, tracking
+and desktop/tablet/mobile layouts. Use scoped disposable test data with cleanup.
+Verify actual email/Google behavior through the configured provider; simulated
+responses alone are not evidence of real delivery or OAuth success.
+Keep a rollback path to the current Supabase sign-in implementation until tested.
+Remove temporary credential-bearing export artifacts after successful validation.
+
+Approval scope
+Approve migrating the two existing Supabase authentication accounts into the
+selected Clerk development application, making the identity/schema/policy changes
+above, and connecting the existing CareerRadar UI. Supabase data and stored PDFs
+remain in place. Production Clerk deployment is a separate later step.

@@ -1,0 +1,137 @@
+CareerRadar live India jobs
+==========================
+
+Live deployment: Supabase project fahvirvrmozvkanmuwnu.
+Initial verified import: 907 real roles across 41 employer boards, including 30 internships (21 Nov 2026).
+Coverage is the connected boards, not every employer or every vacancy in India.
+Roles span experience levels. Fresher/internship filters use actual job evidence.
+Historical research and candidates' profiles, resumes and applications are untouched.
+
+Sources
+- Endor Labs, HackerRank, Razorpay, Rockstar Games, Sigmoid (Greenhouse)
+- Hevo Data, Stable Money (Lever)
+- Sarvam (Ashby)
+Atomicwork's old Greenhouse address returned 404 and was not enabled.
+The registry is public.job_feed_boards. Add only a verified employer board, with
+its exact provider and slug and an official careers URL. No user-supplied URL is
+ever fetched: the collector constructs endpoints on three allowlisted API hosts.
+Sources are assigned to bounded batches; each batch supports at most 10 boards.
+The current six batches contain 8, 8, 8, 8, 8 and 1 employers. Check feed terms before adding sources.
+
+Refresh and closure
+Supabase cron job: careerradar-job-feeds
+Six-hour schedules (UTC): batches 0 through 5 start at minutes 17, 22, 27, 32, 37 and 42. Each runs four times daily; the computer can be switched off.
+The original batch uses public.dispatch_job_feed_sync(); added batches use public.dispatch_job_feed_batch(n), calling the sync-job-feeds Edge
+Function using a dedicated bearer secret read from Supabase Vault. The same
+secret is stored as the Edge Function's JOB_SYNC_SECRET. It is not a frontend key.
+The collector fetches complete boards, including every Lever page, and publishes
+only India locations. Worldwide/ambiguous remote jobs are excluded unless an
+India country/location is explicitly available. The city fallback is conservative
+and not exhaustive; an unrecognized location without a country can be omitted.
+
+Each successful board snapshot commits atomically. Jobs update using the board
+and source job ID, preserving their database ID, first-seen date and original
+known posting date. Updated timestamps are not treated as new posting dates.
+Missing jobs are hidden after one complete successful snapshot and marked CLOSED
+after a second. Reappearing jobs retain the same ID. Jobs are archived, not deleted;
+saved applications are independent and retained. Partial pages, invalid data,
+rate limits and fetch failures never mark jobs closed. Failed feeds are retried
+on the next six-hour run. Feed jobs not successfully checked for 72 hours are
+hidden by database RLS, even if the scheduled worker stops.
+
+Data
+Job title, employer, location, original description, direct application URL,
+stated work mode, source employment type, experience evidence and directly mentioned skills are retained.
+Salary, qualification and graduation restrictions remain unset when not mapped;
+the original description is available. Missing source descriptions remain empty and the existing UI links to the original posting. No salaries, recruiter emails or fresher
+eligibility are generated. Greenhouse updated_at is not used as published_at.
+Ashby unlisted postings and Greenhouse prospect forms are not published.
+The existing UI loads jobs in pages of 1,000 (currently capped at 10,000) and keeps
+the existing cards, filters, guest login gate and application tracking design.
+
+Operations (Supabase SQL Editor or CLI; administrator only)
+select provider, company_name, last_success_at, last_job_count, last_error
+from public.job_feed_boards order by company_name;
+select started_at, finished_at, state, summary
+from public.job_feed_runs order by started_at desc limit 10;
+select jobname, schedule, active from cron.job
+where jobname like 'careerradar-job-feeds%';
+select public.dispatch_job_feed_batch(0); -- manual refresh of batch 0; repeat 1 through 5 separately after the preceding run finishes
+
+Pause ALL collection: select cron.unschedule(jobid) from cron.job where jobname like 'careerradar-job-feeds%';
+Disable one source: update public.job_feed_boards set enabled=false
+where provider='PROVIDER' and board_slug='SLUG';
+Disabling a source stops fetching it; hide its current listings explicitly if
+immediate removal is desired, otherwise the 72-hour freshness policy hides them.
+
+Deployment
+Initial schema is supabase/migrations/202611210014_live_job_feeds.sql.
+scripts/deploy-job-feeds.mjs installs schema, Edge Function, Vault secret and cron,
+then requests an initial run. On an already installed schema use --skip-schema.
+The deployment script generates a random worker secret, uses temporary files
+outside the project, removes those files, and never prints the secret.
+Do not run the initial schema twice. To update worker code without rotating keys:
+npx supabase functions deploy sync-job-feeds --remote=fahvirvrmozvkanmuwnu --use-api --yes
+Security boundaries: browser roles cannot write jobs, read collector diagnostics,
+start runs, commit snapshots or invoke the dispatcher. The worker authenticates
+every request itself; verify_jwt=false is intentional for its dedicated secret.
+Run leases prevent overlapping jobs; each board applies only once per run.
+Diagnostics are retained for 30 days. No candidate data is accessed by the worker.
+
+Validation
+Offline feed tests cover India/foreign/remote locations, visibility, HTML decoding,
+pagination failures, malformed responses and source URLs. Database tests cover
+leases, atomic updates, duplicates, closure/reopening, freshness and permissions.
+scripts/qa-real-job-feeds.mjs tests actual hosted jobs without fixtures or writes.
+The separate older layout QA scripts can still use isolated browser-only fixtures;
+they never insert records into the production database.
+
+Expansion installed 21 Nov 2026
+- 33 additional live employer boards were confirmed before enabling them.
+- Data/source registry: data/job-feed-expansion.json (employer addresses and evidence).
+- Schema/batch dispatchers: 202611210015_job_feed_batches.sql.
+- Source seeds and schedules: 202611210016_more_india_job_sources.sql.
+- Every batch was manually exercised through the same dispatcher as cron and succeeded.
+- Original eight companies' job IDs and dates were preserved.
+- Full deployment proof: qa-artifacts/feed-expansion-deployment.json (ignored local QA artifact).
+- Refresh all current batches sequentially: node scripts/deploy-feed-expansion.mjs --refresh-only
+- Do not rerun applied migrations. The expansion deploy script applies them only on first setup.
+- New jobs from CONNECTED companies publish automatically after a successful source check.
+- New companies are not automatically discovered or approved: validate the employer board,
+  then add it to an existing scheduled batch with spare capacity. Avoid exceeding 10 boards
+  in any batch; configure a new staggered schedule before using an additional batch.
+- General application/talent-pool expressions are excluded. Internships use source employment
+  type or an explicit internship title. Missing experience is not treated as fresher eligibility.
+- RemJobs check: its current public board says it reads employer careers pages, links to the
+  employer's own posting and closes removed listings. Its old how-it-works URL redirects to
+  pricing; its exact current polling interval and private backend were not independently verified.
+  References: https://www.remjobs.works/ and https://www.remjobs.works/pricing
+- The user-facing UI components, CSS, navigation and forms were not redesigned.
+CSV verification completed 21 Nov 2026
+-------------------------------------
+1393 CSV rows checked. Statuses: {"UNVERIFIED":768,"OPEN":532,"NOT_INDIA_OR_NOT_SPECIFIC_ROLE":92,"DUPLICATE_OPEN":1}.
+533 CSV rows currently match published jobs; duplicate rows are not duplicate job records.
+2114 current India jobs across 79 scheduled sources (78 source company names).
+38 additional reviewed sources registered. Full source provenance: data/csv-verified-sources.json.
+Workable and Recruitee public feeds are now supported. Workable location variants merge by source ID; contradictory duplicates fail the snapshot.
+Structured employer pages use explicit reviewed URLs, JobPosting data, employer-name checks, India locations, public DNS checks and robots rules.
+ATS boards discover newly published roles automatically. Reviewed structured-page groups now also scan configured same-origin careers indexes and bounded next pages, then require employer-matching JobPosting evidence before publishing new URLs. Existing split-board URL ownership is preserved.
+All 13 hosted batches succeeded. They run every six hours, with bounded groups and staggered schedules.
+Network errors, access restrictions and uncertain pages are withheld; they are never interpreted as closed jobs.
+Missing jobs hide after one complete source snapshot and close after a second. Expired or explicitly closed source pages are omitted.
+Existing job IDs, original discovery dates, known posting dates, saved applications, profiles and resumes were preserved.
+The source-trigger slug boundary fix in 202611210020 prevents malformed suffixes without rewriting old URLs.
+Verification audit: reports/csv-job-verification-2026-11-21.csv and matching JSON.
+Schema migrations: 202611210018_verified_csv_sources.sql, 202611210019_verified_csv_boards.sql, 202611210020_job_slug_boundary.sql.
+Do not rerun previously applied ALTER TABLE migrations. The source deploy script detects the schema extension.
+Manual refresh: node scripts/deploy-verified-csv-sources.mjs --refresh-only
+Retry an incomplete batch only: add --retry-failed after inspecting the last deployment report.
+
+Job-quality fixes — 24 Nov 2026
+- Workable requests details=true in the complete public widget feed. This provides source descriptions without per-job scraping or AI. Source-empty descriptions remain empty.
+- Fresher matching rejects training/mentoring references and anecdotes about existing employees; explicit source eligibility and zero-experience ranges remain supported.
+- India multi-country strings are narrowed to explicitly Indian segments. The visible primary location prefers India. Explicit careers display metadata resolves conflicting structured locations when present.
+- Migration 202611240022 configures discovery roots for 73 Strings, Infinity, Dognosis, Astrobase and Boeing. Discovery is same-origin, robots-aware, bounded to eight index pages and 200 new links, and preserves each existing source URL's board ownership.
+- Unknown new helper pages are not published. Failures on registered pages or a broken index never commit a partial closure snapshot.
+- Similar titles with different employer source IDs remain separate vacancies. Do not deduplicate by title or strip identity query parameters such as gh_jid.
+- No UI/CSS redesign, synthetic jobs or candidate-data changes are included.

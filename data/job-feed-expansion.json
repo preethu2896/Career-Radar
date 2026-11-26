@@ -1,0 +1,489 @@
+[
+  {
+    "provider": "LEVER",
+    "board_slug": "paytm",
+    "company_name": "Paytm",
+    "official_careers_url": "https://jobs.lever.co/paytm",
+    "sync_batch": 1,
+    "validated_at": "2026-11-21T09:41:37.049Z",
+    "evidence": [
+      {
+        "title": "Intern - Talent Acquisition",
+        "location": "Gurugram, Haryana / Noida, Uttar Pradesh",
+        "source_url": "https://jobs.lever.co/paytm/426a6834-1397-4e65-94af-69874c790805"
+      },
+      {
+        "title": "Intern- HR Onboarding",
+        "location": "Noida, Uttar Pradesh",
+        "source_url": "https://jobs.lever.co/paytm/0ecd9d93-e4f3-4dd0-a22e-852fec9b6e02"
+      },
+      {
+        "title": "Intern-Talent Acquisition",
+        "location": "Bangalore, Karnataka",
+        "source_url": "https://jobs.lever.co/paytm/9d497980-2032-440c-8bac-63fb53938acc"
+      },
+      {
+        "title": "Talent Acquisition Intern",
+        "location": "Noida, Uttar Pradesh",
+        "source_url": "https://jobs.lever.co/paytm/6d7551f7-34c3-46a2-a4e4-18b29f15338c"
+      },
+      {
+        "title": "Talent Acquisition Intern - Bangalore",
+        "location": "Bangalore, Karnataka",
+        "source_url": "https://jobs.lever.co/paytm/88e8b698-8f03-4e09-9581-168f831fb3af"
+      }
+    ]
+  },
+  {
+    "provider": "ASHBY",
+    "board_slug": "atlys",
+    "company_name": "Atlys",
+    "official_careers_url": "https://jobs.ashbyhq.com/atlys",
+    "sync_batch": 1,
+    "validated_at": "2026-11-21T09:41:44.597Z",
+    "evidence": [
+      {
+        "title": "Fulfilment Intern",
+        "location": "Delhi HQ",
+        "source_url": "https://jobs.ashbyhq.com/atlys/b64524ad-e4ab-4e0f-b4fe-f13ffc661a92"
+      },
+      {
+        "title": "Pre Sales Intern",
+        "location": "Delhi HQ",
+        "source_url": "https://jobs.ashbyhq.com/atlys/906d7ff6-04f3-4211-99ce-71d373a95613"
+      },
+      {
+        "title": "Launchpad Fellowship",
+        "location": "Delhi HQ",
+        "source_url": "https://jobs.ashbyhq.com/atlys/53dcce66-f865-4d1e-a6b0-31433d844723"
+      },
+      {
+        "title": "Copywriting Intern",
+        "location": "Delhi HQ",
+        "source_url": "https://jobs.ashbyhq.com/atlys/08613c2a-3544-4e59-8b2c-3a6f548c0284"
+      },
+      {
+        "title": "Graphic Design Intern",
+        "location": "Delhi HQ",
+        "source_url": "https://jobs.ashbyhq.com/atlys/b3f4f145-be12-442c-9107-9e7ac1297bc1"
+      }
+    ]
+  },
+  {
+    "provider": "LEVER",
+    "board_slug": "drivetrain",
+    "company_name": "Drivetrain",
+    "official_careers_url": "https://jobs.lever.co/drivetrain",
+    "sync_batch": 1,
+    "validated_at": "2026-11-21T09:41:36.886Z",
+    "evidence": [
+      {
+        "title": "Engineering Intern – Gen AI for FP&A Platform",
+        "location": "India",
+        "source_url": "https://jobs.lever.co/drivetrain/bc1c17bc-86ac-4f00-a1e3-0eb85aae4fdc"
+      },
+      {
+        "title": "Quality Assurance Engineering (QAE) - Intern",
+        "location": "India",
+        "source_url": "https://jobs.lever.co/drivetrain/edb8a8f7-16ac-4177-bf2e-99c36ab47d5f"
+      },
+      {
+        "title": "Associate - Growth Marketing",
+        "location": "India",
+        "source_url": "https://jobs.lever.co/drivetrain/83c03c6e-ab58-4760-b5eb-152ad46c7dee"
+      },
+      {
+        "title": "Business Development Representative (BDR)",
+        "location": "India",
+        "source_url": "https://jobs.lever.co/drivetrain/01cd2a2f-cc4a-471e-9fc7-b812d503f9bc"
+      }
+    ]
+  },
+  {
+    "provider": "LEVER",
+    "board_slug": "fampay",
+    "company_name": "Fam",
+    "official_careers_url": "https://jobs.lever.co/fampay",
+    "sync_batch": 1,
+    "validated_at": "2026-11-21T09:41:36.167Z",
+    "evidence": [
+      {
+        "title": "People Operations Intern",
+        "location": "Bengaluru",
+        "source_url": "https://jobs.lever.co/fampay/213870db-ddfd-4519-9a57-54691d89cca5"
+      },
+      {
+        "title": "Security Engineer Intern",
+        "location": "Bengaluru",
+        "source_url": "https://jobs.lever.co/fampay/bbbbbfd2-1855-4991-82d5-84ef57607c24"
+      }
+    ]
+  },
+  {
+    "provider": "LEVER",
+    "board_slug": "dnb",
+    "company_name": "Dun & Bradstreet",
+    "official_careers_url": "https://jobs.lever.co/dnb",
+    "sync_batch": 1,
+    "validated_at": "2026-11-21T09:41:37.582Z",
+    "evidence": [
+      {
+        "title": "Intern (R-20146)",
+        "location": "Mumbai - India",
+        "source_url": "https://jobs.lever.co/dnb/b153fc05-ee29-45fc-80b6-3620b357e16a"
+      },
+      {
+        "title": "Apprentice (R-20025)",
+        "location": "Mumbai - India",
+        "source_url": "https://jobs.lever.co/dnb/a61b6368-4c4f-4e1b-b125-d0d7ba7f8278"
+      },
+      {
+        "title": "Intern (R-20146)",
+        "location": "Mumbai - India",
+        "source_url": "https://jobs.lever.co/dnb/b153fc05-ee29-45fc-80b6-3620b357e16a"
+      }
+    ]
+  },
+  {
+    "provider": "ASHBY",
+    "board_slug": "humanarchive",
+    "company_name": "Human Archive",
+    "official_careers_url": "https://jobs.ashbyhq.com/humanarchive",
+    "sync_batch": 1,
+    "validated_at": "2026-11-21T09:41:44.511Z",
+    "evidence": [
+      {
+        "title": "Founder's Office Intern - Partnerships",
+        "location": "India",
+        "source_url": "https://jobs.ashbyhq.com/humanarchive/4c694746-a082-4ee9-9dcd-06a1b82f44ee"
+      },
+      {
+        "title": "Operations Manager (on-site)",
+        "location": "India",
+        "source_url": "https://jobs.ashbyhq.com/humanarchive/9843105d-f7c0-4e5e-ad6e-999836e61fc5"
+      },
+      {
+        "title": "Operations Manager (YC-Backed, High-Growth Startup)",
+        "location": "India",
+        "source_url": "https://jobs.ashbyhq.com/humanarchive/821fdcf4-8f1e-4898-b9aa-d74cb8ba2ec9"
+      }
+    ]
+  },
+  {
+    "provider": "GREENHOUSE",
+    "board_slug": "66degrees",
+    "company_name": "66degrees",
+    "official_careers_url": "https://job-boards.greenhouse.io/66degrees",
+    "sync_batch": 1,
+    "validated_at": "2026-11-21T09:41:43.604Z",
+    "evidence": [
+      {
+        "title": "HR Intern",
+        "location": "Pune",
+        "source_url": "https://job-boards.greenhouse.io/66degrees/jobs/6260964004"
+      },
+      {
+        "title": "HR Intern",
+        "location": "Pune",
+        "source_url": "https://job-boards.greenhouse.io/66degrees/jobs/6260964004"
+      }
+    ]
+  },
+  {
+    "provider": "ASHBY",
+    "board_slug": "kantiv",
+    "company_name": "Kantiv",
+    "official_careers_url": "https://jobs.ashbyhq.com/kantiv",
+    "sync_batch": 1,
+    "validated_at": "2026-11-21T09:41:44.527Z",
+    "evidence": [
+      {
+        "title": "HR Intern",
+        "location": "Remote - India",
+        "source_url": "https://jobs.ashbyhq.com/kantiv/06de1413-8d26-4c49-b63f-398df1c52e13"
+      },
+      {
+        "title": "HR Intern",
+        "location": "Remote - India",
+        "source_url": "https://jobs.ashbyhq.com/kantiv/06de1413-8d26-4c49-b63f-398df1c52e13"
+      }
+    ]
+  },
+  {
+    "provider": "ASHBY",
+    "board_slug": "interview-kickstart",
+    "company_name": "Interview Kickstart",
+    "official_careers_url": "https://jobs.ashbyhq.com/interview-kickstart",
+    "sync_batch": 2,
+    "validated_at": "2026-11-21T09:41:44.938Z",
+    "evidence": [
+      {
+        "title": "Intern, Talent Acquisition",
+        "location": "India",
+        "source_url": "https://jobs.ashbyhq.com/interview-kickstart/7653eff0-a253-4165-b4a4-17c2cd0cbfa2"
+      }
+    ]
+  },
+  {
+    "provider": "ASHBY",
+    "board_slug": "Meraki-Labs",
+    "company_name": "Meraki Labs",
+    "official_careers_url": "https://jobs.ashbyhq.com/Meraki-Labs",
+    "sync_batch": 2,
+    "validated_at": "2026-11-21T09:41:44.606Z",
+    "evidence": [
+      {
+        "title": "AI Engineer Intern",
+        "location": "Bangalore, India",
+        "source_url": "https://jobs.ashbyhq.com/Meraki-Labs/93ff65d2-f0cd-4fd1-b76f-b2e350f2d6c8"
+      }
+    ]
+  },
+  {
+    "provider": "GREENHOUSE",
+    "board_slug": "stripe",
+    "company_name": "Stripe",
+    "official_careers_url": "https://job-boards.greenhouse.io/stripe",
+    "sync_batch": 2,
+    "validated_at": "2026-11-21T09:41:43.414Z",
+    "evidence": [
+      {
+        "title": "Software Engineer, Intern",
+        "location": "Bengaluru",
+        "source_url": "https://stripe.com/jobs/search?gh_jid=8031833"
+      }
+    ]
+  },
+  {
+    "provider": "GREENHOUSE",
+    "board_slug": "towerresearchcapital",
+    "company_name": "Tower Research Capital",
+    "official_careers_url": "https://job-boards.greenhouse.io/towerresearchcapital",
+    "sync_batch": 2,
+    "validated_at": "2026-11-21T09:41:41.535Z",
+    "evidence": [
+      {
+        "title": "HR Intern",
+        "location": "Gurgaon",
+        "source_url": "https://www.tower-research.com/open-positions/?gh_jid=8239067"
+      }
+    ]
+  },
+  {
+    "provider": "GREENHOUSE",
+    "board_slug": "alphagrepsecurities",
+    "company_name": "AlphaGrep",
+    "official_careers_url": "https://job-boards.greenhouse.io/alphagrepsecurities",
+    "sync_batch": 2,
+    "validated_at": "2026-11-21T09:41:41.802Z",
+    "evidence": [
+      {
+        "title": "Regional Sales Head- Chennai",
+        "location": "Chennai",
+        "source_url": "https://job-boards.greenhouse.io/alphagrepsecurities/jobs/8598189002"
+      },
+      {
+        "title": "Regional Sales Head- Delhi",
+        "location": "Delhi",
+        "source_url": "https://job-boards.greenhouse.io/alphagrepsecurities/jobs/8675415002"
+      },
+      {
+        "title": "Regional Sales Head- Hyderabad",
+        "location": "Hyderabad",
+        "source_url": "https://job-boards.greenhouse.io/alphagrepsecurities/jobs/8598183002"
+      }
+    ]
+  },
+  {
+    "provider": "LEVER",
+    "board_slug": "meesho",
+    "company_name": "Meesho",
+    "official_careers_url": "https://jobs.lever.co/meesho",
+    "sync_batch": 2,
+    "validated_at": "2026-11-21T09:41:34.889Z",
+    "evidence": [
+      {
+        "title": "Assistant Manager - Business Finance | CA pass -out 2026",
+        "location": "Bangalore, Karnataka",
+        "source_url": "https://jobs.lever.co/meesho/22c4a7a0-43be-439e-9473-2f8074b3e8d5"
+      }
+    ]
+  },
+  {
+    "provider": "LEVER",
+    "board_slug": "z1tech",
+    "company_name": "Z1 Tech",
+    "official_careers_url": "https://jobs.lever.co/z1tech",
+    "sync_batch": 2,
+    "validated_at": "2026-11-21T09:41:37.249Z",
+    "evidence": [
+      {
+        "title": "Associate - Publisher Sales",
+        "location": "Gurgaon",
+        "source_url": "https://jobs.lever.co/z1tech/38c90a79-5712-4bc5-b10e-17e9b26dac71"
+      }
+    ]
+  },
+  {
+    "provider": "LEVER",
+    "board_slug": "aleph",
+    "company_name": "Aleph",
+    "official_careers_url": "https://jobs.lever.co/aleph",
+    "sync_batch": 2,
+    "validated_at": "2026-11-21T09:41:40.431Z",
+    "evidence": []
+  },
+  {
+    "provider": "ASHBY",
+    "board_slug": "atlan",
+    "company_name": "Atlan",
+    "official_careers_url": "https://jobs.ashbyhq.com/atlan",
+    "sync_batch": 3,
+    "validated_at": "2026-11-21T09:41:45.091Z",
+    "evidence": []
+  },
+  {
+    "provider": "ASHBY",
+    "board_slug": "certifyos",
+    "company_name": "CertifyOS",
+    "official_careers_url": "https://jobs.ashbyhq.com/certifyos",
+    "sync_batch": 3,
+    "validated_at": "2026-11-21T09:41:44.815Z",
+    "evidence": []
+  },
+  {
+    "provider": "GREENHOUSE",
+    "board_slug": "databricks",
+    "company_name": "Databricks",
+    "official_careers_url": "https://job-boards.greenhouse.io/databricks",
+    "sync_batch": 3,
+    "validated_at": "2026-11-21T09:41:41.216Z",
+    "evidence": []
+  },
+  {
+    "provider": "GREENHOUSE",
+    "board_slug": "datadog",
+    "company_name": "Datadog",
+    "official_careers_url": "https://job-boards.greenhouse.io/datadog",
+    "sync_batch": 3,
+    "validated_at": "2026-11-21T09:41:41.692Z",
+    "evidence": []
+  },
+  {
+    "provider": "GREENHOUSE",
+    "board_slug": "equalexperts",
+    "company_name": "Equal Experts",
+    "official_careers_url": "https://job-boards.greenhouse.io/equalexperts",
+    "sync_batch": 3,
+    "validated_at": "2026-11-21T09:41:44.070Z",
+    "evidence": []
+  },
+  {
+    "provider": "ASHBY",
+    "board_slug": "gainsight",
+    "company_name": "Gainsight",
+    "official_careers_url": "https://jobs.ashbyhq.com/gainsight",
+    "sync_batch": 3,
+    "validated_at": "2026-11-21T09:41:44.249Z",
+    "evidence": []
+  },
+  {
+    "provider": "GREENHOUSE",
+    "board_slug": "gitlab",
+    "company_name": "GitLab",
+    "official_careers_url": "https://job-boards.greenhouse.io/gitlab",
+    "sync_batch": 3,
+    "validated_at": "2026-11-21T09:41:44.241Z",
+    "evidence": []
+  },
+  {
+    "provider": "GREENHOUSE",
+    "board_slug": "gravitonresearchcapital",
+    "company_name": "Graviton Research Capital",
+    "official_careers_url": "https://job-boards.greenhouse.io/gravitonresearchcapital",
+    "sync_batch": 3,
+    "validated_at": "2026-11-21T09:41:42.218Z",
+    "evidence": []
+  },
+  {
+    "provider": "GREENHOUSE",
+    "board_slug": "groww",
+    "company_name": "Groww",
+    "official_careers_url": "https://job-boards.greenhouse.io/groww",
+    "sync_batch": 4,
+    "validated_at": "2026-11-21T09:41:38.172Z",
+    "evidence": []
+  },
+  {
+    "provider": "LEVER",
+    "board_slug": "mindtickle",
+    "company_name": "Mindtickle",
+    "official_careers_url": "https://jobs.lever.co/mindtickle",
+    "sync_batch": 4,
+    "validated_at": "2026-11-21T09:41:36.952Z",
+    "evidence": []
+  },
+  {
+    "provider": "ASHBY",
+    "board_slug": "notion",
+    "company_name": "Notion",
+    "official_careers_url": "https://jobs.ashbyhq.com/notion",
+    "sync_batch": 4,
+    "validated_at": "2026-11-21T09:41:45.347Z",
+    "evidence": []
+  },
+  {
+    "provider": "LEVER",
+    "board_slug": "portcast",
+    "company_name": "Portcast",
+    "official_careers_url": "https://jobs.lever.co/portcast",
+    "sync_batch": 4,
+    "validated_at": "2026-11-21T09:41:47.316Z",
+    "evidence": []
+  },
+  {
+    "provider": "GREENHOUSE",
+    "board_slug": "quinstreet",
+    "company_name": "QuinStreet",
+    "official_careers_url": "https://job-boards.greenhouse.io/quinstreet",
+    "sync_batch": 4,
+    "validated_at": "2026-11-21T09:41:43.041Z",
+    "evidence": []
+  },
+  {
+    "provider": "GREENHOUSE",
+    "board_slug": "schrdinger",
+    "company_name": "Schrödinger",
+    "official_careers_url": "https://job-boards.greenhouse.io/schrdinger",
+    "sync_batch": 4,
+    "validated_at": "2026-11-21T09:41:43.322Z",
+    "evidence": []
+  },
+  {
+    "provider": "ASHBY",
+    "board_slug": "smallest",
+    "company_name": "Smallest AI",
+    "official_careers_url": "https://jobs.ashbyhq.com/smallest",
+    "sync_batch": 4,
+    "validated_at": "2026-11-21T09:41:45.018Z",
+    "evidence": []
+  },
+  {
+    "provider": "GREENHOUSE",
+    "board_slug": "zenoti",
+    "company_name": "Zenoti",
+    "official_careers_url": "https://job-boards.greenhouse.io/zenoti",
+    "sync_batch": 4,
+    "validated_at": "2026-11-21T09:41:43.751Z",
+    "evidence": []
+  },
+  {
+    "provider": "LEVER",
+    "board_slug": "zeta",
+    "company_name": "Zeta",
+    "official_careers_url": "https://jobs.lever.co/zeta",
+    "sync_batch": 5,
+    "validated_at": "2026-11-21T09:41:35.817Z",
+    "evidence": []
+  }
+]

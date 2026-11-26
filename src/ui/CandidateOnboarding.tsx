@@ -1,3 +1,7 @@
+import { CANONICAL_ROLES } from "../services/resumeParser.js";
+import { suggestRelatedRoles } from "../services/roleSuggestions.js";
+import { LoadingSkeleton } from "./LoadingSkeleton.js";
+import { getSavedResume, saveResume, removeSavedResume } from "../services/resumeStorage.js";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Plus, Upload, X } from "lucide-react";
 import { authConfigured, friendlyAuthError, incompleteProfile, safeInternalRedirect, saveProfile } from "../services/auth.js";
@@ -33,19 +37,7 @@ import imagee5Url from "../../imagee5.webp";
 import imagee6Url from "../../imagee6.webp";
 
 type Navigate = (path: string) => void;
-const roles = [
-  "Software Engineer",
-  "Frontend Developer",
-  "Backend Developer",
-  "Full-Stack Developer",
-  "Data Analyst",
-  "Data Scientist",
-  "AI/ML Engineer",
-  "Product Designer",
-  "Product Manager",
-  "Cybersecurity Engineer",
-  "DevOps Engineer",
-];
+
 const skills = [
   "Python",
   "JavaScript",
@@ -77,30 +69,47 @@ export type { Draft } from "../services/onboarding.js";
 export { blankDraft } from "../services/onboarding.js";
 export { clearDraftStorage } from "../services/auth.js";
 
-export function loadDraft(userId?: string): Draft {
+const DRAFT_TTL_MS = 24 * 60 * 60 * 1000;
+const DRAFT_PREFIX = "career-radar-onboarding-draft";
+export function saveDraft(userId: string, draft: Draft, now = Date.now()): void {
+  if (!userId || typeof window === "undefined") return;
+  const key = `${DRAFT_PREFIX}:${userId}`;
+  const envelope = { ...draft, _ownerId: userId, _expiresAt: now + DRAFT_TTL_MS };
+  // Personal fields survive a same-tab reload, but are not retained on disk by
+  // the application's persistent draft. Session storage is still accessible to
+  // scripts on this origin; it is not an encryption boundary.
+  try { window.sessionStorage.setItem(key, JSON.stringify(envelope)); } catch { /* Best effort. */ }
+  const persistent = { ...envelope, educationDegree: "", graduationYear: "", educationScore: "", firstName: "", lastName: "", phone: "", postalCode: "", currentCity: "", state: "", currentCompensation: "", expectedCompensation: "", linkedin: "", github: "", portfolio: "", resumeName: "", resumeBytes: 0, prefilledFields: [], preservedFields: [] };
   try {
-    const key = userId ? `career-radar-onboarding-draft:${userId}` : "career-radar-onboarding-draft";
-    const stored = window.localStorage.getItem(key);
-    if (stored) {
-      const parsed = JSON.parse(stored) as Partial<Draft> & { _ownerId?: string };
-      if (userId && parsed._ownerId && parsed._ownerId !== userId) {
-        return blankDraft();
+    window.localStorage.setItem(key, JSON.stringify(persistent));
+    window.localStorage.removeItem(DRAFT_PREFIX);
+  } catch { /* Best effort. */ }
+}
+export function loadDraft(userId?: string, now = Date.now()): Draft {
+  if (!userId || typeof window === "undefined") return blankDraft();
+  const key = `${DRAFT_PREFIX}:${userId}`;
+  for (const storageName of ["sessionStorage", "localStorage"] as const) {
+    try {
+      const storage = window[storageName];
+      storage.removeItem(DRAFT_PREFIX);
+      const stored = storage.getItem(key);
+      if (!stored) continue;
+      const parsed = JSON.parse(stored) as Partial<Draft> & { _ownerId?: string; _expiresAt?: number };
+      if (parsed._ownerId !== userId || typeof parsed._expiresAt !== "number" || !Number.isFinite(parsed._expiresAt) || parsed._expiresAt <= now || parsed._expiresAt > now + DRAFT_TTL_MS) {
+        storage.removeItem(key);
+        continue;
       }
-      return { ...blankDraft(), ...parsed };
-    }
-    if (userId) {
-      const legacy = window.localStorage.getItem("career-radar-onboarding-draft");
-      if (legacy) {
-        const parsed = JSON.parse(legacy) as Partial<Draft> & { _ownerId?: string };
-        if (!parsed._ownerId || parsed._ownerId === userId) {
-          return { ...blankDraft(), ...parsed };
-        }
+      const clean = blankDraft();
+      for (const field of Object.keys(clean) as (keyof Draft)[]) {
+        const value = parsed[field];
+        if (Array.isArray(clean[field])) {
+          if (Array.isArray(value) && value.length <= 100 && value.every(v => typeof v === "string" && v.length <= 500)) Object.assign(clean, { [field]: value });
+        } else if (typeof value === typeof clean[field] && (typeof value !== "string" || value.length <= 2000)) Object.assign(clean, { [field]: value });
       }
-    }
-    return blankDraft();
-  } catch {
-    return blankDraft();
+      return clean;
+    } catch { /* Try the other store, then fall back to a blank draft. */ }
   }
+  return blankDraft();
 }
 
 export function ChoiceRow({
@@ -348,15 +357,39 @@ export const meta = [
 
 export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
   const auth = useProtectedAuth(navigate, "onboarding");
+  // Remount local form state whenever identity changes; never reuse another account's draft.
+  return <CandidateOnboardingForm key={auth.userId || "signed-out"} navigate={navigate} auth={auth} />;
+}
+
+function CandidateOnboardingForm({ navigate, auth }: { navigate: Navigate; auth: ReturnType<typeof useProtectedAuth> }) {
   const { loading, userId, profile, error: authError } = auth;
   const safeRedirectTarget = safeInternalRedirect("/onboarding", "/onboarding");
   const loginUrl = `/login?redirect=${encodeURIComponent(safeRedirectTarget)}`;
   const signupUrl = `/signup?redirect=${encodeURIComponent(safeRedirectTarget)}`;
   const [step, setStep] = useState(1);
-  const [draft, setDraft] = useState<Draft>(loadDraft);
+  const [draft, setDraft] = useState<Draft>(() => ({ ...loadDraft(userId), resumeName: "", resumeBytes: 0 }));
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [parsingResume, setParsingResume] = useState(false);
+  const [savingResume, setSavingResume] = useState(false);
+  const [resumeSaveError, setResumeSaveError] = useState("");
+  const pendingResumeFile = useRef<File | null>(null);
+  const savedResumePath = useRef<string | undefined>(undefined);
+  const [resumeStorageLoading, setResumeStorageLoading] = useState(Boolean(userId));
+  const resumeOperation = useRef(0);
+  useEffect(() => {
+    let active = true;
+    const operation = resumeOperation.current;
+    if (!userId) return;
+    void getSavedResume(userId).then(record => {
+      if (!active || operation !== resumeOperation.current) return;
+      savedResumePath.current = record?.storage_path;
+      setDraft(current => ({ ...current, resumeName: record?.file_name ?? "", resumeBytes: record?.file_size ?? 0 }));
+    }).catch(err => {
+      if (active && operation === resumeOperation.current) { setDraft(current => ({ ...current, resumeName: "", resumeBytes: 0 })); setError(err.message); }
+    }).finally(() => { if (active) setResumeStorageLoading(false); });
+    return () => { active = false; resumeOperation.current++; };
+  }, [userId]);
   const [resumeSummary, setResumeSummary] = useState<ResumeParseResult | null>(null);
   const [prefillState, setPrefillState] = useState<{ prefilled: string[]; preserved: string[] }>(() => ({
     prefilled: draft.prefilledFields || [],
@@ -422,22 +455,15 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
   ) => setDraft((current) => ({ ...current, [key]: toggleSelection(current[key], value, limit) }));
 
   useEffect(() => {
-    try {
-      const toSave = userId ? { ...draft, _ownerId: userId } : draft;
-      if (userId) {
-        window.localStorage.setItem(`career-radar-onboarding-draft:${userId}`, JSON.stringify(toSave));
-      }
-      window.localStorage.setItem("career-radar-onboarding-draft", JSON.stringify(toSave));
-    } catch {
-      /* Local draft is best-effort. */
-    }
-  }, [draft, userId]);
+    if (loading || !userId || authError) return;
+    saveDraft(userId, draft);
+  }, [draft, userId, loading, authError]);
 
   useEffect(() => {
     if (!profile || hydrated.current) return;
     hydrated.current = true;
     setDraft((current) => {
-      const next = hydrateDraftFromProfile(current, profile);
+      const next = hydrateDraftFromProfile(current, { ...profile, resume_name: null, resume_bytes: null });
       if (next.currentCompensation && next.currentCompensation !== "0") {
         previousCurrentCompRef.current = next.currentCompensation;
       }
@@ -451,6 +477,7 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
   const validate = () => validateOnboardingStep(step, draft);
 
   const next = () => {
+    if (parsingResume) return;
     const message = validate();
     if (message) {
       setError(message);
@@ -475,6 +502,7 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
     });
 
   const finish = async () => {
+    if (savingResume || resumeSaveError || parsingResume) return;
     const failure = validateEntireOnboarding(draft);
     if (failure) {
       setStep(failure.step);
@@ -494,6 +522,8 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
     try {
       await saveProfile(getPayload(false));
       try {
+        window.sessionStorage.removeItem(`career-radar-onboarding-draft:${userId}`);
+        window.localStorage.removeItem(`career-radar-onboarding-draft:${userId}`);
         window.localStorage.removeItem("career-radar-onboarding-draft");
       } catch {
         /* Best effort cleanup. */
@@ -507,6 +537,7 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
   };
 
   const completeLater = async () => {
+    if (savingResume || resumeSaveError || parsingResume) return;
     if (!userId) {
       navigate("/");
       return;
@@ -523,9 +554,26 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
     }
   };
 
+  const persistResume = async (file: File, operation: number) => {
+    setSavingResume(true);
+    setResumeSaveError("");
+    try {
+      // Selecting a file beside the storage notice is the affirmative upload action.
+      const saved = await saveResume(userId, file, true, savedResumePath.current);
+      if (operation !== resumeOperation.current) return;
+      savedResumePath.current = saved.storage_path;
+      pendingResumeFile.current = null;
+    } catch (err) {
+      if (operation === resumeOperation.current) setResumeSaveError(err instanceof Error ? err.message : "Your resume was not saved. Please retry.");
+    } finally {
+      if (operation === resumeOperation.current) setSavingResume(false);
+    }
+  };
+
   const onResume = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (!file || parsingResume || savingResume) return;
+    const operation = ++resumeOperation.current;
 
     // Reset input so selecting the same file again still fires onChange
     if (resumeRef.current) {
@@ -542,6 +590,10 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
 
     try {
       const result = await extractResume(file);
+      if (operation !== resumeOperation.current) return;
+      if (result.status === "error") { setError(result.message); return; }
+      pendingResumeFile.current = file;
+      void persistResume(file, operation);
       setResumeSummary(result);
 
       if (result.status === "success") {
@@ -592,18 +644,27 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
         }));
         setPrefillState({ prefilled: [], preserved: [] });
         setError("");
-      } else if (result.status === "error") {
-        setError(result.message);
       }
-    } catch {
-      setError("We couldn't read that PDF. Try an unlocked PDF with selectable text.");
+    } catch (err) {
+      if (operation === resumeOperation.current) setError(err instanceof Error ? err.message : "Resume could not be saved. Please retry.");
     } finally {
-      setParsingResume(false);
+      if (operation === resumeOperation.current) setParsingResume(false);
     }
   };
 
-  const removeResume = (event?: React.MouseEvent) => {
+  const removeResume = async (event?: React.MouseEvent) => {
     event?.stopPropagation();
+    if (parsingResume || savingResume) return;
+    setParsingResume(true);
+    try { await removeSavedResume(userId); } catch (err) {
+      setError(err instanceof Error ? err.message : "Resume could not be removed.");
+      setParsingResume(false); return;
+    }
+    setParsingResume(false);
+    savedResumePath.current = undefined;
+    pendingResumeFile.current = null;
+    setResumeSaveError("");
+    setError("");
     setDraft((curr) => ({
       ...curr,
       resumeName: "",
@@ -633,7 +694,7 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
 
   const onLinkedInImport = () => {
     if (!draft.linkedin.trim()) {
-      setError("Please paste a LinkedIn profile URL (e.g. linkedin.com/in/you) to import.");
+      setError("Please paste a LinkedIn profile URL (e.g. linkedin.com/in/you) to continue.");
       return;
     }
     if (!isValidProfileUrl(draft.linkedin, "linkedin.com")) {
@@ -667,6 +728,9 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
       onResume={onResume}
       removeResume={removeResume}
       parsingResume={parsingResume}
+      savingResume={savingResume}
+      resumeStorageLoading={resumeStorageLoading}
+      resumeSaveFailed={Boolean(resumeSaveError)}
       applySuggestions={applySuggestions}
       error={error}
       setError={setError}
@@ -680,7 +744,7 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
   if (loading) {
     return (
       <main className="onboarding-page">
-        <p className="onboarding-loading">Checking your secure session…</p>
+        <div className="onboarding-loading-layout"><div className="skeleton-portrait" aria-hidden="true" /><LoadingSkeleton label="Loading your profile" rows={5} /></div>
       </main>
     );
   }
@@ -736,6 +800,7 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
         <div className={`onboarding-layout onboarding-layout-step-${step}`}>
           <Visual step={step} label={label} caption={caption} />
           <section className="onboarding-form-panel">
+            <div className="onboarding-form-scroll" key={step}>
             {authConfigured && !userId ? (
               <div className="auth-preview-notice" role="status">
                 <strong>Preview mode</strong>
@@ -767,6 +832,9 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
               <h1>{title}</h1>
             </div>
             <div key={step} className="onboarding-step-content onboarding-step-transition">{body}</div>
+            {step === 1 && resumeSummary?.status === "empty" ? <p className="onboarding-note" role="status">No readable text. Enter your details manually.</p> : null}
+            {savingResume ? <p className="resume-save-status" role="status"><span className="status-pulse" aria-hidden="true" />Saving resume…</p> : null}
+            {resumeSaveError ? <div className="auth-form-error" role="alert"><p>{resumeSaveError}</p><button className="auth-secondary" type="button" onClick={() => { if (pendingResumeFile.current) void persistResume(pendingResumeFile.current, resumeOperation.current); }}>Retry</button></div> : null}
             {error && !isFieldValidationError(error) ? (
               <div className="auth-form-error" role="alert">
                 <p>{error}</p>
@@ -790,12 +858,13 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
                 ) : null}
               </div>
             ) : null}
+            </div>
             <div className="onboarding-actions">
               <button
                 className="auth-secondary"
                 type="button"
                 onClick={step === 1 ? () => void completeLater() : back}
-                disabled={busy}
+                disabled={busy || parsingResume || (step === 1 && (savingResume || Boolean(resumeSaveError)))}
               >
                 {step === 1 ? (
                   "Complete later"
@@ -810,12 +879,12 @@ export function OnboardingRoute({ navigate }: { navigate: Navigate }) {
                   className="auth-primary"
                   type="button"
                   onClick={next}
-                  disabled={busy || (step === 1 && parsingResume)}
+                  disabled={busy || parsingResume}
                 >
                   Continue <ArrowRight size={15} />
                 </button>
               ) : (
-                <button className="auth-primary" type="button" onClick={() => void finish()} disabled={busy}>
+                <button className="auth-primary" type="button" onClick={() => void finish()} disabled={busy || parsingResume || savingResume || Boolean(resumeSaveError)}>
                   {busy ? "Saving…" : "Explore Career Radar"} <ArrowRight size={15} />
                 </button>
               )}
@@ -837,6 +906,9 @@ export function OnboardingStepView({
   onResume,
   removeResume,
   parsingResume = false,
+  savingResume = false,
+  resumeStorageLoading = false,
+  resumeSaveFailed = false,
   applySuggestions,
   error = "",
   setError,
@@ -858,6 +930,9 @@ export function OnboardingStepView({
   onResume?: (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
   removeResume?: (event?: React.MouseEvent) => void;
   parsingResume?: boolean;
+  savingResume?: boolean;
+  resumeStorageLoading?: boolean;
+  resumeSaveFailed?: boolean;
   applySuggestions?: (action: "merge" | "replace") => void;
   error?: string;
   setError?: (err: string) => void;
@@ -867,6 +942,7 @@ export function OnboardingStepView({
   onExpYearsChange?: (value: string) => void;
 }) {
   const [customRoleInput, setCustomRoleInput] = useState("");
+
 
   const onFresherToggle = (checked: boolean) => {
     if (handleFresherToggle) {
@@ -897,9 +973,10 @@ export function OnboardingStepView({
   };
 
   const handleAddCustomRole = () => {
-    const trimmed = customRoleInput.trim();
+    const raw = customRoleInput.trim();
+    const trimmed = CANONICAL_ROLES.find(role => role.toLowerCase() === raw.toLowerCase()) || raw;
     if (!trimmed) return;
-    if (draft.roles.includes(trimmed)) {
+    if (draft.roles.some(role => role.toLowerCase() === trimmed.toLowerCase())) {
       setCustomRoleInput("");
       return;
     }
@@ -921,34 +998,35 @@ export function OnboardingStepView({
 
     return (
       <>
-        <p className="onboarding-lede">Upload your latest resume or paste your LinkedIn profile URL.</p>
-        <div className="resume-upload-wrapper">
+        <p className="onboarding-lede">Add your resume or LinkedIn profile.</p>
+        <div className={`resume-upload-wrapper ${parsingResume ? "is-reading" : ""}`} aria-busy={parsingResume || savingResume}>
+          {parsingResume ? <LoadingSkeleton label="Reading your resume" rows={2} /> : null}
           <button
             id="step1-resume-dropzone"
             className={`resume-dropzone ${draft.resumeName ? "has-file" : ""}`}
             type="button"
             onClick={() => resumeRef?.current?.click()}
-            disabled={parsingResume}
+            disabled={parsingResume || savingResume}
             aria-invalid={Boolean(isFileError || isStep1GeneralError)}
             aria-describedby={
               isFileError ? "step1-resume-error" : isStep1GeneralError ? "step1-general-error" : undefined
             }
           >
             <span className="onboarding-icon">
-              {draft.resumeName ? <Check size={19} /> : <Upload size={19} />}
+              {draft.resumeName ? (resumeSaveFailed ? <X size={19} /> : <Check size={19} />) : <Upload size={19} />}
             </span>
             <span>
               <strong>
-                {parsingResume ? "Reading your resume locally…" : draft.resumeName || "Upload your resume"}
+                {parsingResume ? "Reading your resume…" : draft.resumeName || "Upload your resume"}
               </strong>
               <small>
                 {draft.resumeName
-                  ? `${(draft.resumeBytes / 1024 / 1024).toFixed(1)} MB selected · PDF only`
-                  : "PDF · we'll read your experience, skills and locations"}
+                  ? `${(draft.resumeBytes / 1024 / 1024).toFixed(1)} MB · ${savingResume ? "saving…" : resumeSaveFailed ? "not saved" : "saved privately"}`
+                  : "PDF · up to 5 MB"}
               </small>
             </span>
           </button>
-          {draft.resumeName && !parsingResume ? (
+          {draft.resumeName && !parsingResume && !savingResume ? (
             <button
               type="button"
               className="resume-remove-btn"
@@ -966,6 +1044,8 @@ export function OnboardingStepView({
             {error}
           </small>
         ) : null}
+        <p className="resume-storage-notice">Uploading saves your PDF privately for Career Radar review. Remove it anytime. <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy</a></p>
+        {resumeStorageLoading && !parsingResume && !draft.resumeName ? <LoadingSkeleton label="Checking for a saved resume" rows={1} /> : null}
         <input
           ref={resumeRef}
           className="visually-hidden"
@@ -1006,7 +1086,7 @@ export function OnboardingStepView({
             className="onboarding-linkedin-import-btn"
             onClick={onLinkedInImport}
           >
-            Import <ArrowRight size={14} />
+            Continue with link <ArrowRight size={14} />
           </button>
         </div>
         {isLinkedInError ? (
@@ -1020,7 +1100,7 @@ export function OnboardingStepView({
           </small>
         ) : null}
         <small className="onboarding-note onboarding-note-required">
-          * Your resume or LinkedIn is required to continue.
+          LinkedIn saves a link only; no profile information is imported.
         </small>
       </>
     );
@@ -1030,9 +1110,8 @@ export function OnboardingStepView({
     const resumeRoles = draft.extractedRoles || [];
     const hasResumeRoles = resumeRoles.length > 0;
 
-    const additionalRoles = draft.roles.filter(
-      (r) => (hasResumeRoles ? !resumeRoles.includes(r) : !roles.includes(r))
-    );
+    const displayedRoles = [...new Set([...resumeRoles, ...draft.roles])];
+    const relatedRoles = suggestRelatedRoles([...draft.roles, ...resumeRoles]);
 
     const isRoleError = Boolean(error && (/role/i.test(error) || /title/i.test(error)));
 
@@ -1043,16 +1122,16 @@ export function OnboardingStepView({
           <span className="onboarding-role-count">{draft.roles.length} of 3 selected</span>
         </div>
 
-        {hasResumeRoles ? (
+        {displayedRoles.length > 0 ? (
           <div className="onboarding-role-section">
-            <span className="onboarding-section-label">From your resume</span>
+            <span className="onboarding-section-label">Your roles</span>
             <div
               className="onboarding-pill-grid"
               role="group"
-              aria-label="Roles from your resume"
+              aria-label="Your roles"
               aria-describedby={isRoleError ? "step2-roles-error" : undefined}
             >
-              {resumeRoles.map((role) => {
+              {displayedRoles.map((role) => {
                 const active = draft.roles.includes(role);
                 const disabled = !active && draft.roles.length >= 3;
                 return (
@@ -1071,66 +1150,17 @@ export function OnboardingStepView({
                   </button>
                 );
               })}
-            </div>
-          </div>
-        ) : draft.resumeName ? (
-          <div className="onboarding-empty-notice" role="note">
-            No target roles detected from your experience. Add up to 3 roles manually below.
-          </div>
-        ) : (
-          <div className="onboarding-role-section">
-            <span className="onboarding-section-label">Suggested roles</span>
-            <div
-              className="onboarding-pill-grid"
-              role="group"
-              aria-label="Suggested roles"
-              aria-describedby={isRoleError ? "step2-roles-error" : undefined}
-            >
-              {roles.map((role) => {
-                const active = draft.roles.includes(role);
-                const disabled = !active && draft.roles.length >= 3;
-                return (
-                  <button
-                    type="button"
-                    key={role}
-                    className={active ? "onboarding-role-pill selected" : "onboarding-role-pill"}
-                    onClick={() => {
-                      toggle("roles", role, 3);
-                      if (error && setError) setError("");
-                    }}
-                    aria-pressed={active}
-                    disabled={disabled}
-                  >
-                    {role}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {additionalRoles.length > 0 ? (
-          <div className="onboarding-role-section">
-            <span className="onboarding-section-label">Your added roles</span>
-            <div className="onboarding-pill-grid" role="group" aria-label="Your added roles">
-              {additionalRoles.map((role) => (
-                <button
-                  type="button"
-                  key={role}
-                  className="onboarding-role-pill selected"
-                  onClick={() => {
-                    toggle("roles", role, 3);
-                    if (error && setError) setError("");
-                  }}
-                  aria-pressed={true}
-                >
-                  {role}
-                </button>
-              ))}
             </div>
           </div>
         ) : null}
+        {draft.resumeName && !hasResumeRoles ? <p className="onboarding-empty-notice">No target roles detected from your experience. Add up to 3 roles manually below.</p> : null}
+        {relatedRoles.length > 0 ? <div className="onboarding-role-section">
+          <span className="onboarding-section-label">You might also be interested in</span>
 
+          <div className="onboarding-pill-grid" role="group" aria-label="Related roles">
+            {relatedRoles.map(role => <button key={role} type="button" className="onboarding-role-pill" aria-pressed={false} disabled={draft.roles.length >= 3} onClick={() => toggle("roles", role, 3)}>{role}</button>)}
+          </div>
+        </div> : null}
         {isRoleError ? (
           <small
             id="step2-roles-error"
@@ -1143,11 +1173,16 @@ export function OnboardingStepView({
         ) : null}
 
         <div className="onboarding-custom-role-wrap">
-          <span className="onboarding-field-label">Add a title</span>
+          <datalist id="role-title-suggestions">
+            {CANONICAL_ROLES.filter(role => !draft.roles.some(selected => selected.toLowerCase() === role.toLowerCase())).map(role => <option key={role} value={role} />)}
+          </datalist>
+          <label className="onboarding-field-label" htmlFor="onboarding-custom-role-input">Add a title</label>
           <div className="onboarding-custom-role-input-row">
             <input
               type="text"
               id="onboarding-custom-role-input"
+              list={draft.roles.length < 3 ? "role-title-suggestions" : undefined}
+              autoComplete="off"
               className="onboarding-custom-role-input"
               value={customRoleInput}
               placeholder="add a role"

@@ -1,0 +1,42 @@
+CareerRadar Clerk migration status (20 November 2026)
+
+The current React forms use Clerk authentication. Supabase retains candidate
+profiles, application tracking and private resume storage. This is the Clerk
+DEVELOPMENT instance; production credentials and domains are not configured.
+
+Verified:
+- 314 tests across 30 files passed; TypeScript and production build passed.
+- 73 live checks passed at http://192.168.1.8:5173, with disposable QA cleanup.
+- Signup/email code, password login/device code, reset, onboarding, profile
+  persistence, PDF upload/replacement/download/removal, tracker and isolation.
+- Responsive layouts tested at desktop/tablet/mobile sizes down to 320px.
+- Both original imported users were restored after their Clerk accounts were
+  deleted. Their stable candidate UUIDs and ownership mappings were retained.
+- Original profile, 2 resume rows and 5 storage objects match baseline hashes.
+- Both current original PDFs were downloaded read-only through their mapped
+  Clerk identities; cross-user access was denied.
+- Clerk secret is absent from the public production build.
+
+Follow-up confirmed by the user:
+- Google sign-in works. Automated email-code tests use Clerk's development
+  testing facility; real-inbox delivery is not certified by these tests.
+- The user manually deleted the original Supabase auth.users rows as well.
+  Candidate records/PDFs remain intact because ownership is decoupled from
+  auth.users. Returning to old Supabase Auth cannot rely on those deleted rows.
+- Preservation audit verifies original data and current Clerk ownership, and
+  explicitly records the user-confirmed removal of source authentication rows.
+
+Loading optimizations:
+- PDF processing loads dynamically when a resume is read, reducing the main
+  production JS bundle from 1,014.63 kB to 651.54 kB (365.12 kB deferred).
+- Clerk uses its automatic token cache/refresh rather than forcing token
+  network requests on each protected read. Backend JWT and RLS checks remain.
+- Concurrent profile snapshots share a request only for the same identity and
+  authentication generation. Account switches invalidate in-flight work.
+- Same-account redirect decisions reuse the current validated profile snapshot.
+
+Local app: http://localhost:5173
+Phone on the same Wi-Fi: http://192.168.1.8:5173
+The isolated test server on port 5180 was stopped.
+
+Final checks: 314 regression tests and 73 live checks passed after loading changes. Disposable test data cleaned. Private credential-bearing migration export and import-run files removed after preservation verification and user confirmation of source-account deletion. Non-sensitive audit and ownership proofs retained in ignored .clerk/migrate reports.

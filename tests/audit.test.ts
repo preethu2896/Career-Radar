@@ -6,16 +6,14 @@ describe("Career Radar — Website Quality Audit Verification Suite", () => {
   const rootDir = path.resolve(__dirname, "..");
 
   it("1. favicon exists in public directory and is referenced in index.html", () => {
-    const faviconPath = path.join(rootDir, "public", "favicon.svg");
-    expect(fs.existsSync(faviconPath)).toBe(true);
-
-    const faviconContent = fs.readFileSync(faviconPath, "utf-8");
-    expect(faviconContent).toContain("<svg");
-    expect(faviconContent).toContain("#15372f"); // brand deep pine
-    expect(faviconContent).toContain("#ef715f"); // brand coral dot
-
     const indexHtml = fs.readFileSync(path.join(rootDir, "index.html"), "utf-8");
-    expect(indexHtml).toContain('<link rel="icon" type="image/svg+xml" href="/favicon.svg" />');
+    expect(indexHtml).toContain('<link rel="icon" type="image/png" href="/careerradar-logo.png" />');
+    const faviconPath = path.join(rootDir, "public", "careerradar-logo.png");
+    expect(fs.existsSync(faviconPath)).toBe(true);
+    const image = fs.readFileSync(faviconPath);
+    expect([...image.subarray(0,8)]).toEqual([137,80,78,71,13,10,26,10]);
+    expect(image[25]).toBe(6); // The approved logo retains RGBA transparency.
+
     expect(indexHtml).toContain('<meta name="description"');
   });
 

@@ -1,8 +1,17 @@
+import { graduationYearFromEducation } from "./education.js";
+import {
+  numericEducationScore,
+  qualificationWithoutScore,
+  scoreFromQualification,
+} from "./education.js";
 import type { Profile } from "./auth.js";
 
 export const MAX_RESUME_BYTES = 5 * 1024 * 1024;
 
 export type Draft = {
+  educationDegree: string;
+  graduationYear: string;
+  educationScore: string;
   firstName: string;
   lastName: string;
   careerStage: string;
@@ -34,6 +43,9 @@ export type Draft = {
 };
 
 export const blankDraft = (): Draft => ({
+  educationDegree: "",
+  graduationYear: "",
+  educationScore: "",
   firstName: "",
   lastName: "",
   careerStage: "",
@@ -144,7 +156,7 @@ export function applyResumeSuggestions<
   }
 
   const nextPreserved = (currentDraft.preservedFields || []).filter(
-    (field) => field !== "Target roles" && field !== "Skills"
+    (field) => field !== "Target roles" && field !== "Skills",
   );
 
   return {
@@ -155,15 +167,26 @@ export function applyResumeSuggestions<
   };
 }
 
-export function toggleSelection(values: string[], value: string, limit?: number): string[] {
+export function toggleSelection(
+  values: string[],
+  value: string,
+  limit?: number,
+): string[] {
   if (values.includes(value)) return values.filter((item) => item !== value);
   if (limit && values.length >= limit) return values;
   return [...values, value];
 }
 
-export function isValidResume(file: { name: string; type: string; size: number }): boolean {
+export function isValidResume(file: {
+  name: string;
+  type: string;
+  size: number;
+}): boolean {
   const isPdfName = file.name.toLowerCase().endsWith(".pdf");
-  const isPdfType = !file.type || file.type === "application/pdf" || file.type === "application/octet-stream";
+  const isPdfType =
+    !file.type ||
+    file.type === "application/pdf" ||
+    file.type === "application/octet-stream";
   return isPdfName && isPdfType && file.size <= MAX_RESUME_BYTES;
 }
 
@@ -171,8 +194,11 @@ export function isValidProfileUrl(value: string, host: string): boolean {
   try {
     const trimmed = value.trim();
     if (!trimmed) return false;
-    const url = new URL(trimmed.startsWith("http") ? trimmed : `https://${trimmed}`);
-    const hostMatches = url.hostname === host || url.hostname.endsWith("." + host);
+    const url = new URL(
+      trimmed.startsWith("http") ? trimmed : `https://${trimmed}`,
+    );
+    const hostMatches =
+      url.hostname === host || url.hostname.endsWith("." + host);
     const hasPath = url.pathname.length > 1 && url.pathname !== "/";
     return hostMatches && hasPath;
   } catch {
@@ -180,11 +206,18 @@ export function isValidProfileUrl(value: string, host: string): boolean {
   }
 }
 
-export function isStep1Valid(input: { resumeName?: string | undefined; linkedin?: string | undefined }): boolean {
-  return Boolean(input.resumeName || isValidProfileUrl(input.linkedin ?? "", "linkedin.com"));
+export function isStep1Valid(input: {
+  resumeName?: string | undefined;
+  linkedin?: string | undefined;
+}): boolean {
+  return Boolean(
+    input.resumeName || isValidProfileUrl(input.linkedin ?? "", "linkedin.com"),
+  );
 }
 
-export function normalizePhone(value: string | null | undefined): string | null {
+export function normalizePhone(
+  value: string | null | undefined,
+): string | null {
   if (!value) return null;
   const trimmed = value.trim();
   if (!trimmed) return null;
@@ -226,10 +259,16 @@ export function isValidPhoneInput(value: string | null | undefined): boolean {
   if (!digits || digits === "91") {
     return trimmed === "+91" || trimmed === "+91 ";
   }
-  return digits.length === 10 || (digits.length === 12 && digits.startsWith("91")) || (digits.length >= 10 && digits.length <= 15);
+  return (
+    digits.length === 10 ||
+    (digits.length === 12 && digits.startsWith("91")) ||
+    (digits.length >= 10 && digits.length <= 15)
+  );
 }
 
-export function extractLocalPhoneNumber(phone: string | null | undefined): string {
+export function extractLocalPhoneNumber(
+  phone: string | null | undefined,
+): string {
   if (!phone) return "";
   const trimmed = phone.trim();
   if (!trimmed || trimmed === "+91") return "";
@@ -251,9 +290,10 @@ export function isValidGithubUrl(value: string | null | undefined): boolean {
   if (/^(?:javascript|data|vbscript|file):/i.test(trimmed)) return false;
 
   try {
-    const withProtocol = trimmed.startsWith("http://") || trimmed.startsWith("https://")
-      ? trimmed
-      : `https://${trimmed}`;
+    const withProtocol =
+      trimmed.startsWith("http://") || trimmed.startsWith("https://")
+        ? trimmed
+        : `https://${trimmed}`;
     const parsed = new URL(withProtocol);
     const host = parsed.hostname.toLowerCase();
     if (host !== "github.com" && host !== "www.github.com") return false;
@@ -292,13 +332,16 @@ export function isValidGithubUrl(value: string | null | undefined): boolean {
   }
 }
 
-export function normalizeGithubUrl(value: string | null | undefined): string | null {
+export function normalizeGithubUrl(
+  value: string | null | undefined,
+): string | null {
   if (!value || !isValidGithubUrl(value)) return null;
   const trimmed = value.trim();
   try {
-    const withProtocol = trimmed.startsWith("http://") || trimmed.startsWith("https://")
-      ? trimmed
-      : `https://${trimmed}`;
+    const withProtocol =
+      trimmed.startsWith("http://") || trimmed.startsWith("https://")
+        ? trimmed
+        : `https://${trimmed}`;
     const parsed = new URL(withProtocol);
     const segments = parsed.pathname.split("/").filter(Boolean);
     const username = segments[0];
@@ -309,11 +352,15 @@ export function normalizeGithubUrl(value: string | null | undefined): string | n
   }
 }
 
-export function validateOnboardingStep(step: number, input: OnboardingValidationInput): string {
+export function validateOnboardingStep(
+  step: number,
+  input: OnboardingValidationInput,
+): string {
   if (step === 1 && !isStep1Valid(input)) {
     return "Add a PDF resume or a valid LinkedIn profile URL to continue.";
   }
-  if (step === 2 && !input.roles.length) return "Choose at least one target role.";
+  if (step === 2 && !input.roles.length)
+    return "Choose at least one target role.";
   if (step === 3) {
     if (!input.skills.length && !input.fresher) {
       return "Choose at least one skill, or mark yourself as a fresher.";
@@ -342,7 +389,10 @@ export function validateOnboardingStep(step: number, input: OnboardingValidation
       return "Enter a valid non-negative number for expected compensation.";
     }
   }
-  if (step === 6 && (!input.modes.length || !input.relocation || !input.availability)) {
+  if (
+    step === 6 &&
+    (!input.modes.length || !input.relocation || !input.availability)
+  ) {
     return "Choose your work mode, relocation preference, and availability.";
   }
   if (step === 7) {
@@ -382,7 +432,7 @@ export function validateOnboardingStep(step: number, input: OnboardingValidation
 }
 
 export function validateEntireOnboarding(
-  input: OnboardingValidationInput
+  input: OnboardingValidationInput,
 ): { step: number; message: string } | null {
   for (let s = 1; s <= 8; s++) {
     const message = validateOnboardingStep(s, input);
@@ -413,8 +463,11 @@ export function prefillFromResume<T extends OnboardingDraftFields>(
   suggestions: ResumePrefillSuggestions,
   options: {
     overwriteConfirmed?: boolean;
-    nameSplitter?: (fullName: string) => { firstName: string; lastName: string };
-  } = {}
+    nameSplitter?: (fullName: string) => {
+      firstName: string;
+      lastName: string;
+    };
+  } = {},
 ): PrefillResult<T> {
   const { overwriteConfirmed = false, nameSplitter } = options;
   const nextDraft = { ...currentDraft };
@@ -427,7 +480,10 @@ export function prefillFromResume<T extends OnboardingDraftFields>(
       ? nameSplitter(suggestions.candidateName)
       : (() => {
           const parts = suggestions.candidateName.trim().split(/\s+/);
-          return { firstName: parts[0] ?? "", lastName: parts.slice(1).join(" ") };
+          return {
+            firstName: parts[0] ?? "",
+            lastName: parts.slice(1).join(" "),
+          };
         })();
 
     if (split.firstName) {
@@ -499,9 +555,9 @@ export function prefillFromResume<T extends OnboardingDraftFields>(
     }
   }
 
-  // 7. Skills (up to 5)
+  // 7. Skills (preserve extracted skills for review)
   if (suggestions.skills && suggestions.skills.length > 0) {
-    const proposed = suggestions.skills.slice(0, 5);
+    const proposed = suggestions.skills.slice(0, 50);
     if (!currentDraft.skills.length || overwriteConfirmed) {
       nextDraft.skills = proposed;
       prefilledFields.push("Skills");
@@ -524,7 +580,9 @@ export function prefillFromResume<T extends OnboardingDraftFields>(
   return { draft: nextDraft, prefilledFields, preservedFields };
 }
 
-export function parseDecimalCompensation(value: string | number | null | undefined): number | null {
+export function parseDecimalCompensation(
+  value: string | number | null | undefined,
+): number | null {
   if (value === null || value === undefined) return null;
   if (typeof value === "number") return Number.isFinite(value) ? value : null;
   const trimmed = value.trim();
@@ -540,9 +598,13 @@ export function buildProfilePayload(
     existingProfile?: Profile | null | undefined;
     isPartial?: boolean | undefined;
     onboardingComplete?: boolean | undefined;
-  } = {}
+  } = {},
 ): Profile {
-  const { existingProfile, isPartial = false, onboardingComplete = false } = options;
+  const {
+    existingProfile,
+    isPartial = false,
+    onboardingComplete = false,
+  } = options;
 
   const expLevel = draft.fresher
     ? "No professional experience"
@@ -552,9 +614,10 @@ export function buildProfilePayload(
         ? (existingProfile?.experience_level ?? null)
         : null;
 
-  const computedModes = draft.remote && !draft.modes.includes("Remote")
-    ? [...draft.modes, "Remote"]
-    : draft.modes;
+  const computedModes =
+    draft.remote && !draft.modes.includes("Remote")
+      ? [...draft.modes, "Remote"]
+      : draft.modes;
 
   let currentComp: number | null = null;
   if (draft.fresher) {
@@ -572,7 +635,10 @@ export function buildProfilePayload(
     expectedComp = existingProfile?.expected_compensation ?? null;
   }
 
-  const pickString = (draftVal: string, existingVal?: string | null): string | null => {
+  const pickString = (
+    draftVal: string,
+    existingVal?: string | null,
+  ): string | null => {
     const trimmed = draftVal.trim();
     if (trimmed) return trimmed;
     if (isPartial && existingVal) return existingVal;
@@ -586,25 +652,39 @@ export function buildProfilePayload(
   };
 
   const rawPhone = normalizePhone(draft.phone);
-  const resolvedPhone = rawPhone !== null
-    ? rawPhone
-    : (isPartial ? (existingProfile?.phone ?? null) : null);
+  const resolvedPhone =
+    rawPhone !== null
+      ? rawPhone
+      : isPartial
+        ? (existingProfile?.phone ?? null)
+        : null;
 
   const normalizedGithub = normalizeGithubUrl(draft.github);
-  const resolvedGithub = normalizedGithub !== null
-    ? normalizedGithub
-    : (isPartial ? (existingProfile?.github_url ?? null) : null);
+  const resolvedGithub =
+    normalizedGithub !== null
+      ? normalizedGithub
+      : isPartial
+        ? (existingProfile?.github_url ?? null)
+        : null;
 
   return {
     id: userId,
     first_name: draft.firstName.trim() || existingProfile?.first_name || "",
     last_name: draft.lastName.trim() || existingProfile?.last_name || "",
-    career_stage: draft.careerStage || (isPartial ? (existingProfile?.career_stage ?? null) : null),
+    career_stage:
+      draft.careerStage ||
+      (isPartial ? (existingProfile?.career_stage ?? null) : null),
     experience_level: expLevel,
     target_roles: pickArray(draft.roles, existingProfile?.target_roles),
     skills: pickArray(draft.skills, existingProfile?.skills),
-    preferred_cities: pickArray(draft.cities, existingProfile?.preferred_cities),
-    work_preferences: pickArray(computedModes, existingProfile?.work_preferences),
+    preferred_cities: pickArray(
+      draft.cities,
+      existingProfile?.preferred_cities,
+    ),
+    work_preferences: pickArray(
+      computedModes,
+      existingProfile?.work_preferences,
+    ),
     industries: pickArray(draft.industries, existingProfile?.industries),
     onboarding_complete: onboardingComplete,
     phone: resolvedPhone,
@@ -619,45 +699,67 @@ export function buildProfilePayload(
     github_url: resolvedGithub,
     portfolio_url: pickString(draft.portfolio, existingProfile?.portfolio_url),
     resume_name: pickString(draft.resumeName, existingProfile?.resume_name),
-    resume_bytes: draft.resumeBytes || (isPartial ? (existingProfile?.resume_bytes ?? null) : null),
+    resume_bytes:
+      draft.resumeBytes ||
+      (isPartial ? (existingProfile?.resume_bytes ?? null) : null),
   };
 }
 
 export function hydrateDraftFromProfile(
   current: Draft,
-  profile: Profile | null | undefined
+  profile: Profile | null | undefined,
 ): Draft {
   if (!profile) return current;
 
   const isFresher = Boolean(
     current.fresher ||
-      profile.experience_level === "No professional experience" ||
-      profile.career_stage === "Student / Fresher" ||
-      profile.current_compensation === 0
+    profile.experience_level === "No professional experience" ||
+    profile.career_stage === "Student / Fresher" ||
+    profile.current_compensation === 0,
   );
 
   const resolvedCurrentComp = isFresher
     ? "0"
     : current.currentCompensation ||
-      (profile.current_compensation !== null && profile.current_compensation !== undefined
+      (profile.current_compensation !== null &&
+      profile.current_compensation !== undefined
         ? String(profile.current_compensation)
         : "");
 
   return {
     ...current,
+    educationDegree: qualificationWithoutScore(
+      current.educationDegree || profile.education_degree || "",
+    ),
+    graduationYear:
+      current.graduationYear || String(profile.graduation_year ?? ""),
+    educationScore: numericEducationScore(
+      current.educationScore ||
+        profile.education_score ||
+        scoreFromQualification(
+          current.educationDegree || profile.education_degree || "",
+        ),
+    ),
     firstName: profile.first_name?.trim() || current.firstName.trim() || "",
     lastName: profile.last_name?.trim() || current.lastName.trim() || "",
     careerStage: current.careerStage || profile.career_stage || "",
     roles: current.roles.length ? current.roles : (profile.target_roles ?? []),
     skills: current.skills.length ? current.skills : (profile.skills ?? []),
-    cities: current.cities.length ? current.cities : (profile.preferred_cities ?? []),
-    modes: current.modes.length ? current.modes : (profile.work_preferences ?? []),
-    industries: current.industries.length ? current.industries : (profile.industries ?? []),
+    cities: current.cities.length
+      ? current.cities
+      : (profile.preferred_cities ?? []),
+    modes: current.modes.length
+      ? current.modes
+      : (profile.work_preferences ?? []),
+    industries: current.industries.length
+      ? current.industries
+      : (profile.industries ?? []),
     fresher: isFresher,
-    experienceYears:
-      isFresher
-        ? "0"
-        : (current.experienceYears || (profile.experience_level?.match(/^\d+/)?.[0] || "")),
+    experienceYears: isFresher
+      ? "0"
+      : current.experienceYears ||
+        profile.experience_level?.match(/^\d+(?:\.\d+)?/)?.[0] ||
+        "",
     phone: current.phone || profile.phone || "",
     currentCity: current.currentCity || profile.current_city || "",
     state: current.state || profile.state || "",
@@ -665,7 +767,8 @@ export function hydrateDraftFromProfile(
     currentCompensation: resolvedCurrentComp,
     expectedCompensation:
       current.expectedCompensation ||
-      (profile.expected_compensation !== null && profile.expected_compensation !== undefined
+      (profile.expected_compensation !== null &&
+      profile.expected_compensation !== undefined
         ? String(profile.expected_compensation)
         : ""),
     relocation: current.relocation || profile.relocation || "",
@@ -674,7 +777,8 @@ export function hydrateDraftFromProfile(
     github: current.github || profile.github_url || "",
     portfolio: current.portfolio || profile.portfolio_url || "",
     resumeName: current.resumeName || profile.resume_name || "",
-    resumeBytes: current.resumeBytes || (profile.resume_bytes ? Number(profile.resume_bytes) : 0),
+    resumeBytes:
+      current.resumeBytes ||
+      (profile.resume_bytes ? Number(profile.resume_bytes) : 0),
   };
 }
-

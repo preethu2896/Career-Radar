@@ -1,0 +1,30 @@
+import {LoaderCircle} from 'lucide-react';
+import {readRecentSearches,rememberSearch,removeRecentSearch} from '../services/recentSearches.js';
+import {normalizeSearchText} from '../services/directoryPolicy.js';
+import {useEffect,useId,useMemo,useState} from 'react';
+import {searchSuggestions} from '../services/careerCatalog.js';
+import './searchAutocomplete.css';
+export type SearchChoice={value:string;kind?:string};
+export function SearchAutocomplete({value,onChange,choices,label,placeholder,id,onFocus,onEnter,required=false,maxLength=300,suggestionsMaxWidth,recentKey,onSearch,searching=false}:{value:string;onChange:(value:string)=>void;choices:readonly SearchChoice[];label:string;placeholder?:string;id?:string;onFocus?:()=>void;onEnter?:(value:string)=>void;required?:boolean;maxLength?:number;suggestionsMaxWidth?:number;recentKey?:string;onSearch?:(value:string)=>void;searching?:boolean}){
+ const [recent,setRecent]=useState<string[]>(()=>recentKey?readRecentSearches(recentKey):[]);
+ const remember=(text:string)=>{if(recentKey)setRecent(rememberSearch(recentKey,text));};
+ const generated=useId();const inputId=id??generated;const [open,setOpen]=useState(false);const [active,setActive]=useState(-1);
+ const [suggestionsAllowed,setSuggestionsAllowed]=useState(()=>suggestionsMaxWidth===undefined||window.matchMedia('(max-width: '+suggestionsMaxWidth+'px)').matches);
+ useEffect(()=>{if(suggestionsMaxWidth===undefined){setSuggestionsAllowed(true);return;}const media=window.matchMedia('(max-width: '+suggestionsMaxWidth+'px)');const change=()=>{setSuggestionsAllowed(media.matches);setOpen(false);setActive(-1);};change();media.addEventListener('change',change);return()=>media.removeEventListener('change',change);},[suggestionsMaxWidth]);
+ const options=useMemo(()=>{if(!suggestionsAllowed||!value.trim())return [];const unique=[...new Map(choices.map(choice=>[normalizeSearchText(choice.value),choice])).values()];const groups=new Map<string,SearchChoice[]>();for(const choice of unique){const kind=['Company','Role','Location','Industry'].includes(choice.kind??'')?choice.kind!:'Other';const group=groups.get(kind);if(group)group.push(choice);else groups.set(kind,[choice]);}const matches=[...groups.values()].map(group=>searchSuggestions(value,group.map(choice=>choice.value),[],8).map(label=>group.find(choice=>choice.value===label)!)).filter(group=>group.length);const results:SearchChoice[]=[];for(let i=0;results.length<8&&matches.some(group=>group[i]);i++)for(const group of matches)if(group[i]&&results.length<8)results.push(group[i]!);return results;},[value,choices,suggestionsAllowed]);
+ const showingRecent=Boolean(recentKey)&&open&&!value.trim()&&recent.length>0;
+ const showing=suggestionsAllowed&&open&&Boolean(value.trim())&&options.length>0;
+ const submitSearch=(text:string)=>{remember(text);setOpen(false);setActive(-1);onSearch?.(text.trim());};
+ const choose=(text:string)=>{remember(text);onChange(text);setOpen(false);setActive(-1);};
+ return <div className={"cr-search-autocomplete"+(onSearch?" has-search-action":"")} onBlur={event=>{if(!event.currentTarget.contains(event.relatedTarget)){remember(value);setOpen(false);}}}>
+  <input required={required} maxLength={maxLength} id={inputId} type="search" role={suggestionsAllowed?"combobox":"searchbox"} autoComplete="off" aria-label={label} aria-autocomplete={suggestionsAllowed?"list":"none"} aria-expanded={suggestionsAllowed?showing:undefined} aria-controls={showing?inputId+'-suggestions':undefined} aria-activedescendant={showing&&active>=0?inputId+'-suggestion-'+active:undefined} value={value} placeholder={placeholder} onFocus={()=>{if(recentKey)setRecent(readRecentSearches(recentKey));setOpen(true);if(suggestionsAllowed)onFocus?.();}} onChange={event=>{onChange(event.target.value);setOpen(true);setActive(-1);}} onKeyDown={event=>{
+   if(event.key==='Escape'){if(showing||showingRecent)event.preventDefault();setOpen(false);setActive(-1);}
+   if(suggestionsAllowed&&(event.key==='ArrowDown'||event.key==='ArrowUp')&&options.length&&value.trim()){event.preventDefault();setOpen(true);setActive(i=>(i+(event.key==='ArrowDown'?1:options.length-1)+options.length)%options.length);}
+   if(event.key==='Enter')remember(value);
+   if(event.key==='Enter'&&showing&&active>=0){event.preventDefault();choose(options[active]!.value);}else if(event.key==='Enter'&&onSearch){event.preventDefault();submitSearch(value);}else if(event.key==='Enter'&&onEnter){event.preventDefault();onEnter(value);}
+  }}/>
+  {onSearch?<button type="button" className="cr-search-submit" aria-label={'Submit '+label.toLowerCase()} aria-busy={searching} disabled={searching} onMouseDown={event=>event.preventDefault()} onClick={()=>submitSearch(value)}>{searching?<LoaderCircle size={14} className="cr-search-progress" aria-hidden="true"/>:null}<span>Search</span><span className="visually-hidden">{searching?' in progress':''}</span></button>:null}
+  {showingRecent?<div className="cr-search-options cr-recent-searches" aria-label="Recent searches"><div className="cr-recent-heading"><span>Recent searches</span><button type="button" onClick={()=>recentKey&&setRecent(removeRecentSearch(recentKey))}>Clear history</button></div>{recent.map(text=><div className="cr-recent-row" key={text}><button type="button" onClick={()=>choose(text)}>{text}</button><button type="button" aria-label={'Remove recent search '+text} onClick={()=>recentKey&&setRecent(removeRecentSearch(recentKey,text))}>×</button></div>)}</div>:null}
+  {showing?<div role="listbox" id={inputId+'-suggestions'} aria-label={label+' suggestions'} className="cr-search-options">{options.map((option,index)=><button type="button" role="option" id={inputId+'-suggestion-'+index} key={option.value} aria-selected={active===index} onMouseDown={event=>event.preventDefault()} onMouseMove={()=>setActive(index)} onClick={()=>choose(option.value)}><span>{option.value}</span>{option.kind?<small>{option.kind}</small>:null}</button>)}</div>:null}
+ </div>;
+}

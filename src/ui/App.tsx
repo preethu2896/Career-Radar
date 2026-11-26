@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {CompanyRoleSearch} from './CompanyRoleSearch.js';
+import {parseCompanyProfilePath} from '../services/companyProfileUrls.js';
+import { LoadingSkeleton } from "./LoadingSkeleton.js";
+import { AuthReady } from './ClerkRoot.js';
+import { SiteHeader } from './SiteHeader.js';
+import { LegalPage } from "./LegalPages.js";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
   Bell,
@@ -32,11 +38,14 @@ import {
   type SignalStatus,
 } from "./mockData.js";
 import { CareerWalkthrough, TrustAndAudienceSections } from "./HowItWorks.js";
-import { AuthCallbackRoute, AuthRoute, DashboardRoute, ForgotPasswordRoute, ResetPasswordRoute } from "./AuthFlows.js";
-import { OnboardingRoute } from "./CandidateOnboarding.js";
+import { AuthCallbackRoute, AuthRoute, ForgotPasswordRoute, ResetPasswordRoute } from "./AuthFlows.js";
 import { loadProductCompanies } from "./productData.js";
 import { safeExternalUrl } from "../domain/normalize.js";
 import handUrl from "../../hand.webp";
+
+const DiscoveryRoute = lazy(() => import('./Discovery.js').then(module => ({default: module.DiscoveryRoute})));
+const ProfileSettingsRoute = lazy(() => import('./ProfileSettings.js').then(module => ({default: module.ProfileSettingsRoute})));
+const DashboardRoute = lazy(() => import('./JobsDashboard.js').then(module => ({default: module.JobsDashboardRoute})));
 
 type Screen = "home" | "discover" | "signals" | "watchlist";
 
@@ -155,8 +164,43 @@ function SignalStatusPill({ status }: { status: SignalStatus }) {
   return <Pill tone={tone}>{labels[status]}</Pill>;
 }
 
-function Landing({ onEnter, onLogin, onSignUp }: { onEnter: () => void; onLogin: () => void; onSignUp: () => void }) {
+function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnter: () => void; onLogin: () => void; onSignUp: () => void; showNavigation?: boolean }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [landingNavHidden, setLandingNavHidden] = useState(false);
+
+  useEffect(() => {
+    if (!showNavigation) return;
+    let previousY = Math.max(0, window.scrollY), movement = 0, direction = 0;
+    let frame: number | undefined;
+    const update = () => {
+      frame = undefined;
+      const y = Math.max(0, Math.min(window.scrollY, document.documentElement.scrollHeight - window.innerHeight));
+      const delta = y - previousY;
+      previousY = y;
+      if (y < 80 || mobileNavOpen || document.querySelector('.landing-nav :focus-visible')) {
+        movement = 0;
+        direction = 0;
+        setLandingNavHidden(false);
+        return;
+      }
+      if (!delta) return;
+      const nextDirection = delta > 0 ? 1 : -1;
+      if (nextDirection !== direction) movement = 0;
+      direction = nextDirection;
+      movement += delta;
+      if (Math.abs(movement) >= 8) {
+        setLandingNavHidden(direction > 0);
+        movement = 0;
+      }
+    };
+    const onScroll = () => { if (frame === undefined) frame = window.requestAnimationFrame(update); };
+    if (mobileNavOpen) setLandingNavHidden(false);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (frame !== undefined) window.cancelAnimationFrame(frame);
+    };
+  }, [showNavigation, mobileNavOpen]);
 
   useEffect(() => {
     if (!mobileNavOpen) return;
@@ -169,20 +213,23 @@ function Landing({ onEnter, onLogin, onSignUp }: { onEnter: () => void; onLogin:
 
   return (
     <div id="top" className="landing">
-      <nav className="landing-nav">
-        <a className="brand-home" href="/#top" aria-label="Back to the top">
+      {showNavigation ? (
+      <nav className={"landing-nav" + (landingNavHidden ? " is-scroll-hidden" : "")} aria-hidden={landingNavHidden} onFocusCapture={() => setLandingNavHidden(false)}>
+        <a className="brand-home" href="/" aria-label="Career Radar jobs">
+          <img className="cr-navbar-mark" src="/careerradar-logo.png" width={28} height={28} alt="" aria-hidden="true" decoding="async" />
           <Logo />
         </a>
         <div className="landing-links">
-          <a href="/#signals">Career signals</a>
-          <a href="/#trust">Our approach</a>
+          <a href="/jobs">Jobs</a>
+          <a href="/companies">Companies</a>
+          <a href="/about#trust">Our approach</a>
         </div>
         <div className="landing-actions">
           <button className="text-button" onClick={onLogin}>
             Sign in
           </button>
           <button className="nav-cta" onClick={onEnter}>
-            Try the preview <ArrowRight size={15} />
+            Explore jobs <ArrowRight size={15} />
           </button>
         </div>
         <button
@@ -195,13 +242,13 @@ function Landing({ onEnter, onLogin, onSignUp }: { onEnter: () => void; onLogin:
         </button>
         {mobileNavOpen && (
           <div className="mobile-nav-panel">
-            <a href="/#signals" onClick={() => setMobileNavOpen(false)}>
-              Career signals
+            <a href="/jobs" onClick={() => setMobileNavOpen(false)}>
+              Jobs
             </a>
-            <a href="/#trust" onClick={() => setMobileNavOpen(false)}>
+            <a href="/about#trust" onClick={() => setMobileNavOpen(false)}>
               Our approach
             </a>
-            <a href="/#how-it-works" onClick={() => setMobileNavOpen(false)}>
+            <a href="/about#how-it-works" onClick={() => setMobileNavOpen(false)}>
               How it works
             </a>
             <button
@@ -220,11 +267,13 @@ function Landing({ onEnter, onLogin, onSignUp }: { onEnter: () => void; onLogin:
                 onEnter();
               }}
             >
-              Try the preview <ArrowRight size={15} />
+              Explore jobs <ArrowRight size={15} />
             </button>
           </div>
         )}
       </nav>
+      ) : null}
+      
       <main>
         <section className="hero">
           <div className="hero-copy">
@@ -380,11 +429,11 @@ function Landing({ onEnter, onLogin, onSignUp }: { onEnter: () => void; onLogin:
           </nav>
         </div>
         <div className="landing-footer-meta">
-          <a href="/#top" className="brand-home" aria-label="Career Radar home">
+          <a href="/" className="brand-home" aria-label="Career Radar jobs">
             <Logo />
           </a>
           <span>Career intelligence for the curious.</span>
-          <span>© 2026 Career Radar · Mock data preview</span>
+          <span>© 2026 Career Radar</span><span><a href="/terms">Terms</a> · <a href="/privacy">Privacy</a></span>
         </div>
         <div className="landing-footer-wordmark" aria-hidden="true">careerradar</div>
       </footer>
@@ -482,6 +531,7 @@ function AppShell({ onExit }: { onExit: () => void }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [productCompanies, setProductCompanies] = useState<Company[]>(companies);
   const [dataSource, setDataSource] = useState<"demo" | "local" | "live">("demo");
+  const [dataLoading, setDataLoading] = useState(true);
   const [dataError, setDataError] = useState<string | null>(null);
   const [filterOpen, setFilterOpen] = useState(false);
   const [cityFilter, setCityFilter] = useState("");
@@ -514,7 +564,8 @@ function AppShell({ onExit }: { onExit: () => void }) {
       if (!active) return;
       if ((result.source === "local" || result.source === "live") && result.companies.length) { setProductCompanies(result.companies); setDataSource(result.source); }
       setDataError(result.error);
-    });
+      setDataLoading(false);
+    }).catch(() => { if (active) { setDataError("Company records could not be loaded."); setDataLoading(false); } });
     return () => { active = false; };
   }, []);
   const filtered = useMemo(
@@ -615,7 +666,7 @@ function AppShell({ onExit }: { onExit: () => void }) {
           </button>
         </div>
       </aside>
-      <main className="app-main">
+      <main key={screen} className="app-main screen-transition">
         <header className="app-header">
           <div className="mobile-app-brand">
             <button
@@ -767,7 +818,7 @@ function AppShell({ onExit }: { onExit: () => void }) {
               </button>
             </div>
             <div className="company-grid">
-              {filtered.slice(0, visibleCount).map((company) => (
+              {dataLoading ? Array.from({ length: 6 }, (_, index) => <LoadingSkeleton key={index} label="Loading company records" rows={4} />) : filtered.slice(0, visibleCount).map((company) => (
                 <CompanyCard
                   key={company.id}
                   company={company}
@@ -777,8 +828,8 @@ function AppShell({ onExit }: { onExit: () => void }) {
                 />
               ))}
             </div>
-            {filtered.length === 0 ? <div className="empty-state discovery-empty"><Search size={22} /><h3>No company records found.</h3><p>Try another name, city, or verification filter. Local records keep unknown evidence visible instead of guessing.</p></div> : null}
-            {visibleCount < filtered.length ? <button className="load-more-button" onClick={() => setVisibleCount((count) => count + 24)}>Load more records <ArrowRight size={14} /></button> : null}
+            {!dataLoading && filtered.length === 0 ? <div className="empty-state discovery-empty"><Search size={22} /><h3>No company records found.</h3><p>Try another name, city, or verification filter. Local records keep unknown evidence visible instead of guessing.</p></div> : null}
+            {!dataLoading && visibleCount < filtered.length ? <button className="load-more-button" onClick={() => setVisibleCount((count) => count + 24)}>Load more records <ArrowRight size={14} /></button> : null}
           </>
         )}
         {screen === "signals" && (
@@ -1254,19 +1305,7 @@ function NotFoundRoute({
 }) {
   return (
     <div className="not-found-page">
-      <header className="not-found-header">
-        <a
-          href="/#top"
-          className="brand-home"
-          onClick={(e) => {
-            e.preventDefault();
-            navigate("/");
-          }}
-          aria-label="Career Radar home"
-        >
-          <Logo />
-        </a>
-      </header>
+      
       <main className="not-found-content">
         <span className="kicker">
           <span className="kicker-line" /> SIGNAL LOST · 404
@@ -1311,9 +1350,37 @@ function usePageMetadata(path: string, entered: boolean) {
     } else {
       switch (path) {
         case "/":
-          title = "Career Radar — Company-first career intelligence";
+          title = "Career Radar — Find the signal behind the job";
+          description = "Discover companies and opportunities for your next career move.";
+          break;
+        case "/jobs":
+          title = "Jobs | Career Radar";
           description =
-            "Discover companies worth your next career move, explore verified career signals, and build a shortlist with evidence.";
+            "Explore sourced openings and requirements. Browse without an account; sign in to apply.";
+          break;
+        case "/about":
+          title = "About Career Radar";
+          description = "Our approach to finding companies and opportunities with evidence.";
+          break;
+        case "/companies":
+          title = "Companies | Career Radar";
+          description = "Explore company research and official career pages.";
+          break;
+        case "/refer":
+          title = "Referrals — Coming soon | Career Radar";
+          description = "Referrals are coming soon to CareerRadar. Explore jobs and companies today.";
+          break;
+        case "/pricing":
+          title = "Pricing | Career Radar";
+          description = "Free job discovery and application tracking, with Pro features planned.";
+          break;
+        case "/applications":
+          title = "Saved & applications | Career Radar";
+          description = "Your saved roles, application stages and private notes.";
+          break;
+        case "/account":
+          title = "Your account | Career Radar";
+          description = "Your profile, private resume and membership.";
           break;
         case "/login":
           title = "Sign In | Career Radar";
@@ -1324,6 +1391,14 @@ function usePageMetadata(path: string, entered: boolean) {
           title = "Create Account | Career Radar";
           description =
             "Create your Career Radar account to discover verified companies and career opportunities.";
+          break;
+        case "/terms":
+          title = "Terms of Service | Career Radar";
+          description = "Current service terms and limitations.";
+          break;
+        case "/privacy":
+          title = "Privacy Policy | Career Radar";
+          description = "How Career Radar handles account, profile and resume information.";
           break;
         case "/forgot-password":
           title = "Forgot Password | Career Radar";
@@ -1344,13 +1419,22 @@ function usePageMetadata(path: string, entered: boolean) {
           description =
             "Configure your career preferences, role focus, skills, and target locations.";
           break;
+        case "/profile":
+          title = "Your profile | Career Radar";
+          description = "Edit your career direction, background and private resume.";
+          break;
+        case "/explore":
+          title = "Explore opportunities | Career Radar";
+          description = "Explore sourced openings and company research without creating an account.";
+          break;
         case "/dashboard":
-          title = "Dashboard | Career Radar";
+        case "/radar":
+          title = "Your radar | Career Radar";
           description =
-            "View your personalized career intelligence, company signals, and recommendations.";
+            "Explore relevant openings and track your applications with clear next steps.";
           break;
         default:
-          title = "Page Not Found | Career Radar";
+          title = parseCompanyProfilePath(path) ? 'Company details | Career Radar' : path.startsWith('/jobs/') ? 'Role details | Career Radar' : path.startsWith('/companies/') ? 'Company details | Career Radar' : "Page Not Found | Career Radar";
           description =
             "The requested page could not be found. Return to Career Radar home or explore the preview.";
           break;
@@ -1368,19 +1452,40 @@ function usePageMetadata(path: string, entered: boolean) {
   }, [path, entered]);
 }
 
+
 export default function App() {
   const [entered, setEntered] = useState(false);
   const [path, setPath] = useState(() => window.location.pathname);
-  useEffect(() => { const onPopState = () => setPath(window.location.pathname); window.addEventListener("popstate", onPopState); return () => window.removeEventListener("popstate", onPopState); }, []);
-  const navigate = useCallback((nextPath: string) => { window.history.pushState({}, "", nextPath); setPath(nextPath.split("?")[0] ?? "/"); window.scrollTo({ top: 0, behavior: "auto" }); }, []);
+  useEffect(() => { const onPopState = () => { setEntered(false); setPath(window.location.pathname); }; window.addEventListener("popstate", onPopState); return () => window.removeEventListener("popstate", onPopState); }, []);
+  const navigate = useCallback((nextPath: string) => { window.history.pushState({}, "", nextPath); setEntered(false); setPath(new URL(nextPath, window.location.origin).pathname); window.scrollTo({ top: 0, behavior: "auto" }); }, []);
+
+  useEffect(() => {if(path === '/account'){window.history.replaceState({}, '', '/profile');setPath('/profile');window.scrollTo({top:0,behavior:'auto'});}}, [path]);
+
+  // Keep ordinary internal links in the app so the same transition runs everywhere.
+  useEffect(() => {
+    const handleLink = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const anchor = event.target instanceof Element ? event.target.closest("a[href]") : null;
+      if (!(anchor instanceof HTMLAnchorElement) || anchor.hasAttribute("download") || (anchor.target && anchor.target !== "_self")) return;
+      const url = new URL(anchor.href);
+      if (url.origin !== window.location.origin || url.hash || url.pathname === "/auth/callback") return;
+      event.preventDefault();
+      navigate(url.pathname + url.search);
+    };
+    document.addEventListener("click", handleLink);
+    return () => document.removeEventListener("click", handleLink);
+  }, [navigate]);
 
   usePageMetadata(path, entered);
 
   const pageKey = entered ? "app-shell" : path;
+  const withoutSiteNavbar = ["/", "", "/login", "/signup", "/forgot-password", "/reset-password", "/auth/callback", "/onboarding"].includes(path);
 
   let pageContent: React.ReactNode;
   if (entered) {
     pageContent = <AppShell onExit={() => setEntered(false)} />;
+  } else if (path === "/terms" || path === "/privacy") {
+    pageContent = <LegalPage kind={path === "/terms" ? "terms" : "privacy"} />;
   } else if (path === "/signup" || path === "/login") {
     pageContent = <AuthRoute path={path} navigate={navigate} />;
   } else if (path === "/forgot-password") {
@@ -1390,29 +1495,39 @@ export default function App() {
   } else if (path === "/auth/callback") {
     pageContent = <AuthCallbackRoute navigate={navigate} />;
   } else if (path === "/onboarding") {
-    pageContent = <OnboardingRoute navigate={navigate} />;
-  } else if (path === "/dashboard") {
+    pageContent = <ProfileSettingsRoute navigate={navigate} welcome />;
+  } else if (path === "/profile") {
+    pageContent = <ProfileSettingsRoute navigate={navigate} />;
+  } else if (path === "/account") {
+    pageContent = <ProfileSettingsRoute navigate={navigate} />;
+  } else if (path === "/dashboard" || path === '/radar') {
     pageContent = <DashboardRoute navigate={navigate} />;
-  } else if (path === "/" || path === "") {
+  } else if (path === "/about" || path === "/" || path === "") {
     pageContent = (
       <Landing
-        onEnter={() => setEntered(true)}
+        showNavigation={path === "/" || path === ""}
+        onEnter={() => navigate("/jobs")}
         onLogin={() => navigate("/login")}
-        onSignUp={() => navigate("/signup")}
+        onSignUp={() => navigate("/jobs")}
       />
     );
+  } else if (['/', '', '/jobs', '/explore', '/companies', '/refer', '/pricing', '/applications', '/account'].includes(path) || path.startsWith('/jobs/') || path.startsWith('/companies/')) {
+    pageContent = <DiscoveryRoute key={path} path={path === '/explore' ? '/jobs' : path} navigate={navigate}/>;
   } else {
     pageContent = (
       <NotFoundRoute
         navigate={navigate}
-        onEnter={() => setEntered(true)}
+        onEnter={() => navigate("/")}
       />
     );
   }
 
   return (
-    <div key={pageKey} className="page-transition">
-      {pageContent}
+    <div className={"cr-site-shell" + (withoutSiteNavbar ? " cr-no-site-navbar" : "") + (!withoutSiteNavbar ? " cr-product-type" : "")}>
+      {!withoutSiteNavbar ? <SiteHeader navigate={navigate} path={path}/> : null}
+      <div key={pageKey} className="page-transition">
+      <Suspense fallback={<main className="cr-loading"><LoadingSkeleton label="Loading page" rows={5}/></main>}>{['/login','/signup','/forgot-password','/reset-password','/auth/callback','/onboarding','/profile','/account','/dashboard','/radar'].includes(path) ? <AuthReady>{pageContent}</AuthReady> : pageContent}</Suspense>
+      </div>
     </div>
   );
 }

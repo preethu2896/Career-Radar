@@ -1,0 +1,19 @@
+import assert from 'node:assert/strict';
+import { chromium, expect as baseExpect } from '@playwright/test';
+import { writeFile } from 'node:fs/promises';
+const expect=baseExpect.configure({timeout:60000});
+const b=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
+const checks=[];
+const base={location:'Bengaluru, India',work_mode:'Hybrid',experience_requirement:'Freshers welcome',education_requirement:null,graduation_requirement:null,marks_requirement:null,salary:null,description:'Browser-only layout QA record.',application_instructions:null,skills:['SQL'],source_url:'https://example.com/careers',application_url:'https://example.com/apply',contact_email:null,contact_source_url:null,source_kind:'OFFICIAL',status:'OPEN',published_at:new Date(Date.now()-7200000).toISOString(),first_seen_at:new Date().toISOString(),last_checked_at:new Date().toISOString()};
+const jobs=[['QA Company One','Junior Data Analyst'],['QA Company Two','Frontend Developer'],['QA Company One','Customer Success Associate'],['QA Company Three','Design Internship']].map(([company_name,title],i)=>({...base,id:`00000000-0000-4000-8000-00000000000${i+1}`,company_name,title}));
+try{
+ const p=await b.newPage({reducedMotion:'reduce'});p.setDefaultTimeout(60000);await p.route('**/rest/v1/career_opportunities*',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(jobs)}));
+ for(const width of [1440,1024,768,390,320]){
+  await p.setViewportSize({width,height:900});await p.goto('http://localhost:5173/jobs',{waitUntil:'domcontentloaded'});await expect(p.locator('.sf-board-job')).toHaveCount(4);await p.evaluate(()=>document.fonts.ready);
+  const layout=await p.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:innerWidth,columns:getComputedStyle(document.querySelector('.sf-board-cards')).gridTemplateColumns.split(' ').length,overflow:[...document.querySelectorAll('.sf-board-job,.sf-board-sidebar,.sf-board-intro,.sf-board-tools,.sf-header nav')].filter(e=>{const r=e.getBoundingClientRect();return r.left< -1||r.right>innerWidth+1;}).map(e=>e.className)}));
+  assert.ok(layout.scroll<=layout.width+1);assert.deepEqual(layout.overflow,[]);assert.equal(layout.columns,width<=680?1:2);checks.push({width,layout:true,columns:layout.columns});await p.screenshot({path:`qa-artifacts/board-populated-${width}.png`,fullPage:true});
+  await p.getByRole('button',{name:'Job alerts',exact:true}).click();await expect(p.getByText('Email alerts are coming soon.',{exact:false})).toBeVisible();await p.getByRole('button',{name:'Close alert information',exact:true}).click();
+ }
+ await p.setViewportSize({width:1440,height:900});await p.goto('http://localhost:5173/jobs',{waitUntil:'domcontentloaded'});await expect(p.locator('.sf-board-job')).toHaveCount(4);await p.getByRole('button',{name:/QA Company Two/}).click();await expect(p.locator('.sf-board-job')).toHaveCount(1);await expect(p.getByLabel('Search jobs',{exact:true})).toHaveValue('QA Company Two');await p.getByRole('button',{name:'Reset',exact:true}).click();await expect(p.locator('.sf-board-job')).toHaveCount(4);await p.getByRole('button',{name:/Last 24h/}).click();await expect(p.getByRole('button',{name:/Last 24h/})).toHaveAttribute('aria-pressed','true');await p.getByRole('link',{name:'Apply for Junior Data Analyst',exact:true}).click();await p.waitForURL(url=>url.pathname==='/login');assert.equal(new URL(p.url()).searchParams.get('redirect'),'/jobs/'+jobs[0].id);checks.push({featuredSearch:true,dateSelection:true,applyLoginGate:true,alertsHonest:true});
+ await writeFile('qa-artifacts/board-layout-report.json',JSON.stringify({passed:true,checks},null,2));console.log('PASS: populated cards across five sizes, company filters, date filter, alerts and locked Apply');
+}finally{await b.close();}

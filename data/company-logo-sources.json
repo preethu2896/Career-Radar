@@ -1,0 +1,284 @@
+[
+  {
+    "company": "66degrees",
+    "domain": "66degrees.com",
+    "path": "/company-logos/66degrees.png",
+    "sourceUrl": "https://cdn.prod.website-files.com/68dd5adbcc75b2bc818c9064/68dd9d05fd5320033efe867b_webclip.png",
+    "sha256": "e131f345aa30caa848027791de3565c90d4e5fa8f27d3a0b2f9c191df3157b3a"
+  },
+  {
+    "company": "Aleph",
+    "domain": "alephholding.com",
+    "path": "/company-logos/aleph.png",
+    "sourceUrl": "https://alephdigital.com/uploads/bc00caf5-12d7-4a6b-bff2-54829be0881c/cb8dbbcdf22c649beb72f4a267d58e1d/bc00caf5-12d7-4a6b-bff2-54829be0881c.png?lastmodified=12112026091211",
+    "sha256": "fb3eb49a1acdef70fb82503e0fe32db593478461f8f2bbbd5dea4e51f1282ea0"
+  },
+  {
+    "company": "AlphaGrep",
+    "domain": "alpha-grep.com",
+    "path": "/company-logos/alphagrep.ico",
+    "sourceUrl": "https://alpha-grep.com/wp-content/uploads/2022/02/favicon.ico",
+    "sha256": "1339a33ee19073c2c87f3c34715b0741a960fe6276b9e71ae544fe205a8801ef"
+  },
+  {
+    "company": "Atlan",
+    "domain": "atlan.com",
+    "path": "/company-logos/atlan.png",
+    "sourceUrl": "https://atlan.com/favicon-96x96.png",
+    "sha256": "ebfc61e76ae8f7aa1f1aa9956883cdb052e42415e1742c69b94f0c693db48fe7"
+  },
+  {
+    "company": "Atlys",
+    "domain": "atlys.com",
+    "path": "/company-logos/atlys.ico",
+    "sourceUrl": "https://www.atlys.com/favicon.ico",
+    "sha256": "f9123ef2891c0646ff6e88f4532458df79b2fa88ac7ff699bcec239e4cf5017d"
+  },
+  {
+    "company": "CertifyOS",
+    "domain": "certifyos.com",
+    "path": "/company-logos/certifyos.png",
+    "sourceUrl": "https://www.certifyos.com/certifyos-favicon.png",
+    "sha256": "47c8b84b2088d54f8245bffb8bddc3ac62db05be29d0f21f27eee0b92954dd62"
+  },
+  {
+    "company": "Databricks",
+    "domain": "databricks.com",
+    "path": "/company-logos/databricks.png",
+    "sourceUrl": "https://www.databricks.com/en-website-assets/icons/icon-48x48.png?v=c9b9916c3b27dc51866c46b79a6e9b88",
+    "sha256": "3cab979e24ea08691f383fe4d7e6a890ae47c4fd8cd060c98db2e57e5c8f4ff7"
+  },
+  {
+    "company": "Datadog",
+    "domain": "datadoghq.com",
+    "path": "/company-logos/datadog.ico",
+    "sourceUrl": "https://datadoghq.com/favicon.ico",
+    "sha256": "3a243712ab55af7cad0200c046bef1760f677da2e2baf93d489c15374c209464"
+  },
+  {
+    "company": "Drivetrain",
+    "domain": "drivetrain.ai",
+    "path": "/company-logos/drivetrain.png",
+    "sourceUrl": "https://www.google.com/s2/favicons?domain=drivetrain.ai&sz=128",
+    "sha256": "e0f34082772ffe38198b6b7f0b46c068c115f4d97bd55b70a932d8f4c517962d",
+    "cachedFavicon": true
+  },
+  {
+    "company": "Dun & Bradstreet",
+    "domain": "dnb.com",
+    "path": "/company-logos/dun-bradstreet.png",
+    "sourceUrl": "https://www.dnb.com/etc.clientlibs/dnb-marketing-website/clientlibs/clientlib-react/resources/logo192.png",
+    "sha256": "84711bfed5e5640e82a1f1f38f51eb2b7f92be38339ea611c990ed63b0f18dc0"
+  },
+  {
+    "company": "Endor Labs",
+    "domain": "endorlabs.com",
+    "path": "/company-logos/endor-labs.png",
+    "sourceUrl": "https://cdn.prod.website-files.com/656eaf5c6da3527caf362363/6a860de45ffdf3b4121f2d62_Endorlabs%20Favicon%20256.png",
+    "sha256": "7facbdbadb529c0451820ca9ba41762698c0060218969d7c3bb072a17e6f0232"
+  },
+  {
+    "company": "Equal Experts",
+    "domain": "equalexperts.com",
+    "path": "/company-logos/equal-experts.png",
+    "sourceUrl": "https://www.equalexperts.com/wp-content/themes/equalexperts2024/assets/images/ico/Equal-Experts-Apple-Touch-Icon-144.png",
+    "sha256": "0a76fbf7c661ae7271a5a3bb5d67d95637fde49b0a2e02e2684f47dd56985d84"
+  },
+  {
+    "company": "Fam",
+    "domain": "famapp.in",
+    "path": "/company-logos/fam.ico",
+    "sourceUrl": "https://www.famapp.in/assets/localImages/favicon.ico",
+    "sha256": "e16dfb4af8e2451c0492a50b2fc6c7d045ea36efd93e533e8af598c0a7b87e5c"
+  },
+  {
+    "company": "Gainsight",
+    "domain": "gainsight.com",
+    "path": "/company-logos/gainsight.png",
+    "sourceUrl": "https://www.gainsight.com/apple-touch-icon.png",
+    "sha256": "a23f09a1ef88983394eac2543f4893b7e38c3d8907fe65ae999e5cde29d75a94"
+  },
+  {
+    "company": "GitLab",
+    "domain": "gitlab.com",
+    "path": "/company-logos/gitlab.png",
+    "sourceUrl": "https://about.gitlab.com/images/ico/favicon-192x192.png",
+    "sha256": "8274a7c15c1c7c5a07fdb684f8a7e5b417fe74ea2321fdd1c830fc9b18b50cb0"
+  },
+  {
+    "company": "Graviton Research Capital",
+    "domain": "gravitontrading.com",
+    "path": "/company-logos/graviton-research-capital.png",
+    "sourceUrl": "https://www.gravitontrading.com/assets/images/favicon.png",
+    "sha256": "e17608e98758f5ddebbf81accd4b8e128e67ac15d7ddf425146d0a2faeb3c43e"
+  },
+  {
+    "company": "Groww",
+    "domain": "groww.in",
+    "path": "/company-logos/groww.ico",
+    "sourceUrl": "https://groww.in/favicon32x32-groww.ico",
+    "sha256": "564693601684b13988e40ffec631ebc8432a19f46213f5fb9dca4a8fd38dcd30"
+  },
+  {
+    "company": "HackerRank",
+    "domain": "hackerrank.com",
+    "path": "/company-logos/hackerrank.png",
+    "sourceUrl": "https://www.hackerrank.com/_sherpa/assets/static/apple-touch-icon.png",
+    "sha256": "f2b8426bb10fdbede9365b87cf47d49c12bc0d7a38a4a084d1f51dc9dc3f0cb8"
+  },
+  {
+    "company": "Hevo Data",
+    "domain": "hevodata.com",
+    "path": "/company-logos/hevo-data.png",
+    "sourceUrl": "https://res.cloudinary.com/hevo/image/upload/v1763715985/website-rewamp/favicon/white/fav_white_2x_v3tkls.png",
+    "sha256": "337e17a77a187a823396a463bce6b17eb2be6017a9551bcf74cb7636732df6e6"
+  },
+  {
+    "company": "Interview Kickstart",
+    "domain": "interviewkickstart.com",
+    "path": "/company-logos/interview-kickstart.png",
+    "sourceUrl": "https://cdn-ilcidid.nitrocdn.com/UUGFLrvwXQisJMMAxvyGgbCYGRGywWEY/assets/images/optimized/rev-1b39a8e/interviewkickstart.com/wp-content/uploads/2024/12/cropped-IK_Icon_Color-180x180.png",
+    "sha256": "b1ff4c267568b500abb422ba902ba401e31dba52a8ecdfcba64c56c912e033b3"
+  },
+  {
+    "company": "Kantiv",
+    "domain": "kantiv.com",
+    "path": "/company-logos/kantiv.png",
+    "sourceUrl": "https://cdn.prod.website-files.com/636de67849cf1232cc2b67ae/6a1d72cf59cd93d0a20d4dab_Kantiv-Favicon_Kantiv-Favicon.png",
+    "sha256": "4f465236db4b2cd8ad7a1a5bf884a068d4a7d14a6eabdad9ce9a5114ca8f4d51"
+  },
+  {
+    "company": "Meesho",
+    "domain": "meesho.com",
+    "path": "/company-logos/meesho.png",
+    "sourceUrl": "https://meesho.com/apple-touch-icon.png",
+    "sha256": "e3f857c1e715d0308aa493d53cdcb14800bd146274dd24e6aad26ba82f995cd4"
+  },
+  {
+    "company": "Meraki Labs",
+    "domain": "merakilabs.com",
+    "path": "/company-logos/meraki-labs.png",
+    "sourceUrl": "https://cdn.prod.website-files.com/5fbfc5c8208e6b61b0bf4316/5ff701549f8a5383577ef23e_Meraki%20Labs_webclip.png",
+    "sha256": "c5652276bc2dac5df71be963a0044cb6acb7c7d0d3eeb745ecad9fb30a2e9d0e"
+  },
+  {
+    "company": "Mindtickle",
+    "domain": "mindtickle.com",
+    "path": "/company-logos/mindtickle.ico",
+    "sourceUrl": "https://mindtickle.com/favicon.ico?favicon.29xz68vsfgmjs.ico",
+    "sha256": "ebf4e4e5112072c4c3164d4a5ff84bccde889ecb034275c7ccab15171390b026"
+  },
+  {
+    "company": "Notion",
+    "domain": "notion.so",
+    "path": "/company-logos/notion.png",
+    "sourceUrl": "https://www.notion.com/front-static/logo-ios.png",
+    "sha256": "483846a85e43e22879445047b83b22033e70fcc25ab34809ebadb7f856507ee0"
+  },
+  {
+    "company": "Paytm",
+    "domain": "paytm.com",
+    "path": "/company-logos/paytm.png",
+    "sourceUrl": "https://paytm.com/favicon.ico",
+    "sha256": "f5be5f761c1132d6fab1710abb204823d3cac2687a5c05effba5e79d90f02c4b"
+  },
+  {
+    "company": "Portcast",
+    "domain": "portcast.io",
+    "path": "/company-logos/portcast.png",
+    "sourceUrl": "https://cdn.prod.website-files.com/643006af9e6f61169be0dfb1/643006af9e6f616ffee0dfea_Frame%2012427.png",
+    "sha256": "7e34d8045837fcb2161389454f0c6d39179ffdf919489f9b3fc60def50bd068e"
+  },
+  {
+    "company": "QuinStreet",
+    "domain": "quinstreet.com",
+    "path": "/company-logos/quinstreet.png",
+    "sourceUrl": "https://www.google.com/s2/favicons?domain=quinstreet.com&sz=128",
+    "sha256": "cef21a8b9e8f52ff2f3e901fc52efc9d8ea5949aca48486247e029f5165e0079",
+    "cachedFavicon": true
+  },
+  {
+    "company": "Razorpay",
+    "domain": "razorpay.com",
+    "path": "/company-logos/razorpay.png",
+    "sourceUrl": "https://framerusercontent.com/images/CU1m0xFonUl76ZeaW0IdkQ0M.png",
+    "sha256": "21bf23cd70af8a8d3733b8301c0d3af0271ecc66cc8802c846e09f0ae474e1ea"
+  },
+  {
+    "company": "Rockstar Games",
+    "domain": "rockstargames.com",
+    "path": "/company-logos/rockstar-games.ico",
+    "sourceUrl": "https://media-rockstargames-com.akamaized.net/favicons/rockstar/favicon.ico",
+    "sha256": "f2ddcb2992cc336952917f712a1f1d377d3cf11595749cf306d956c16cc28b06"
+  },
+  {
+    "company": "Sarvam",
+    "domain": "sarvam.ai",
+    "path": "/company-logos/sarvam.ico",
+    "sourceUrl": "https://www.sarvam.ai/favicon.ico",
+    "sha256": "f983f1055c5e797e3eb8cb4be766dedf98c7d46a4971bed38568d32ec435cb3d"
+  },
+  {
+    "company": "Schrödinger",
+    "domain": "www.schrodinger.com",
+    "path": "/company-logos/schrodinger.png",
+    "sourceUrl": "https://www.schrodinger.com/wp-content/themes/bigdrop-theme/dist/images/favicon/apple-icon.png",
+    "sha256": "92ea40c562aef0c7af7593196285f4dca8e8ba35d622311b6f5630f683dd39e1"
+  },
+  {
+    "company": "Sigmoid",
+    "domain": "sigmoid.com",
+    "path": "/company-logos/sigmoid.png",
+    "sourceUrl": "https://www.sigmoid.com/wp-content/uploads/2026/08/sigmoid-favicon-512x512-1-300x300.png",
+    "sha256": "acc3a9850b09ba185ac17f243e484cbfeb0eeb0eda631b8892f9bc7ec04722ff"
+  },
+  {
+    "company": "Smallest AI",
+    "domain": "smallest.ai",
+    "path": "/company-logos/smallest-ai.png",
+    "sourceUrl": "https://framerusercontent.com/images/8aGg1mfHwnBJJYiECyUmneAyRVA.png",
+    "sha256": "18da45fa9f82171f18786c096257f81dd27c1fc76a0e2297420c383a85ff99d4"
+  },
+  {
+    "company": "Stable Money",
+    "domain": "stablemoney.in",
+    "path": "/company-logos/stable-money.png",
+    "sourceUrl": "https://stablemoney.in/favicon.png",
+    "sha256": "d95127510c20cbe23bb236f150a67249806759111742140ced1640e49b9780f8"
+  },
+  {
+    "company": "Stripe",
+    "domain": "stripe.com",
+    "path": "/company-logos/stripe.png",
+    "sourceUrl": "https://images.stripeassets.com/fzn2n1nzq965/4vVgZi0ZMoEzOhkcv7EVwK/8cce6fdcf2733b2ec8e99548908847ed/favicon.png?w=180&h=180",
+    "sha256": "cb86ad335799c963a12003be1ef5ca21afe578fb4fa0592dd344294b42a5aba2"
+  },
+  {
+    "company": "Tower Research Capital",
+    "domain": "tower-research.com",
+    "path": "/company-logos/tower-research-capital.png",
+    "sourceUrl": "https://tower-research.com/wp-content/uploads/2024/05/favicon-300x300.png",
+    "sha256": "be13ee6cd81f3a58e4a92d19f36ef770918369236a9639667f8942dc630926e4"
+  },
+  {
+    "company": "Z1 Tech",
+    "domain": "z1tech.com",
+    "path": "/company-logos/z1-tech.png",
+    "sourceUrl": "https://www.z1tech.com/favicons/apple-icon-57x57.png",
+    "sha256": "35b010facd5decb21ea0babee3ce0057ea1a024542f8566495d962879de0631e"
+  },
+  {
+    "company": "Zenoti",
+    "domain": "zenoti.com",
+    "path": "/company-logos/zenoti.png",
+    "sourceUrl": "https://www.zenoti.com/apple-icon.png?apple-icon.e75f088c.png",
+    "sha256": "57579df93ebb148224d9c837d4ad3857236ba5217caf2145efe5a3c1f2f3e8f7"
+  },
+  {
+    "company": "Zeta",
+    "domain": "zeta.tech",
+    "path": "/company-logos/zeta.png",
+    "sourceUrl": "https://www.zeta.tech/in/wp-content/uploads/sites/3/2022/01/favicon-1.png",
+    "sha256": "651216c75528a58b1fb82282ed359a6bae058c7517d1404d20d6c6565cba0266"
+  }
+]
