@@ -281,7 +281,7 @@ export function JobsBoard({
                 >
                   <span>{label}</span>
                   <small>
-                    {loading ? "—" : countPosted(value!).toLocaleString()}
+                    {loading||error ? "—" : countPosted(value!).toLocaleString()}
                   </small>
                 </button>
               ))}

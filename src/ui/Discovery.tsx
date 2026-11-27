@@ -183,7 +183,7 @@ function Jobs({
     [error, setError] = useState(""),
     [revision, setRevision] = useState(0);
   const [remote,setRemote]=useState<PublicJobPage|null>(null),[facets,setFacets]=useState<PublicFacets|null>(null),[offset,setOffset]=useState(0),[loadingMore,setLoadingMore]=useState(false);
-  useEffect(()=>{if(catalogueEnabled)void catalogueFacets().then(setFacets).catch(()=>{});},[]);
+  useEffect(()=>{if(catalogueEnabled)void catalogueFacets().then(setFacets).catch(()=>{});},[revision]);
   const [filters, setFilters] = useState<JobFilters>(() => ({
     ...EMPTY_JOB_FILTERS,
     ...Object.fromEntries(
@@ -209,7 +209,7 @@ function Jobs({
       })
       .finally(() => {
         if (active) {setLoading(false);setLoadingMore(false);}
-      });},catalogueEnabled&&!path.startsWith('/jobs/')?150:0);
+      });},catalogueEnabled&&!path.startsWith('/jobs/')?400:0);
     return () => {
       active = false;controller.abort();clearTimeout(requestTimer);
     };

@@ -1,7 +1,7 @@
 import { compressDescription } from "./descriptionCodec.ts";
 import type { FeedJob } from "./jobFeeds.ts";
 import { explicitlyAcceptsFreshers } from "./jobEligibility.ts";
-import { searchKey } from "./publicCatalogue.ts";
+import { searchKey, invalidateCatalogueReadCache } from "./publicCatalogue.ts";
 export const slug = (s: string) =>
   s
     .normalize("NFKD")
@@ -50,7 +50,12 @@ export async function writeCatalogueSnapshot(
   for (const j of jobs) {
     const old: any = known.get(j.source_job_id),
       digest = await hash(JSON.stringify(j));
-    if (old?.content_hash === digest && old?.status === "OPEN" && old?.company_id===source.company_id) continue;
+    if (
+      old?.content_hash === digest &&
+      old?.status === "OPEN" &&
+      old?.company_id === source.company_id
+    )
+      continue;
     const h = await hash(source.id + ":" + j.source_job_id),
       id =
         old?.id ??
@@ -170,10 +175,22 @@ export async function writeCatalogueSnapshot(
   });
   const tx = await db.transaction("write");
   try {
-    if(source.lease_owner){const guard=await tx.execute({sql:"UPDATE catalogue_sources SET lease_expires_at=? WHERE id=? AND lease_owner=? AND lease_expires_at>? RETURNING id",args:[new Date(Date.now()+150000).toISOString(),source.id,source.lease_owner,new Date().toISOString()]});if(!guard.rows.length)throw Error('SOURCE_LEASE_EXPIRED');}
+    if (source.lease_owner) {
+      const guard = await tx.execute({
+        sql: "UPDATE catalogue_sources SET lease_expires_at=? WHERE id=? AND lease_owner=? AND lease_expires_at>? RETURNING id",
+        args: [
+          new Date(Date.now() + 150000).toISOString(),
+          source.id,
+          source.lease_owner,
+          new Date().toISOString(),
+        ],
+      });
+      if (!guard.rows.length) throw Error("SOURCE_LEASE_EXPIRED");
+    }
     for (let i = 0; i < statements.length; i += 50)
       await tx.batch(statements.slice(i, i + 50));
     await tx.commit();
+    invalidateCatalogueReadCache(db);
   } catch (error) {
     await tx.rollback();
     throw error;
