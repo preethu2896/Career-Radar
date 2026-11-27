@@ -87,6 +87,7 @@ function ProfileSettings({
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [message, setMessage] = useState("");
+  const dirty=JSON.stringify([first.trim(),last.trim(),roles,[...cities].sort(),[...modes].sort()])!==JSON.stringify([profile.first_name.trim(),profile.last_name.trim(),profile.target_roles,[...new Set(profile.preferred_cities.map(canonicalLocation))].sort(),[...profile.work_preferences].sort()]);
   const mounted = useRef(true);
   useEffect(() => {
     mounted.current = true;
@@ -98,7 +99,7 @@ function ProfileSettings({
     document.title = `${welcome ? "Welcome" : "Your profile"} | CareerRadar`;
   }, [welcome]);
   const submit = async (skip = false) => {
-    if (busy) return;
+    if (busy||(!welcome&&!skip&&!dirty)) return;
     setBusy(true);
     setError("");
     setMessage("");
@@ -198,7 +199,7 @@ function ProfileSettings({
           {error}
         </p>
       ) : null}
-      {message ? (
+      {message&&!dirty ? (
         <p className="cr-profile-success" role="status">
           {message}
         </p>
@@ -337,7 +338,7 @@ function ProfileSettings({
               <a href="/jobs" className="auth-secondary">
                 Back to jobs
               </a>
-              <button className="auth-primary" disabled={busy}>
+              <button className="auth-primary" disabled={busy||!dirty}>
                 {busy ? "Saving…" : "Save profile"}
               </button>
             </div>

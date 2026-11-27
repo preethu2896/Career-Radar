@@ -56,3 +56,13 @@ it('clears every subscriber immediately and lets all subscribers load the new ac
     });
   } finally { unsubscribe1(); unsubscribe2(); }
 });
+
+it('reuses only a freshly loaded profile for the same verified identity without extending its age or retaining an old token',async()=>{
+ let clock=Date.parse('2026-11-27T12:00:00Z');vi.spyOn(Date,'now').mockImplementation(()=>clock);
+ const query=vi.spyOn(supabase!,'from').mockReturnValue({select:()=>({eq:(_column:string,id:string)=>({maybeSingle:async()=>({data:{id,first_name:id==='alice'?'Alice':'Bob',last_name:'Example'},error:null})})})} as never);
+ await getAuthSnapshot(session('alice'));
+ clock+=10000;const renewed=await getAuthSnapshot({...session('alice'),access_token:'renewed-token'});expect(renewed.session?.access_token).toBe('renewed-token');expect(query).toHaveBeenCalledTimes(1);
+ clock+=6000;await getAuthSnapshot(session('alice'));expect(query).toHaveBeenCalledTimes(2);
+ await getAuthSnapshot(session('bob'));expect(query).toHaveBeenCalledTimes(3);expect(getCachedAuthSnapshot()?.session?.user.id).toBe('bob');expect(getCachedAuthSnapshot()?.profile?.first_name).toBe('Bob');
+ await getAuthSnapshot(session('alice'));expect(query).toHaveBeenCalledTimes(4);expect(getCachedAuthSnapshot()?.profile?.first_name).toBe('Alice');
+});

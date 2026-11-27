@@ -1,0 +1,54 @@
+.cr-tracker-feedback,
+.cr-tracker-undo,
+.cr-tracker-confirm {
+  background: #edf1e8;
+  color: #15372f;
+  padding: 16px;
+  border-radius: 12px;
+  margin: 16px 0;
+  overflow-wrap: anywhere;
+}
+.cr-tracker-undo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.cr-tracker-undo p {
+  flex: 1 1 180px;
+  margin: 0;
+}
+.cr-tracker-confirm p {
+  margin: 0 0 14px;
+}
+.cr-tracker-row[aria-busy="true"] {
+  cursor: progress;
+}
+.cr-tracker-row h2 {
+  overflow-wrap: anywhere;
+}
+.cr-manual-form .cr-detail-actions {
+  justify-content: flex-end;
+}
+.cr-manual-form .auth-error {
+  color: #923b30;
+}
+.cr-workspace .cr-tracker-confirm .auth-primary {
+  background: #923b30;
+}
+.cr-tracker-confirm :focus-visible {
+  outline: 3px solid #438372;
+  outline-offset: 3px;
+}
+@media (max-width: 450px) {
+  .cr-tracker-row-main {
+    flex-wrap: wrap;
+  }
+  .cr-tracker-row-main > .cr-field {
+    width: 100%;
+  }
+  .cr-tracker .cr-detail-actions {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}

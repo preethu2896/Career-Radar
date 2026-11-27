@@ -70,7 +70,7 @@ export function useSiteAccount() {
   }, [ready, revision]);
   return {
     snapshot,
-    userId: snapshot?.session?.user.id ?? null,
+    userId: snapshot&&isCurrentAuthSnapshot(snapshot)?snapshot.session?.user.id??null:null,
     loading,
     error,
     retry: () => setRevision((value) => value + 1),
@@ -163,7 +163,7 @@ export function SiteHeader({
                 </button>
               </div>
             </details>
-          ) : (
+          ) : account.loading ? <span className="cr-account-pending" role="status" aria-label="Loading account"/> : account.error ? <button className="cr-text-button" onClick={account.retry}>Retry account</button> : (
             <a className="auth-secondary" href="/login" aria-label="Sign in">
               <UserRound
                 className="sf-mobile-account-icon"

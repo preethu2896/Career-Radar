@@ -551,7 +551,7 @@ export function JobsBoard({
               </p>
               <button className="auth-secondary" onClick={retry}>
                 Try again
-              </button>
+              </button><a className="cr-catalogue-alternative" href="/tracker">Track a role you found elsewhere</a>
             </div>
           ) : !total ? (
             <div className="sf-board-empty">

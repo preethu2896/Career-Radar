@@ -95,11 +95,13 @@ export type AuthSnapshot = {
 };
 
 let cachedSnapshot: AuthSnapshot | null = null;
+let profileFreshUntil=0;
 let inFlightSnapshot: Promise<AuthSnapshot> | null = null;
 let authGeneration = 0;
 let profileFlight: { generation: number; userId: string; promise: Promise<AuthSnapshot> } | null = null;
 const snapshotGenerations = new WeakMap<AuthSnapshot, number>();
-function cacheAuthSnapshot(snapshot: AuthSnapshot): AuthSnapshot {
+function cacheAuthSnapshot(snapshot: AuthSnapshot,profileFresh=false): AuthSnapshot {
+  if(profileFresh)profileFreshUntil=Date.now()+15000;
   snapshotGenerations.set(snapshot, authGeneration);
   cachedSnapshot = snapshot;
   return snapshot;
@@ -114,6 +116,7 @@ function invalidateAuth(nextIdentity: string | null | undefined) {
   authGeneration++;
   identity = nextIdentity;
   cachedSnapshot = null;
+  profileFreshUntil=0;
   inFlightSnapshot = null;
   profileFlight = null;
 }
@@ -306,6 +309,7 @@ async function buildSnapshotForSession(
     console.warn("Unable to fetch profile for snapshot:", err);
   }
 
+  const profileWasLoaded=profile!==null;
   // Extract user metadata from signup or OAuth
   const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
   const metaFirst = String(meta.first_name ?? meta.given_name ?? "").trim();
@@ -341,7 +345,7 @@ async function buildSnapshotForSession(
   }
 
   assertGeneration(generation);
-  return cacheAuthSnapshot({ session, profile });
+  return cacheAuthSnapshot({ session, profile },profileWasLoaded);
 }
 
 function sharedSnapshot(session: Session, generation: number) {
@@ -367,6 +371,9 @@ export async function getAuthSnapshot(
     if (!session?.user) {
       return cacheAuthSnapshot({ session: null, profile: null });
     }
+    // Session validation still happens above. Reuse only a recently fetched
+    // profile for this same identity; never extend its original freshness window.
+    if(cachedSnapshot?.session?.user.id===session.user.id&&isCurrentAuthSnapshot(cachedSnapshot)&&Date.now()<profileFreshUntil)return cacheAuthSnapshot({session,profile:cachedSnapshot.profile});
     return sharedSnapshot(session, generation);
   }
   if (inFlightSnapshot) return inFlightSnapshot;

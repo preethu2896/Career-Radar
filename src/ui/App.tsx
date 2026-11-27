@@ -1,3 +1,4 @@
+import './auditPolish.css';
 import {signOut} from '../services/auth.js';
 import {CompanyRoleSearch} from './CompanyRoleSearch.js';
 import {parseCompanyProfilePath} from '../services/companyProfileUrls.js';
@@ -232,7 +233,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
           <a href="/about#what-we-do">Our approach</a>
         </div>
         <div className="landing-actions">
-          {landingAccount.userId?<details className="sf-account-menu"><summary aria-label="Profile menu">Profile</summary><div><a href="/dashboard">Dashboard</a><a href="/profile">Profile</a><a href="/tracker">Tracker</a><a href="/settings">Settings</a><a href="/settings#settings-subscription">Subscription</a><button disabled={logoutBusy} onClick={()=>void logout()}>{logoutBusy?'Signing out…':'Sign out'}</button>{logoutError?<p className="cr-error" role="alert">{logoutError}</p>:null}</div></details>:<button className="text-button" onClick={onLogin}>Sign in</button>}
+          {landingAccount.userId?<details className="sf-account-menu"><summary aria-label="Profile menu">Profile</summary><div><a href="/dashboard">Dashboard</a><a href="/profile">Profile</a><a href="/tracker">Tracker</a><a href="/settings">Settings</a><a href="/settings#settings-subscription">Subscription</a><button disabled={logoutBusy} onClick={()=>void logout()}>{logoutBusy?'Signing out…':'Sign out'}</button>{logoutError?<p className="cr-error" role="alert">{logoutError}</p>:null}</div></details>:landingAccount.loading?<span className="cr-account-pending" role="status" aria-label="Loading account"/>:landingAccount.error?<button className="text-button" onClick={landingAccount.retry}>Retry account</button>:<button className="text-button" onClick={onLogin}>Sign in</button>}
           <button className="nav-cta" onClick={onEnter}>
             Explore jobs <ArrowRight size={15} />
           </button>
@@ -256,7 +257,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
             <a href="/about#how-it-works" onClick={() => setMobileNavOpen(false)}>
               How it works
             </a>
-            {landingAccount.userId?<><a href="/dashboard" className="mobile-nav-link">Dashboard</a><a href="/profile" className="mobile-nav-link">Profile</a><a href="/tracker" className="mobile-nav-link">Tracker</a><a href="/settings" className="mobile-nav-link">Settings</a><a href="/settings#settings-subscription" className="mobile-nav-link">Subscription</a><button className="mobile-nav-link" disabled={logoutBusy} onClick={()=>void logout()}>{logoutBusy?'Signing out…':'Sign out'}</button></>:<button
+            {landingAccount.userId?<><a href="/dashboard" className="mobile-nav-link">Dashboard</a><a href="/profile" className="mobile-nav-link">Profile</a><a href="/tracker" className="mobile-nav-link">Tracker</a><a href="/settings" className="mobile-nav-link">Settings</a><a href="/settings#settings-subscription" className="mobile-nav-link">Subscription</a><button className="mobile-nav-link" disabled={logoutBusy} onClick={()=>void logout()}>{logoutBusy?'Signing out…':'Sign out'}</button></>:landingAccount.loading?<span className="cr-account-pending" role="status" aria-label="Loading account"/>:landingAccount.error?<button className="mobile-nav-link" onClick={landingAccount.retry}>Retry account</button>:<button
               className="mobile-nav-link"
               onClick={() => {
                 setMobileNavOpen(false);
@@ -418,7 +419,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
           </nav>
           <nav className="landing-footer-column" aria-label="Explore links">
             <h3>EXPLORE</h3>
-            <a href="/companies">Discover companies</a>
+            <a href="/jobs?experience=internship">Internships</a>
             <button type="button" onClick={onEnter}>Browse opportunities</button>
             <a href="/jobs?location=Bengaluru">Jobs in Bengaluru</a>
             <a href="/jobs?query=software">Software jobs</a>

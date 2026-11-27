@@ -224,15 +224,25 @@ export async function updateApplication(
   if (error) throw new Error("Changes were not saved. Please retry.");
   return data as Application;
 }
-export async function deleteApplication(userId: string, id: string) {
-  const client = await clientFor(userId);
-  const { error } = await client
-    .from("candidate_applications")
-    .delete()
-    .eq("id", id)
-    .eq("user_id", userId);
-  if (error) throw new Error("Could not remove this role. Please retry.");
+async function trackerMutation<T>(work:(signal:AbortSignal)=>Promise<T>):Promise<T>{
+ const controller=new AbortController();let timer:ReturnType<typeof setTimeout>|undefined;
+ try{return await Promise.race([work(controller.signal),new Promise<never>((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(new Error('The change could not be confirmed. Refresh your tracker before retrying.'));},12000);})]);}
+ finally{clearTimeout(timer);}
 }
+export async function deleteApplication(userId:string,id:string){
+ return trackerMutation(async signal=>{const client=await clientFor(userId);signal.throwIfAborted();const{error}=await client.from('candidate_applications').delete().eq('id',id).eq('user_id',userId).abortSignal(signal);if(error)throw Error('Removal could not be confirmed. Refresh your tracker before retrying.');});
+}
+export async function restoreApplication(userId:string,item:Application):Promise<Application>{
+ if(item.user_id!==userId)throw Error('Sign in again to restore this role.');
+ return trackerMutation(async signal=>{
+  const client=await clientFor(userId);signal.throwIfAborted();
+  const{error}=await client.from('candidate_applications').upsert({id:item.id,user_id:userId,entity_key:item.entity_key,source_kind:item.source_kind,company_name:item.company_name,title:item.title,source_url:safeExternalUrl(item.source_url),status:item.status,notes:item.notes,created_at:item.created_at,applied_at:item.applied_at},{onConflict:'user_id,entity_key',ignoreDuplicates:true}).abortSignal(signal);
+  if(error)throw Error('Restore could not be confirmed. Refresh your tracker before retrying.');
+  const{data,error:readError}=await client.from('candidate_applications').select('*').eq('user_id',userId).eq('entity_key',item.entity_key).abortSignal(signal).single();
+  if(readError||!data)throw Error('Restore could not be confirmed. Refresh your tracker before retrying.');return data as Application;
+ });
+}
+
 export function publishedContact(job: Opportunity) {
   return job.contact_email &&
     /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(job.contact_email) &&

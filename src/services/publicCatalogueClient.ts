@@ -1,3 +1,4 @@
+import {blockedCatalogueMessage} from './catalogueAvailability.js';
 import {
   PublicCatalogueCache,
   publicCatalogueCacheKey,
@@ -52,7 +53,7 @@ export async function catalogueRequest<T>(
       } catch {}
       throw Error(
         blocked
-          ? "The jobs and companies catalogue is temporarily unavailable. Please try again later."
+          ? blockedCatalogueMessage()
           : "Current catalogue could not be loaded. Please retry.",
       );
     }

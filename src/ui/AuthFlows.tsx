@@ -295,7 +295,7 @@ function PasswordField({
           onFocus={onFocus}
           autoComplete={autoComplete}
           aria-invalid={Boolean(error)}
-          aria-describedby={error ? `${name}-error` : undefined}
+          aria-describedby={error ? `${name}-error` : name==='confirmPassword'?'confirmPassword-help':undefined}
         />
         <button
           className="password-toggle"
@@ -310,6 +310,7 @@ function PasswordField({
           {visible ? <EyeOff size={16} /> : <Eye size={16} />}
         </button>
       </div>
+      {!error&&name==='confirmPassword'?<small id="confirmPassword-help">Enter the same password again.</small>:null}
       {error ? (
         <small id={`${name}-error`} className="auth-error">
           {error}
@@ -413,6 +414,7 @@ export function AuthRoute({
   const mode: AuthMode = path === "/login" ? "login" : "signup";
   // Capture once: auth listeners may navigate before the submit promise resolves.
   const redirectTarget = useMemo(() => new URLSearchParams(window.location.search).get('redirect'), [path]);
+  const [checkingSession,setCheckingSession]=useState(Boolean(supabase));
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -434,23 +436,25 @@ export function AuthRoute({
       session: Awaited<ReturnType<typeof getSession>>,
     ) => {
       if (active && session?.user) {
-        const validated = await getSession({ validate: true });
+        setCheckingSession(true);
+        const validated = session;
         if (!active || !validated?.user) return;
         const redirectParam = redirectTarget;
         const dest = await destinationForUser(validated.user);
         if (active) navigate(safeInternalRedirect(redirectParam, dest));
-      }
+      }else if(active)setCheckingSession(false);
     };
     void getSession({ validate: true })
       .then(redirect)
-      .catch(() => undefined);
+      .catch(() => {if(active)setCheckingSession(false);});
     const unsubscribe = subscribeToAuthChanges((snapshot) => {
       if (active && snapshot.session?.user) {
+        setCheckingSession(true);
         const redirectParam = redirectTarget;
         void destinationForUser(snapshot.session.user).then((destination) => {
           if (active)
             navigate(safeInternalRedirect(redirectParam, destination));
-        });
+        }).catch(error=>{if(active){setErrors({form:friendlyAuthError(error)});setCheckingSession(false);}});
       }
     });
     return () => {
@@ -473,12 +477,13 @@ export function AuthRoute({
       next.password =
         passwordPolicyError(password) || "Choose a stronger password.";
     }
-    if (mode === "signup" && password !== confirmPassword)
+    if(mode==='signup'&&!confirmPassword)next.confirmPassword='Confirm your password.';
+    else if (mode === "signup" && password !== confirmPassword)
       next.confirmPassword = "Passwords do not match.";
     if (mode === "signup" && !terms)
       next.terms = "Accept the terms to create your account.";
     setErrors(next);
-    if (Object.keys(next).length || !authConfigured) return;
+    if (Object.keys(next).length || !authConfigured){requestAnimationFrame(()=>document.querySelector<HTMLInputElement>('.auth-form [aria-invalid="true"]')?.focus());return;}
     setBusy(true);
     try {
       if (mode === "signup") {
@@ -702,6 +707,7 @@ export function AuthRoute({
     );
   }
 
+  if(checkingSession)return <main className="cr-loading"><LoadingSkeleton label="Checking your sign-in" rows={5}/></main>;
   return (
     <AuthShell
       compact={mode === "signup"}
@@ -719,6 +725,7 @@ export function AuthRoute({
           {errors.form}
         </div>
       ) : null}
+      {mode==='login'?<p className="auth-account-hint">Check the email below if your browser filled a different account.</p>:null}
       <form className="auth-form" onSubmit={submit} noValidate>
         {mode === "signup" ? (
           <>

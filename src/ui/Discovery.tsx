@@ -51,7 +51,7 @@ import {
 import { safeExternalUrl } from "../domain/normalize.js";
 import { LoadingSkeleton } from "./LoadingSkeleton.js";
 import { SavedResumePanel } from "./SavedResumePanel.js";
-import { Tracker } from "./CandidateWorkspace.js";
+import { Tracker } from "./Tracker.js";
 import { CompanyLogo } from './CompanyLogo.js';
 import { JobDetails } from './JobDetails.js';
 import { HiringCompanyDetails } from './HiringCompanyDetails.js';
@@ -150,6 +150,7 @@ export function DiscoveryRoute({
             <h1>Referrals, on CareerRadar.</h1>
             <p>We’re working on this. Explore jobs and companies while you wait.</p>
             <a className="auth-primary" href="/jobs">Explore jobs <ArrowRight size={16}/></a>
+            <a className="cr-launch-preference" href="/settings#settings-notifications">Save a preference for launch updates</a><p className="sf-hint">Product emails are coming soon. No referral request is created.</p>
           </section>
         ) : path === "/pricing" ? (
           <Pricing />
@@ -745,7 +746,7 @@ function Pricing() {
           <p className="sf-hint">
             We’ll enable purchase when contact coverage, monitoring and billing
             are ready. No payment is collected now.
-          </p>
+          </p><a className="cr-launch-preference" href="/settings#settings-notifications">Save a preference for launch updates</a><p className="sf-hint">Product emails are coming soon.</p>
         </section>
       </div>
       <section className="sf-comparison">

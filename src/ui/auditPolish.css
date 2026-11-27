@@ -1,0 +1,83 @@
+.cr-site-shell.cr-product-type .page-transition main :is(h1, h2) {
+  letter-spacing: normal;
+  word-spacing: 0.06em;
+}
+.cr-account-pending {
+  display: inline-block;
+  width: 72px;
+  height: 28px;
+  vertical-align: middle;
+  border-radius: 18px;
+  background: #e8ece3;
+}
+.cr-dashboard-other-stages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin: -8px 0 24px;
+  font-size: 13px;
+}
+.cr-dashboard-other-stages a {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  text-underline-offset: 3px;
+}
+.auth-account-hint {
+  font-size: 13px;
+  color: #58665f;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+.landing-footer-column a,
+.landing-footer-column button {
+  overflow-wrap: normal;
+  word-break: normal;
+  line-height: 1.5;
+}
+.cr-product-type .cr-profile-section p {
+  word-spacing: normal;
+}
+@media (min-width: 761px) and (max-width: 1100px) {
+  .landing-footer-main {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+  }
+  .landing-footer-brand {
+    grid-column: 1/-1;
+  }
+}
+@media (max-width: 450px) {
+  .cr-dashboard-other-stages {
+    gap: 8px 16px;
+  }
+  .cr-account-pending {
+    width: 28px;
+  }
+  .cr-personal-list strong {
+    overflow-wrap: break-word;
+  }
+}
+
+.cr-catalogue-alternative {
+  display: inline-flex;
+  margin-top: 16px;
+  min-height: 44px;
+  align-items: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cr-launch-preference {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  margin-top: 12px;
+}
+
+.auth-page .auth-two-col {
+  align-items: start;
+}
