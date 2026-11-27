@@ -3,12 +3,6 @@
 .cr-walkthrough .walkthrough-heading p { max-width: 460px; }
 .cr-walkthrough figure { margin: 0; }
 .cr-walkthrough .cr-demo-illustration { pointer-events: none; user-select: none; }
-.cr-walkthrough .cr-walkthrough-footer { max-width: 952px; margin: 20px auto 0; display: flex; align-items: flex-start; gap: 24px; justify-content: space-between; }
-.cr-walkthrough .cr-walkthrough-footer p { font-size: 12px; line-height: 1.65; color: #58665f; margin: 0; max-width: 610px; }
-.cr-walkthrough .cr-walkthrough-playback { display: flex; align-items: center; gap: 16px; flex: none; }
-.cr-walkthrough .cr-walkthrough-playback button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 0 4px; background: transparent; border: 0; border-bottom: 1px solid #a6b3a6; color: #15372f; font: inherit; font-size: 12px; cursor: pointer; border-radius: 0; }
-.cr-walkthrough .cr-walkthrough-playback button:hover { border-color: #15372f; }
-.cr-walkthrough .cr-walkthrough-playback button:focus-visible { outline: 2px solid #15372f; outline-offset: 5px; }
 .cr-walkthrough .cr-walkthrough-fallback { min-height: 520px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; padding: 32px; background: #faf9f4; border: 1px solid #dedfd5; border-radius: 20px; color: #15372f; text-align: center; }
 .cr-walkthrough .cr-walkthrough-fallback span { font-size: 12px; color: #58665f; }
 .cr-walkthrough .cr-walkthrough-fallback strong { font-family: 'Instrument Serif', Georgia, serif; font-size: 38px; font-weight: 400; }
@@ -18,9 +12,5 @@
   .cr-walkthrough .walkthrough-heading { text-align: left; margin: 0 4px 24px; }
   .cr-walkthrough .walkthrough-heading h2 { font-size: clamp(36px, 8vw, 48px); line-height: 1; }
   .cr-walkthrough .walkthrough-heading p { margin-left: 0; font-size: 14px; }
-  .cr-walkthrough .cr-walkthrough-footer { margin: 16px 4px 0; flex-direction: column; gap: 12px; }
-  .cr-walkthrough .cr-walkthrough-fallback { min-height: 470px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .cr-walkthrough .cr-walkthrough-playback { display: none; }
+  .cr-walkthrough .cr-walkthrough-fallback { min-height: 560px; }
 }

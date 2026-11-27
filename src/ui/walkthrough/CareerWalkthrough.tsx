@@ -4,7 +4,7 @@ import './walkthrough.css';
 const Demo = lazy(() => import('./CareerDemo.js'));
 
 function StillFallback() {
-  return <div className="cr-walkthrough-fallback"><span>Example walkthrough</span><strong>Search. Save. Keep moving.</strong><p>Find a role, check its requirements and keep track of your next step.</p></div>;
+  return <div className="cr-walkthrough-fallback"><span>CareerRadar</span><strong>Find a role. Take the next step.</strong><p>Explore jobs and companies, unlock apply links and apply directly with the employer.</p></div>;
 }
 
 class PreviewBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
@@ -26,8 +26,8 @@ export function CareerWalkthrough() {
     return () => observer.disconnect();
   }, []);
   return <section id="how-it-works" className="cr-walkthrough" ref={section} aria-labelledby="career-walkthrough-heading">
-    <div className="walkthrough-heading"><h2 id="career-walkthrough-heading">Find your next role.<br /><em>Keep your next step clear.</em></h2><p>Search the market, understand the role and keep your job hunt moving in one place.</p></div>
-    <figure aria-label="CareerRadar search and tracker walkthrough" aria-describedby="career-demo-description">
+    <div className="walkthrough-heading"><h2 id="career-walkthrough-heading">Find your next role.<br /><em>Go straight to the source.</em></h2><p>Explore jobs and companies, unlock apply links and apply on the employer’s own site.</p></div>
+    <figure aria-label="How CareerRadar works: explore jobs and companies, sign in, get the application link, and apply directly on the employer’s site">
       <PreviewBoundary><Suspense fallback={<StillFallback />}>{near ? <Demo /> : <StillFallback />}</Suspense></PreviewBoundary>
     </figure>
   </section>;
