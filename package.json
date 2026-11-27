@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "frontend:build": "vite build",
-    "build": "tsc --noEmit",
+    "build": "tsc --noEmit && npm run api:build",
     "test": "vitest run",
     "test:watch": "vitest",
     "import": "tsx src/cli/import.ts",
@@ -17,7 +17,8 @@
     "import:employer": "tsx src/cli/employerImport.ts",
     "collect:bangalore-jobs": "tsx src/cli/collectBangaloreJobs.ts",
     "local-data:build": "tsx src/cli/buildLocalDataset.ts",
-    "test:live": "node --env-file=.env.local scripts/qa-live.mjs"
+    "test:live": "node --env-file=.env.local scripts/qa-live.mjs",
+    "api:build": "node scripts/build-api.mjs && node scripts/check-catalogue-api.mjs"
   },
   "dependencies": {
     "@clerk/backend": "^3.31.3",

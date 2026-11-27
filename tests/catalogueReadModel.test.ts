@@ -3,7 +3,7 @@ import { DatabaseSync } from "node:sqlite";
 import { readFileSync } from "node:fs";
 import { catalogueRead } from "../supabase/functions/_shared/publicCatalogue.js";
 import { writeCatalogueSnapshot } from "../supabase/functions/_shared/catalogueWriter.js";
-import handler from "../api/catalogue.js";
+import handler from "../server/catalogueProxy.js";
 const databases: DatabaseSync[] = [];
 afterEach(() => {
   databases.splice(0).forEach((db) => db.close());

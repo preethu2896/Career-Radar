@@ -56,7 +56,7 @@ export default async function handler(
       );
       return;
     }
-    const value = publicCatalogueView(await response.json());
+    const value = publicCatalogueView(await response.json(),{alreadyPublic:true});
     const seconds = Math.floor(
       publicCatalogueCacheAge(url.searchParams.get("action") ?? "jobs", value) /
         1000,
