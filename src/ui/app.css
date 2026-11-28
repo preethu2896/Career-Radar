@@ -3957,10 +3957,11 @@ button:not(:disabled):active { transform: translateY(1px); }
 .career-landing-content .career-final-cta-inner {
   max-width: 668px;
   margin: 0 auto;
-  padding: 12px 24px 40px;
+  padding: 12px 24px 12px;
   transform: none;
 }
 .career-final-hand {
+  margin-top: clamp(-225px, -16vw, -140px);
   height: clamp(360px, 45vw, 600px);
   background-size: cover;
   background-position: center 56%;
@@ -3969,6 +3970,6 @@ button:not(:disabled):active { transform: translateY(1px); }
   -webkit-mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
 }
 @media (max-width: 650px) {
-  .career-landing-content .career-final-cta-inner { padding: 8px 20px 28px; }
-  .career-final-hand { height: 380px; background-position: center 55%; }
+  .career-landing-content .career-final-cta-inner { padding: 8px 20px 12px; }
+  .career-final-hand { height: 380px; margin-top: -140px; background-position: center 55%; }
 }
