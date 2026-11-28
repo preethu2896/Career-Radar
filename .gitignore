@@ -25,3 +25,5 @@ supabase/.temp/
 *.db
 *.db-shm
 *.db-wal
+
+mcp-dist/

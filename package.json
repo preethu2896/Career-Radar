@@ -18,23 +18,29 @@
     "collect:bangalore-jobs": "tsx src/cli/collectBangaloreJobs.ts",
     "local-data:build": "tsx src/cli/buildLocalDataset.ts",
     "test:live": "node --env-file=.env.local scripts/qa-live.mjs",
-    "api:build": "node scripts/build-api.mjs && node scripts/check-catalogue-api.mjs"
+    "api:build": "node scripts/build-api.mjs && node scripts/check-catalogue-api.mjs",
+    "mcp:build": "node scripts/build-mcp.mjs",
+    "mcp:start": "node mcp-dist/careerradar.mjs",
+    "mcp:check": "node scripts/check-mcp.mjs"
   },
   "dependencies": {
     "@clerk/backend": "^3.31.3",
     "@clerk/react": "^6.19.3",
     "@libsql/client": "0.18.0",
+    "@modelcontextprotocol/server": "2.4.0",
     "@supabase/supabase-js": "^2.117.3",
     "csv-parse": "^7.0.3",
     "jose": "^6.2.18",
     "lucide-react": "^0.468.0",
     "pdfjs-dist": "^4.10.38",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@clerk/testing": "^2.3.5",
     "@electric-sql/pglite": "^0.5.17",
+    "@modelcontextprotocol/client": "2.4.0",
     "@playwright/test": "^1.65.1",
     "@types/node": "^22.10.2",
     "@types/react": "^18.3.18",
