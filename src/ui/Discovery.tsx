@@ -1,3 +1,4 @@
+import { PricingSection } from "./PricingSection.js";
 import{PublicCompanies}from'./PublicCompanies.js';
 import {catalogueEnabled,catalogueJobs,catalogueFacets,type PublicJobPage,type PublicFacets} from '../services/publicCatalogueClient.js';
 import {loadOpportunityList} from '../services/opportunityList.js';
@@ -691,97 +692,5 @@ function AccountPage({ account }: { account: Account }) {
   );
 }
 function Pricing() {
-  const features = [
-    ["Search jobs and companies", "Included", "Included"],
-    ["Job descriptions", "Included", "Included"],
-    ["Job-apply links", "3 free unlocks", "Included"],
-    ["Company careers links", "Locked", "Included"],
-    ["Profile context, saves and tracker", "Included", "Included"],
-    ["Private résumé storage", "Included", "Included"],
-    [
-      "Researched company-contact access",
-      "Coming soon",
-      "Coming soon",
-    ],
-    ["Saved-search email alerts", "—", "5 active searches*"],
-    ["Watched-company alerts", "—", "20 companies*"],
-  ];
-  return (
-    <>
-      <section className="sf-compact-intro sf-pricing-intro">
-        <p className="sf-section-label">Start with a clearer search</p>
-        <h1>Free to find your next move.</h1>
-        <p>Browse jobs, apply at the source and keep track of your progress.</p>
-      </section>
-      <div className="sf-pricing-grid">
-        <section>
-          <h2>Free</h2>
-          <p className="sf-price">₹0</p>
-          <p>For exploring and organizing your job search.</p>
-          <ul>
-            <li>Public job and company discovery</li>
-            <li>3 free job-apply unlocks</li>
-            <li>Personal profile and application tracking</li>
-            <li>Private résumé storage</li>
-          </ul>
-          <a className="auth-primary" href="/signup">
-            Create a free account
-            <ArrowRight size={16} />
-          </a>
-        </section>
-        <section>
-          <span className="sf-planned">
-            Planned · Not available to purchase
-          </span>
-          <h2>Pro</h2>
-          <p className="sf-price">
-            ₹199 <small>/ 30 days</small>
-          </p>
-          <p>Proposed launch price. No automatic renewal planned.</p>
-          <ul>
-            <li>More apply links and company careers access</li>
-            <li>Saved-search email alerts</li>
-            <li>Watched-company opening alerts</li>
-          </ul>
-          <p className="sf-hint">
-            We’ll enable purchase when contact coverage, monitoring and billing
-            are ready. No payment is collected now.
-          </p><a className="cr-launch-preference" href="/settings#settings-notifications">Save a preference for launch updates</a><p className="sf-hint">Product emails are coming soon.</p>
-        </section>
-      </div>
-      <section className="sf-comparison">
-        <h2>What’s included</h2>
-        <div
-          className="sf-comparison-scroll"
-          tabIndex={0}
-          role="region"
-          aria-label="Plan comparison"
-        >
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Feature</th>
-                <th scope="col">Free</th>
-                <th scope="col">Pro (planned)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {features.map(([name, free, pro]) => (
-                <tr key={name}>
-                  <th scope="row">{name}</th>
-                  <td>{free}</td>
-                  <td>{pro}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="sf-hint">
-          * Contact allowances and alerts are planned, not currently available.
-          Unavailable contacts won’t consume an unlock. Published hiring emails
-          already attached to free job listings remain visible.
-        </p>
-      </section>
-    </>
-  );
+  return <PricingSection standalone />;
 }

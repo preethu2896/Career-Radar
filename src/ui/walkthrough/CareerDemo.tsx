@@ -22,10 +22,6 @@ async function journey(a: Act<Scene>) {
   await a.move('rest')
   await a.wait(950)
   await a.click({ at: 'apply', x: .85, y: .5 })
-  await a.set({ page: 2 })
-  a.mark('sign-in')
-  await a.wait(700)
-  await a.click({ at: 'sign-in', x: .85, y: .5 })
   await a.set({ page: 3 })
   a.mark('access')
   await a.move('rest')
@@ -86,11 +82,7 @@ export default function CareerDemo() {
           </div>
           <div className="cr-demo-page cr-demo-details" data-visible={s.page === 1}>
             <div className="cr-demo-detail-main"><span className="cr-demo-label">Jobs / Company careers</span><div className="cr-demo-role-title">Frontend Developer</div><span className="cr-demo-muted">Bengaluru, India · Onsite</span><div className="cr-demo-rule" /><div className="cr-demo-serif cr-demo-section-title">About this role</div><p>Build thoughtful, accessible web experiences.</p><b className="cr-demo-subtitle">Requirements</b><ul><li>React and TypeScript</li><li>Responsive, accessible interfaces</li></ul></div>
-            <Card pad="large" className="cr-demo-apply-card"><div className="cr-demo-serif">Apply for this role</div><p>Get the direct link to the employer’s application.</p><Button size="large" variant="primary" data-target="apply" data-cursor="hand" icon={<LockKeyhole size={16} />}><span>Sign in to apply</span></Button></Card>
-          </div>
-          <div className="cr-demo-page cr-demo-auth" data-visible={s.page === 2}>
-            <div className="cr-demo-auth-copy"><div className="cr-demo-serif">Your next step starts here.</div><p>One account to unlock application links.</p><div className="cr-demo-auth-role"><BriefcaseBusiness size={20} /><div><b>Frontend Developer</b><span>Bengaluru, India</span></div></div></div>
-            <Card pad="large" className="cr-demo-signin"><div className="cr-demo-serif">Welcome to CareerRadar</div><p>Sign in or create your account.</p><Button size="large" variant="primary" data-target="sign-in" data-cursor="hand" trailingIcon={<ArrowRight size={16} />}><span>Continue with Google</span></Button></Card>
+            <Card pad="large" className="cr-demo-apply-card"><div className="cr-demo-serif">Apply for this role</div><p>Get the direct link to the employer’s application.</p><Button size="large" variant="primary" data-target="apply" data-cursor="hand" icon={<LockKeyhole size={16} />}><span>View application</span></Button></Card>
           </div>
           <div className="cr-demo-page cr-demo-access" data-visible={s.page === 3}>
             <div className="cr-demo-access-heading"><div className="cr-demo-serif">Go straight to the source.</div><p>Get the direct link to the company’s original opening.</p></div>

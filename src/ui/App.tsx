@@ -1,3 +1,5 @@
+import { CompanyLogoMarquee } from "./CompanyLogoMarquee.js";
+import { PricingSection } from "./PricingSection.js";
 import './auditPolish.css';
 import {signOut} from '../services/auth.js';
 import {CompanyRoleSearch} from './CompanyRoleSearch.js';
@@ -374,15 +376,10 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
             <div className="hero-demo-label"><span className="live-dot" /> Illustrative product preview</div>
           </div>
         </section>
-        <section className="proof-strip">
-          <p>DISCOVERY WITH RECEIPTS</p>
-          <span />
-          <p>FOR INDIAN JOB SEEKERS</p>
-          <span />
-          <p>ALWAYS YOUR CALL</p>
-        </section>
+        <CompanyLogoMarquee />
         <CareerWalkthrough />
         <TrustAndAudienceSections onEnter={onEnter} />
+        <PricingSection />
         <CareerFaqSection />
         <section className="career-final-cta" style={{ backgroundImage: `url(${handUrl})` }}>
           <div className="career-final-cta-inner">

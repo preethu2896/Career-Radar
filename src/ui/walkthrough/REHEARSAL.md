@@ -2,7 +2,7 @@
 
 Built from the previously rehearsed Stageshow 1.1.1 hero-demo adaptation, retaining measured targets, responsive frames, CareerRadar fonts/colours and MIT runtime license.
 
-Story: search jobs / explore companies → read role → sign in → get application link → continue on employer’s career portal. The portal form stays empty; the animation does not submit an application. No plan, subscription, pricing, free-unlock count, tracking, preview/example banner, explanatory footer, replay or still control is presented.
+Story: search jobs / explore companies → read role → get application link → continue on employer’s career portal. The portal form stays empty; the animation does not submit an application. No login, signup, plan, subscription, pricing, free-unlock count, tracking, preview/example banner, explanatory footer, replay or still control is presented.
 
 Playback: loops while visible. The scene body fades at the reset while the header remains anchored; state and pointer reset behind that fade. Cursor starts and ends on the same measured rest target. Reduced-motion preference displays the completed employer handoff as a still. Lazy loading and offscreen/hidden-tab playback management are retained.
 

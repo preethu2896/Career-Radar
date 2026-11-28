@@ -1,0 +1,15 @@
+@font-face { font-family: 'CareerRadar Inter'; src: url('/fonts/inter-medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+.cr-logo-marquee { width: 100%; padding: 30px 0 34px; background: #f5f5f5; }
+.cr-logo-marquee > p { margin: 0 auto 22px; padding: 0 24px; max-width: 720px; color: #6b6b6b; font: 500 13px/1.6 'CareerRadar Inter', Inter, ui-sans-serif, system-ui, sans-serif; text-align: center; }
+.cr-logo-marquee-viewport { display: flex; flex-direction: column; gap: 12px; width: 100%; overflow: hidden; mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); }
+.cr-logo-marquee-viewport:focus-visible { outline: 2px solid #15372f; outline-offset: -2px; }
+.cr-logo-marquee-row { overflow: hidden; width: 100%; }
+.cr-logo-marquee-track { display: flex; width: max-content; animation: cr-logo-marquee-scroll 60s linear infinite; }
+.cr-logo-marquee-track.is-reversed { animation-direction: reverse; }
+.cr-logo-marquee-group { display: flex; flex: none; align-items: center; gap: 12px; margin: 0; padding: 0 12px 0 0; list-style: none; }
+.cr-logo-chip { display: flex; flex: none; align-items: center; gap: 8px; height: 40px; padding: 8px 16px; border: 1px solid #e5e5e5; border-radius: 999px; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / 3%); color: #262626; font: 500 14px/20px 'CareerRadar Inter', Inter, ui-sans-serif, system-ui, sans-serif; white-space: nowrap; }
+.cr-logo-chip img { display: block; width: 20px; height: 20px; flex: none; object-fit: contain; }
+.cr-logo-marquee:hover .cr-logo-marquee-track, .cr-logo-marquee:focus-within .cr-logo-marquee-track, .cr-logo-marquee:active .cr-logo-marquee-track { animation-play-state: paused; }
+@keyframes cr-logo-marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (max-width: 600px) { .cr-logo-marquee { padding: 26px 0 28px; } .cr-logo-marquee > p { font-size: 12px; margin-bottom: 18px; } .cr-logo-marquee-viewport { mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent); } }
+@media (prefers-reduced-motion: reduce) { .cr-logo-marquee-track { animation: none; } .cr-logo-marquee-group[aria-hidden='true'] { display: none; } .cr-logo-marquee-row { overflow-x: auto; } .cr-logo-marquee-viewport { mask-image: none; } }

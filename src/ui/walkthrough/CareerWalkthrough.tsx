@@ -27,7 +27,7 @@ export function CareerWalkthrough() {
   }, []);
   return <section id="how-it-works" className="cr-walkthrough" ref={section} aria-labelledby="career-walkthrough-heading">
     <div className="walkthrough-heading"><h2 id="career-walkthrough-heading">Find your next role.<br /><em>Go straight to the source.</em></h2><p>Explore jobs and companies, unlock apply links and apply on the employer’s own site.</p></div>
-    <figure aria-label="How CareerRadar works: explore jobs and companies, sign in, get the application link, and apply directly on the employer’s site">
+    <figure aria-label="How CareerRadar works: explore jobs and companies, get the application link, and apply directly on the employer’s site">
       <PreviewBoundary><Suspense fallback={<StillFallback />}>{near ? <Demo /> : <StillFallback />}</Suspense></PreviewBoundary>
     </figure>
   </section>;
