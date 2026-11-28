@@ -18,7 +18,7 @@
     "collect:bangalore-jobs": "tsx src/cli/collectBangaloreJobs.ts",
     "local-data:build": "tsx src/cli/buildLocalDataset.ts",
     "test:live": "node --env-file=.env.local scripts/qa-live.mjs",
-    "api:build": "node scripts/build-api.mjs && node scripts/check-catalogue-api.mjs",
+    "api:build": "node scripts/build-api.mjs && node scripts/check-catalogue-api.mjs && node scripts/check-assistant-api.mjs",
     "mcp:build": "node scripts/build-mcp.mjs",
     "mcp:start": "node mcp-dist/careerradar.mjs",
     "mcp:check": "node scripts/check-mcp.mjs"

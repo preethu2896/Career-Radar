@@ -1,0 +1,36 @@
+.cr-assistant-consent {
+  max-width: 680px;
+}
+.cr-assistant-consent h1 {
+  font:
+    400 clamp(32px, 5vw, 44px)/1.1 "Instrument Serif",
+    Georgia,
+    serif;
+  margin: 0 0 24px;
+  color: #15372f;
+}
+.cr-assistant-connection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+  border-top: 1px solid #dedfd5;
+}
+.cr-assistant-address {
+  display: block;
+  overflow-wrap: anywhere;
+  margin: 12px 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+@media (max-width: 500px) {
+  .cr-assistant-connection {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+.cr-assistant-setup {
+  max-width: 840px;
+}

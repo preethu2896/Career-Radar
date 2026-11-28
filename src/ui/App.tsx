@@ -47,6 +47,8 @@ import { loadProductCompanies } from "./productData.js";
 import { safeExternalUrl } from "../domain/normalize.js";
 import handUrl from "../../hand.webp";
 
+const AssistantSetup = lazy(() => import('./AssistantConnections.js').then(module => ({default: module.AssistantSetup})));
+const AssistantApproval = lazy(() => import('./AssistantConnections.js').then(module => ({default: module.AssistantApproval})));
 const InformationPage = lazy(() => import('./InformationPages.js').then(module => ({default: module.InformationPage})));
 const LegalPage = lazy(() => import('./LegalPages.js').then(module => ({default: module.LegalPage})));
 const DiscoveryRoute = lazy(() => import('./Discovery.js').then(module => ({default: module.DiscoveryRoute})));
@@ -1384,6 +1386,11 @@ function usePageMetadata(path: string, entered: boolean) {
           title = "Pricing | Career Radar";
           description = "Free job discovery and application tracking, with Pro features planned.";
           break;
+        case "/connect":
+        case "/connect/approve":
+          title = "Connect your assistant | CareerRadar";
+          description = "Connect and manage an AI assistant with your CareerRadar account.";
+          break;
         case "/settings":
           title = "Settings | CareerRadar";
           description = "Manage your sign-in, notification preferences and account.";
@@ -1510,6 +1517,10 @@ export default function App() {
     pageContent = <AuthCallbackRoute navigate={navigate} />;
   } else if (path === "/onboarding") {
     pageContent = <ProfileSettingsRoute navigate={navigate} welcome />;
+  } else if (path === "/connect") {
+    pageContent = <AssistantSetup/>;
+  } else if (path === "/connect/approve") {
+    pageContent = <AssistantApproval/>;
   } else if (path === "/settings") {
     pageContent = <SettingsRoute navigate={navigate} />;
   } else if (path === "/profile") {
@@ -1544,7 +1555,7 @@ export default function App() {
     <div className={"cr-site-shell" + (withoutSiteNavbar ? " cr-no-site-navbar" : "") + (!withoutSiteNavbar ? " cr-product-type" : "")}>
       {!withoutSiteNavbar ? <SiteHeader navigate={navigate} path={path}/> : null}
       <div key={pageKey} className="page-transition">
-      <Suspense fallback={<main className="cr-loading"><LoadingSkeleton label="Loading page" rows={5}/></main>}>{['/login','/signup','/forgot-password','/reset-password','/auth/callback','/onboarding','/profile','/account','/settings','/dashboard','/radar'].includes(path) ? <AuthReady>{pageContent}</AuthReady> : pageContent}</Suspense>
+      <Suspense fallback={<main className="cr-loading"><LoadingSkeleton label="Loading page" rows={5}/></main>}>{['/login','/signup','/forgot-password','/reset-password','/auth/callback','/onboarding','/profile','/account','/settings','/dashboard','/radar','/connect/approve'].includes(path) ? <AuthReady>{pageContent}</AuthReady> : pageContent}</Suspense>
       </div>
       {!withoutSiteNavbar?<PublicFooter/>:null}
     </div>
