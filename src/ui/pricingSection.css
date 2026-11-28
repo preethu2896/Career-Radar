@@ -27,3 +27,20 @@
 .cr-membership a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 @media (max-width: 850px) { .cr-membership { padding: 64px 24px; } .cr-membership-grid { gap: 12px; } .cr-membership-card { padding: 22px 18px; } .cr-membership-price > span { font-size: 44px; } }
 @media (max-width: 650px) { .cr-membership { padding: 56px 20px; } .cr-membership-grid { grid-template-columns: 1fr; gap: 16px; } .cr-membership-card { padding: 26px; } .cr-membership-description { min-height: 0; } .cr-membership-intro > p { font-size: 15px; } .cr-membership-price > span { font-size: 50px; } .cr-membership-card ul { margin-bottom: 26px; } }
+
+@media (max-width: 650px) {
+  .cr-membership-grid {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    margin: 0 -20px;
+    padding: 2px 20px 16px;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 20px;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #8a9b90 transparent;
+  }
+  .cr-membership-card { flex: 0 0 86%; min-width: 0; scroll-snap-align: start; }
+}

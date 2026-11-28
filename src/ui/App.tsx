@@ -282,7 +282,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
       </nav>
       ) : null}
       
-      <main>
+      <main className="career-landing-content">
         {new URLSearchParams(window.location.search).get('account-deleted')==='1'?<p className="cr-deletion-success" role="status">Your CareerRadar account and private data have been deleted.</p>:null}
         <section className="hero">
           <div className="hero-copy">
@@ -381,7 +381,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
         <TrustAndAudienceSections onEnter={onEnter} />
         <PricingSection />
         <CareerFaqSection />
-        <section className="career-final-cta" style={{ backgroundImage: `url(${handUrl})` }}>
+        <section className="career-final-cta">
           <div className="career-final-cta-inner">
             <span className="kicker">
               <span className="kicker-line" /> YOUR NEXT MOVE
@@ -394,6 +394,7 @@ function Landing({ onEnter, onLogin, onSignUp, showNavigation = false }: { onEnt
               Explore your market <ArrowRight size={16} />
             </button>
           </div>
+          <div className="career-final-hand" style={{ backgroundImage: `url(${handUrl})` }} aria-hidden="true" />
         </section>
       </main>
       <footer className="landing-footer">
